@@ -1,0 +1,17 @@
+{
+	"name": "spd-server",
+	"description": "A implementation of the spd language server in node.",
+	"author": "SPGoding",
+	"license": "MIT",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/SPGoding/spd.git"
+	},
+	"engines": {
+		"node": "*"
+	},
+	"dependencies": {
+		"vscode-languageserver": "^5.2.1"
+	}
+}
