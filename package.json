@@ -22,35 +22,35 @@
         "jsonValidation":[
             {
                 "fileMatch": "data/*/advancements/**/*.json",
-                "url": "./client/ref/minecraft-json-schemas/data/advancement.json"
+                "url": "./ref/minecraft-json-schemas/data/advancement.json"
             },
             {
                 "fileMatch": "data/*/recipes/**/*.json",
-                "url": "./client/ref/minecraft-json-schemas/data/recipe.json"
+                "url": "./ref/minecraft-json-schemas/data/recipe.json"
             },
             {
                 "fileMatch": "data/*/loot_tables/**/*.json",
-                "url": "./client/ref/minecraft-json-schemas/data/loot_table.json"
+                "url": "./ref/minecraft-json-schemas/data/loot_table.json"
             },
             {
                 "fileMatch": "data/*/tags/blocks/**/*.json",
-                "url": "./client/ref/minecraft-json-schemas/data/loot_table.json"
+                "url": "./ref/minecraft-json-schemas/data/loot_table.json"
             },
             {
                 "fileMatch": "data/*/tags/fluids/**/*.json",
-                "url": "./client/ref/minecraft-json-schemas/data/tags/fluid.json"
+                "url": "./ref/minecraft-json-schemas/data/tags/fluid.json"
             },
             {
                 "fileMatch": "data/*/tags/functions/**/*.json",
-                "url": "./client/ref/minecraft-json-schemas/data/tags/function.json"
+                "url": "./ref/minecraft-json-schemas/data/tags/function.json"
             },
             {
                 "fileMatch": "data/*/tags/items/**/*.json",
-                "url": "./client/ref/minecraft-json-schemas/data/tags/item.json"
+                "url": "./ref/minecraft-json-schemas/data/tags/item.json"
             },
             {
                 "fileMatch": "pack.mcmeta",
-                "url": "./client/ref/minecraft-json-schemas/data/pack.mcmeta.json"
+                "url": "./ref/minecraft-json-schemas/data/pack.mcmeta.json"
             }
         ]
     },
