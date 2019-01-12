@@ -1,0 +1,17 @@
+{
+    "extends": [
+        "tslint:recommended"
+    ],
+    "rules": {
+        "semicolon": [
+            true,
+            "never"
+        ],
+        "jsdoc-format": [
+            true,
+            "check-multiline-start"
+        ],
+        "no-trailing-whitespace": false,
+        "object-literal-sort-keys": false
+    }
+}
