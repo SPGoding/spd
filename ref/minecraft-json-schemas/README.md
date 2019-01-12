@@ -1,0 +1,3 @@
+Files in this forder (`/client/ref/minecraft-json-schemas/`) are part of [CommandBlockLogic/minecraft-json-schemas](https://github.com/CommandBlockLogic/minecraft-json-schemas) which is forked from [Levertion/minecraft-json-schemas](https://github.com/Levertion/minecraft-json-schemas).
+
+These files are licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
