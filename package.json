@@ -16,44 +16,68 @@
         "Programming Languages"
     ],
     "engines": {
-        "vscode": "^1.30.1"
+        "vscode": "^1.19.0"
     },
     "contributes": {
+        "languages": [
+            {
+                "id": "mcfunction",
+                "extensions": [
+                    ".mcfunction"
+                ]
+            },
+            {
+                "id": "json",
+                "extensions": [
+                    ".mcmeta"
+                ]
+            }
+        ],        
+        "commands": [
+            {
+                "command": "spd.initialize",
+                "title": "Initialize datapack"
+            }
+        ],
         "jsonValidation":[
             {
-                "fileMatch": "data/*/advancements/**/*.json",
+                "fileMatch": "/data/*/advancements/**.json",
                 "url": "./ref/minecraft-json-schemas/data/advancement.json"
             },
             {
-                "fileMatch": "data/*/recipes/**/*.json",
+                "fileMatch": "/data/*/recipes/**.json",
                 "url": "./ref/minecraft-json-schemas/data/recipe.json"
             },
             {
-                "fileMatch": "data/*/loot_tables/**/*.json",
+                "fileMatch": "/data/*/loot_tables/**.json",
                 "url": "./ref/minecraft-json-schemas/data/loot_table.json"
             },
             {
-                "fileMatch": "data/*/tags/blocks/**/*.json",
+                "fileMatch": "/data/*/tags/blocks/**.json",
                 "url": "./ref/minecraft-json-schemas/data/loot_table.json"
             },
             {
-                "fileMatch": "data/*/tags/fluids/**/*.json",
+                "fileMatch": "/data/*/tags/fluids/**.json",
                 "url": "./ref/minecraft-json-schemas/data/tags/fluid.json"
             },
             {
-                "fileMatch": "data/*/tags/functions/**/*.json",
+                "fileMatch": "/data/*/tags/functions/**.json",
                 "url": "./ref/minecraft-json-schemas/data/tags/function.json"
             },
             {
-                "fileMatch": "data/*/tags/items/**/*.json",
+                "fileMatch": "/data/*/tags/items/**.json",
                 "url": "./ref/minecraft-json-schemas/data/tags/item.json"
             },
             {
-                "fileMatch": "pack.mcmeta",
+                "fileMatch": "/pack.mcmeta",
                 "url": "./ref/minecraft-json-schemas/data/pack.mcmeta.json"
             }
         ]
     },
+    "activationEvents": [
+        "workspaceContains:**/pack.mcmeta",
+        "onCommand:spd.initialize"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/SPGoding/spd.git"
