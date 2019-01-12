@@ -23,7 +23,9 @@ TODO
 
 ## Building
 
-- Run `npm install` in this folder. This installs all necessary npm modules in both the client and server folder
+- Run `npm install` in this folder. This installs all necessary npm modules in both the client and server folder.
+    - If it warns `Cannot find module 'vscode'`, run `npm run postinstall` manually. (See [Microsoft/vscode#2810
+](https://github.com/Microsoft/vscode/issues/2810))
 - Open VS Code in this folder.
 - Execute `Run Build Task` command (defaults to `Ctrl + Shift + B`) to compile the client and server.
 - Switch to the Debug viewlet.
