@@ -39,4 +39,4 @@ TODO
 - [datapack-language-server](https://github.com/pca006132/datapack-language-server) by @pca006132
 - [lsp-sample](https://github.com/Microsoft/vscode-extension-samples/tree/master/lsp-sample) by @Microsoft.
 - [mcfunction-langserver](https://github.com/Levertion/mcfunction-langserver) by @Levertion
-- [mc-nbt-paths](https://github.com/MrYurihi/mc-nbt-paths)
+- [mc-nbt-paths](https://github.com/MrYurihi/mc-nbt-paths) by @MrYurihi
