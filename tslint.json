@@ -29,13 +29,20 @@
             1,
             2
         ],
-        "ordered-imports": [
-            true
-        ],
         "max-line-length": [
             true,
             100
         ],
+        "object-literal-key-quotes": [
+            true,
+            "as-needed"
+        ],
+        "indent": [
+            true,
+            "spaces",
+            4
+        ],
+        "prefer-const": true,
         "eofline": true
     }
 }
