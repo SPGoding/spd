@@ -11,7 +11,16 @@
 	"engines": {
 		"node": "*"
 	},
+	"scripts": {
+		"test": "mocha --opts ./mocha.opts"
+	},
 	"dependencies": {
 		"vscode-languageserver": "^5.2.1"
+	},
+	"devDependencies": {
+		"@types/power-assert": "^1.5.0",
+		"mocha": "^5.2.0",
+		"power-assert": "^1.6.1",
+		"ts-node": "^7.0.1"
 	}
 }

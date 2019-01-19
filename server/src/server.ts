@@ -3,6 +3,7 @@ import {
     ProposedFeatures,
     TextDocumentSyncKind
 } from 'vscode-languageserver'
+import {WorkspaceCache} from './utils/types'
 
 const connection = createConnection(ProposedFeatures.all)
 
@@ -27,4 +28,10 @@ connection.onInitialize(() => {
             }
         }
     }
+})
+
+const workspaceCache: WorkspaceCache = {}
+
+connection.onDidOpenTextDocument(params => {
+    params.textDocument.text
 })

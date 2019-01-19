@@ -24,4 +24,8 @@ connection.onInitialize(() => {
         }
     };
 });
+const workspaceCache = {};
+connection.onDidOpenTextDocument(params => {
+    params.textDocument.text;
+});
 //# sourceMappingURL=server.js.map
