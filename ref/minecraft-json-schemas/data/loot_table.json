@@ -2,14 +2,14 @@
     "$schema": "http://json-schema.org/schema#",
     "$id": "https://raw.githubusercontent.com/Levertion/minecraft-json-schemas/master/java/data/loot_table.json",
     "type": "object",
-    "title": "Root tag",
+    "title": "根标签。",
     "additionalProperties": false,
     "properties": {
         "additionalProperties": false,
         "type": {
             "type": "string",
             "title": "Loot table type",
-            "description": "The loot table's type. Will be used to validate the usage of functions and conditions",
+            "description": "该战利品表的类型。将被游戏用于验证函数和条件的使用。",
             "enum": [
                 "minecraft:advancement_reward",
                 "minecraft:block",
@@ -21,7 +21,7 @@
         },
         "functions": {
             "type": "array",
-            "title": "Loot table functions",
+            "title": "战利品表函数",
             "items": {
                 "$ref": "#/definitions/function"
             }
@@ -29,36 +29,36 @@
         "pools": {
             "type": "array",
             "title": "Loot pools",
-            "description": "All the available loot pools",
+            "description": "所有可用的随机池。",
             "items": {
                 "additionalProperties": false,
                 "properties": {
                     "functions": {
                         "type": "array",
-                        "title": "Pool functions",
+                        "title": "随机池函数。",
                         "items": {
                             "$ref": "#/definitions/function"
                         }
                     },
                     "conditions": {
                         "$ref": "#/definitions/conditions",
-                        "title": "Pool conditions",
+                        "title": "随机池条件、",
                         "description": "The conditions which must pass in order for this pool to be used"
                     },
                     "rolls": {
                         "$ref": "#/definitions/random",
-                        "title": "Rolls",
-                        "description": "The number of rolls in this pool. If it is a range, a random number is chosen"
+                        "title": "抽取次数。",
+                        "description": "在该随机池中抽取的次数。"
                     },
                     "bonus_rolls": {
                         "$ref": "#/definitions/random",
-                        "title": "Bonus rolls",
-                        "description": "The additional rolls given for each point of luck"
+                        "title": "奖励抽取次数。",
+                        "description": "每一点幸运效果所增加的抽取次数。"
                     },
                     "entries": {
                         "type": "array",
-                        "title": "The entries",
-                        "description": "For each roll, one of these entries is chosen to be given, with a chance based on the 'weight'",
+                        "title": "项目列表。",
+                        "description": "每一次抽取都会从该列表中随机选择。选中某个项目的几率由它的 'weight' 权重决定。",
                         "items": {
                             "$ref": "#/definitions/entry"
                         }
@@ -70,8 +70,8 @@
     "definitions": {
         "conditions": {
             "type": "array",
-            "title": "Conditions",
-            "description": "The conditions that must pass for this pool/entry to be used",
+            "title": "条件",
+            "description": "该随机池/项目被使用时应达成的条件。",
             "items": {
                 "$ref": "#/definitions/condition"
             }
@@ -85,8 +85,8 @@
                             "enum": [
                                 "minecraft:entity_properties"
                             ],
-                            "title": "Test entity properties",
-                            "descriptions": "Test whether an entity describes in 'entity' can pass the predicate described in 'predicate'"
+                            "title": "测试实体属性。",
+                            "descriptions": "测试 entity 中指定的实体能否通过 predicate 中的断言。"
                         },
                         "entity": {
                             "$ref": "#/definitions/entity"
@@ -109,8 +109,8 @@
                         },
                         "scores": {
                             "type": "object",
-                            "title": "Scores to check",
-                            "description": "The name of each sub-object is the score to check, it is either a number or a range",
+                            "title": "检查的分数。",
+                            "description": "要检测的分数。",
                             "additionalProperties": {
                                 "$ref": "../shared/range.json"
                             }
@@ -124,15 +124,14 @@
                             "enum": [
                                 "minecraft:random_chance"
                             ],
-                            "title": "Random Chance",
-                            "description": "A random chance (ignoring looting) that the condition will pass"
+                            "title": "随机几率。",
+                            "description": "游戏会生成一个 0.0 到 1.0 的随机数，当该数字小于等于被比数时，条件通过。"
                         },
                         "chance": {
                             "type": "number",
                             "minimum": 0,
                             "maximum": 1,
-                            "title": "Chance",
-                            "description": "The chance that the condition will pass. i.e 0.3 means 30% chance."
+                            "title": "被比数。"
                         }
                     }
                 },
@@ -144,20 +143,18 @@
                             "enum": [
                                 "minecraft:random_chance_with_looting"
                             ],
-                            "title": "Looting Chance",
-                            "description": "A random chance taking looting into account that the condition will pass"
+                            "title": "受抢夺魔咒影响的随机几率。",
+                            "description": "游戏会生成一个 0.0 到 1.0 的随机数，当该数字小于等于[b]被比数[/b]时，条件通过。击杀者的抢夺附魔等级会影响被比数的大小。"
                         },
                         "chance": {
                             "type": "number",
                             "minimum": 0,
                             "maximum": 1,
-                            "title": "Base chance",
-                            "description": "The base chance that the condition will pass without any looting. i.e 0.3 means 30% chance."
+                            "title": "被比数的基础值。"
                         },
                         "looting_multiplier": {
                             "type": "number",
-                            "title": "Looting multiplier",
-                            "description": "The extra chance each level of looting adds to success"
+                            "title": "每一级抢夺附魔所增加的被比数。"
                         }
                     }
                 },
@@ -168,12 +165,12 @@
                             "enum": [
                                 "minecraft:killed_by_player"
                             ],
-                            "description": "This condition will pass only if the mob was killed by a player, unless the 'inverse' condition is set"
+                            "description": "当前实体被玩家击杀时，条件通过。"
                         },
                         "inverse": {
                             "type": "boolean",
                             "title": "Inverse",
-                            "description": "If true, the condition will only pass if the entity is not killed by a player"
+                            "description": "如果设置为 true，则变为击杀者不是玩家时条件通过。"
                         }
                     }
                 },
@@ -184,17 +181,16 @@
                             "enum": [
                                 "minecraft:block_state_property"
                             ],
-                            "description": "Check properties of block state"
+                            "description": "匹配被破坏方块。"
                         },
                         "block": {
                             "$ref": "../shared/block_name.json",
-                            "title": "Block ID",
-                            "description": "ID of block. Test will fail if broken block doesn't match"
+                            "title": "方块 ID。"
                         },
                         "properties": {
                             "type": "object",
-                            "title": "Properties",
-                            "description": "Map of 'property:value' pairs",
+                            "title": "方块状态。",
+                            "description": "一系列方块状态的键-值对。",
                             "additionalProperties": {
                                 "type": "string"
                             }
@@ -208,7 +204,7 @@
                             "enum": [
                                 "minecraft:damage_source_properties"
                             ],
-                            "description": "Checks damage source"
+                            "title": "匹配该实体死亡时受到的伤害。"
                         },
                         "predicate": {
                             "$ref": "../shared/predicate.json#/definitions/damage"
@@ -222,7 +218,7 @@
                             "enum": [
                                 "minecraft:location_check"
                             ],
-                            "description": "Checks location"
+                            "description": "当前位置满足指定断言时，条件通过。"
                         },
                         "predicate": {
                             "$ref": "../shared/predicate.json#/definitions/location"
@@ -236,7 +232,7 @@
                             "enum": [
                                 "minecraft:match_tool"
                             ],
-                            "description": "Checks tool (available for block breaking and fishing)"
+                            "description": "匹配玩家使用的工具。"
                         },
                         "predicate": {
                             "$ref": "../shared/predicate.json#/definitions/item"
@@ -250,7 +246,7 @@
                             "enum": [
                                 "minecraft:survives_explosion"
                             ],
-                            "description": "Return true with 1/explosion radius probability"
+                            "description": "如果该方块是被爆炸破坏的，该条件有 1/爆炸半径 的几率通过；如果该方块是被玩家正常挖掘的，该条件永远通过。"
                         }
                     }
                 },
@@ -261,17 +257,17 @@
                             "enum": [
                                 "minecraft:table_bonus"
                             ],
-                            "description": "Passes with probability picked from table, indexed by enchantment level"
+                            "description": "分别定义不同级别的附魔等级下条件的通过几率。"
                         },
                         "enchantment": {
                             "$ref": "../shared/enchantment_name.json",
-                            "title": "Enchantment",
-                            "description": "ID of enchantment"
+                            "title": "魔咒。",
+                            "description": "探测的魔咒 ID。"
                         },
                         "chances": {
                             "type": "array",
-                            "title": "Chances",
-                            "description": "list of probabilities for enchantment level, indexed from 0",
+                            "title": "几率。",
+                            "description": "每个魔咒等级下的通过几率。",
                             "items": {
                                 "type": "number"
                             }
@@ -285,17 +281,15 @@
                             "enum": [
                                 "minecraft:weather_check"
                             ],
-                            "description": "Check the weather"
+                            "description": "检测当时的天气。"
                         },
                         "raining": {
                             "type": "boolean",
-                            "title": "Is raining",
-                            "description": "Check if it's raining"
+                            "title": "是否下雨。"
                         },
                         "thundering": {
                             "type": "boolean",
-                            "title": "Is thundering",
-                            "description": "Check if it's thundering"
+                            "title": "是否打雷。"
                         }
                     }
                 },
@@ -306,11 +300,11 @@
                             "enum": [
                                 "minecraft:alternative"
                             ],
-                            "description": "Joins conditions from parameter terms with 'or' ('disjunction')"
+                            "description": "析取范式。即，若指定的条件中有一个通过，则该条件通过；否则，该条件不通过。"
                         },
                         "terms": {
                             "$ref": "#/definitions/conditions",
-                            "title": "Terms"
+                            "title": "条件列表。"
                         }
                     }
                 },
@@ -321,11 +315,11 @@
                             "enum": [
                                 "minecraft:inverted"
                             ],
-                            "description": "Inverts condition from parameter term"
+                            "description": "取反。即，若指定的条件通过，则该条件不通过；否则，该条件通过。"
                         },
                         "term": {
                             "$ref": "#/definitions/condition",
-                            "title": "Term"
+                            "title": "指定的条件。"
                         }
                     }
                 }
@@ -335,8 +329,8 @@
             ]
         },
         "entity": {
-            "title": "Entity to test",
-            "description": "'this' for the entity which died to make the loot table, 'killer' for the entity which killed the entity, and 'killer_player' for the player who killed the entity (if it exists)",
+            "title": "要测试的实体。",
+            "description": "this 指代当前死亡的实体，killer 指代击杀者，killer_player 指代击杀玩家（如果存在的话）。",
             "enum": [
                 "this",
                 "killer",
@@ -345,7 +339,7 @@
         },
         "function": {
             "title": "Function",
-            "description": "This is a function which changes the properties of an item",
+            "description": "一个改变物品属性的函数。",
             "required": [
                 "function"
             ],
@@ -355,15 +349,13 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:set_count",
-                                "set_count"
+                                "minecraft:set_count"
                             ],
-                            "title": "Set Number",
-                            "description": "Set the 'count' of the items. Can be either an integer or a range. If it is a range it is set randomly within that range"
+                            "title": "设置物品堆叠数量。"
                         },
                         "count": {
                             "$ref": "#/definitions/random",
-                            "description": "The exact value or a range to choose a random value from to set the count to"
+                            "title": "堆叠数量。"
                         }
                     }
                 },
@@ -372,15 +364,13 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:set_damage",
-                                "set_damage"
+                                "minecraft:set_damage"
                             ],
-                            "title": "Set durability %",
-                            "description": "Sets the percentage of the maximum durability"
+                            "title": "设置物品耐久度。"
                         },
                         "damage": {
                             "$ref": "#/definitions/random",
-                            "description": "The data value or a random value in a range to set the 'durability' to. 0.35 means 35% durability left"
+                            "description": "随机设置的剩余耐久度。0.35 表示剩余 35% 耐久度。"
                         }
                     }
                 },
@@ -389,16 +379,14 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:set_nbt",
-                                "set_nbt"
+                                "minecraft:set_nbt"
                             ],
-                            "title": "Set nbt",
-                            "description": "A function to set the 'tag' nbt of the item to the value specified in 'nbt'"
+                            "title": "给该物品设置 NBT。"
                         },
                         "tag": {
                             "type": "string",
                             "title": "NBT string",
-                            "description": "A string of nbt, which is escaped using the json format (a \\ in front of each \\ or \")"
+                            "description": "要添加的 NBT。注意转义。"
                         }
                     }
                 },
@@ -407,14 +395,12 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:set_attributes",
-                                "set_attributes"
+                                "minecraft:set_attributes"
                             ]
                         },
                         "modifiers": {
                             "type": "array",
-                            "title": "Modifiers",
-                            "description": "A list of modifiers to apply to the item.",
+                            "title": "向该物品添加属性修饰器。",
                             "items": {
                                 "additionalProperties": false,
                                 "title": "A single modifier",
@@ -436,18 +422,17 @@
                                             "generic.armor",
                                             "generic.armorToughness"
                                         ],
-                                        "title": "Attribute to apply",
-                                        "description": "The attribute modifier to apply to the item."
+                                        "title": "应用的属性。"
                                     },
                                     "name": {
-                                        "title": "Custom name",
-                                        "description": "The name of the attribute. Can be any string",
+                                        "title": "自定义名称。",
+                                        "description": "属性的名字。可以是任意字符串。",
                                         "type": "string"
                                     },
                                     "amount": {
                                         "$ref": "#/definitions/random",
-                                        "title": "Modification amount",
-                                        "description": "The amount to change the attribute by. This can either be a single number or a range, with a `min` and `max` key"
+                                        "title": "编辑量。",
+                                        "description": "对该属性的编辑数量。"
                                     },
                                     "operation": {
                                         "enum": [
@@ -455,12 +440,11 @@
                                             "multiply_base",
                                             "multiply_total"
                                         ],
-                                        "title": "Attribute to apply",
-                                        "description": ""
+                                        "title": "应用的属性"
                                     },
                                     "slot": {
                                         "title": "Applied slot",
-                                        "description": "The slot to apply the attribute to. Can either be an array or a single string. If it is an array, it chooses one of the slots randomly",
+                                        "description": "应用该属性的物品栏位。",
                                         "oneOf": [
                                             {
                                                 "type": "array",
@@ -488,8 +472,8 @@
                                         ]
                                     },
                                     "id": {
-                                        "title": "String UUID (optional)",
-                                        "description": "A uuid to give to the attribute. If left blank it is randomised. They can be specified to allow (for example), items to be identical or to overwrite specific attributes by using another item (buggy)",
+                                        "title": "字符串形式的 UUID（可选）",
+                                        "description": "一个给予该属性的 UUID。如果留空将会由游戏随机生成。通过指定两个 UUID 相同的属性修饰器，可以让物品间互相覆盖属性修饰效果（可能导致 bug）。",
                                         "type": "string"
                                     }
                                 }
@@ -502,19 +486,17 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:enchant_randomly",
-                                "enchant_randomly"
+                                "minecraft:enchant_randomly"
                             ],
-                            "title": "Choose random enchantment",
-                            "description": "Chooses a random enchantment from the enchantments list. If it is not specified, a random enchantment (which is compatible with the item) will be applied instead"
+                            "title": "选择随机魔咒。",
+                            "description": "从魔咒列表中随机选择魔咒。"
                         },
                         "enchantments": {
                             "type": "array",
                             "items": {
                                 "$ref": "../shared/enchantment_name.json"
                             },
-                            "title": "Enchantments",
-                            "description": "The enchantments to choose from to apply to the item"
+                            "title": "魔咒列表。"
                         }
                     }
                 },
@@ -526,16 +508,16 @@
                                 "minecraft:enchant_with_levels",
                                 "enchant_with_levels"
                             ],
-                            "title": "Enchanting table",
-                            "description": "Enchants the item randomly as if it were enchanted. The levels key is a range object (either an integer or an object). If \"treasure\" is true, then the enchantment may use treasure enchantments (mending or frost-walker)"
+                            "title": "附魔台。",
+                            "description": "像该物品被附魔台附魔一样进行随机附魔。"
                         },
                         "levels": {
                             "$ref": "#/definitions/random"
                         },
                         "treasure": {
                             "type": "boolean",
-                            "title": "Use treasure enchantments?",
-                            "description": "Whether the enchantment can include treasure enchantments (such as mending and frost walker)"
+                            "title": "是否使用宝藏附魔。",
+                            "description": "附魔结果能否包含宝藏魔咒。"
                         }
                     },
                     "required": [
@@ -547,20 +529,18 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:looting_enchant",
-                                "looting_enchant"
+                                "minecraft:looting_enchant"
                             ],
-                            "title": "Extra items with looting",
-                            "description": "How many extra items to add for each level of the looting enchantment applied. For example, a count of 10 with a looting level of 5 would give an extra 50 items"
+                            "title": "由击杀者的抢夺魔咒等级调整物品的数量。"
                         },
                         "count": {
                             "$ref": "#/definitions/random",
-                            "description": "The exact value or a range to choose a random value from to add to the count for each level of looting"
+                            "description": "每一级抢夺魔咒增加的物品数量。"
                         },
                         "limit": {
                             "type": "number",
                             "title": "Maximum",
-                            "description": "The maximum number of additional items available"
+                            "description": "物品数量的最大限制。0 代表无限制。"
                         }
                     }
                 },
@@ -569,11 +549,10 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:furnace_smelt",
-                                "furnace_smelt"
+                                "minecraft:furnace_smelt"
                             ],
-                            "title": "Smelt if possible",
-                            "description": "If possible, smelt the item. If it can't be smelted, nothing happens."
+                            "title": "熔炼。",
+                            "description": "如果可以的话，对该物品进行熔炼。"
                         }
                     }
                 },
@@ -582,10 +561,9 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:exploration_map",
-                                "exploration_map"
+                                "minecraft:exploration_map"
                             ],
-                            "description": "Converts an empty map into an explorer map leading to a nearby generated structure"
+                            "description": "将普通的地图物品变为一个指引到某个结构的探险地图。"
                         },
                         "destination": {
                             "enum": [
@@ -604,7 +582,7 @@
                                 "Swamp_Hut",
                                 "Village"
                             ],
-                            "description": "The type of generated structure to locate."
+                            "description": "目标结构的 ID。"
                         },
                         "decoration": {
                             "enum": [
@@ -636,19 +614,19 @@
                                 "banner_black",
                                 "red_x"
                             ],
-                            "description": "The icon used to mark the destination on the map. If mansion or monument is used, the color of the lines on the item texture will change to match the corresponding explorer map"
+                            "description": "该结构在地图中显示的图标。如果设置为 mansion 或 monument，地图物品的图标将会改变。"
                         },
                         "zoom": {
                             "type": "integer",
-                            "description": "The zoom level of the resulting map. Defaults to 2"
+                            "description": "地图缩放等级。默认为 2。"
                         },
                         "search_radius": {
                             "type": "integer",
-                            "description": "The size, in chunks, of the area to search for structures. The area checked is square, not circular. Radius 0 causes only the current chunk to be searched, radius 1 causes the current chunk and eight adjacent chunks to be searched, and so on. Defaults to 50."
+                            "description": "搜寻的区块半径。搜寻的区域是方形，不是圆形。设置为 0 将只在当前区块搜寻，设置为 1 将会搜寻当前区块和周围的 8 个区块，以此类推。默认为 50。"
                         },
                         "skip_existing_chunks": {
                             "type": "boolean",
-                            "description": "Don't search in chunks that have already been generated. Defaults to true"
+                            "description": "是否不在已经生成过的区块搜寻。默认为 true。"
                         }
                     }
                 },
@@ -657,19 +635,17 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:set_name",
-                                "set_name"
+                                "minecraft:set_name"
                             ],
-                            "title": "Set name",
-                            "description": "Add display name of the item"
+                            "title": "设置该物品的显示名。"
                         },
                         "name": {
                             "$ref": "../shared/text_component.json",
-                            "description": "A name will be added"
+                            "description": "显示名。"
                         },
                         "entity": {
                             "$ref": "#/definitions/entity",
-                            "description": "Will be used to parse selectors and scores defined in name"
+                            "description": "如果存在，将被用于解析 name 中的 score 和 entity。"
                         }
                     }
                 },
@@ -678,26 +654,24 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:set_lore",
-                                "set_lore"
+                                "minecraft:set_lore"
                             ],
-                            "title": "Set lore",
-                            "description": "Add display lore of the item"
+                            "title": "设置该物品的下标。"
                         },
                         "lore": {
                             "type": "array",
                             "items": {
                                 "$ref": "../shared/text_component.json",
-                                "description": "A lore will be added"
+                                "description": "一行下标。"
                             }
                         },
                         "entity": {
                             "$ref": "#/definitions/entity",
-                            "description": "Will be used to parse selectors and scores defined in each lore"
+                            "description": "如果存在，将被用于解析 JSON 聊天文本中的 entity 和 score。"
                         },
                         "replace": {
                             "type": "boolean",
-                            "description": "Should replace old lore or not"
+                            "description": "是否替代原有的下标。"
                         }
                     }
                 },
@@ -706,15 +680,13 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:fill_player_head",
-                                "fill_player_head"
+                                "minecraft:fill_player_head"
                             ],
-                            "title": "Fill player head",
-                            "description": "Set SkullOwner of a player head according to the specific player"
+                            "title": "将玩家头颅的皮肤信息设置为指定玩家。"
                         },
                         "entity": {
                             "$ref": "#/definitions/entity",
-                            "description": "If it's not a player, nothing will happen"
+                            "description": "如果指定的实体不是玩家，或者该物品不是玩家头颅，什么都不会发生。"
                         }
                     }
                 },
@@ -727,7 +699,7 @@
                                     "enum": [
                                         "binomial_with_bonus_count"
                                     ],
-                                    "description": "Add random value using binomial distribution with n <- level + extraRounds and p <- probabilty"
+                                    "description": "将按照二项分布生成随机数。"
                                 },
                                 "parameters": {
                                     "additionalProperties": false,
@@ -748,7 +720,7 @@
                                     "enum": [
                                         "uniform_bonus_count"
                                     ],
-                                    "description": "Add random value using uniform distribution from 0 to bonusMultiplier * level"
+                                    "description": "将按照均匀分布生成随机数。"
                                 },
                                 "parameters": {
                                     "additionalProperties": false,
@@ -766,7 +738,7 @@
                                     "enum": [
                                         "ore_drops"
                                     ],
-                                    "description": "Apply formula count * (max(0, random(0..1) - 1) + 1)"
+                                    "description": "应用公式 count * (max(0, random(0..1) - 1) + 1)。"
                                 },
                                 "parameters": {
                                     "additionalProperties": false
@@ -777,18 +749,17 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:apply_bonus",
-                                "apply_bonus"
+                                "minecraft:apply_bonus"
                             ],
-                            "title": "Apply bonus",
-                            "description": "Apply one of predefined bonus formulas"
+                            "title": "应用奖励。",
+                            "description": "应用预设的奖励公式之一。"
                         },
                         "enchantment": {
                             "$ref": "../shared/enchantment_name.json",
-                            "description": "ID for enchantment level used for calculation"
+                            "description": "用于计算的魔咒 ID。"
                         },
                         "formula": {
-                            "description": "Type of used bonus formula"
+                            "description": "使用的奖励公式。"
                         },
                         "parameters": {}
                     }
@@ -798,11 +769,10 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:copy_name",
-                                "copy_name"
+                                "minecraft:copy_name"
                             ],
-                            "title": "Copy name",
-                            "description": "Copy display name from block entity to item"
+                            "title": "复制名称。",
+                            "description": "从方块实体复制显示名称到物品。"
                         },
                         "source": {
                             "enum": [
@@ -816,11 +786,10 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:copy_nbt",
-                                "copy_nbt"
+                                "minecraft:copy_nbt"
                             ],
-                            "title": "Copy NBT",
-                            "description": "Copy nbt from the source to the target"
+                            "title": "复制 NBT。",
+                            "description": "将 NBT 从源复制到目标。"
                         },
                         "source": {
                             "$ref": "#/definitions/entity",
@@ -830,18 +799,18 @@
                         },
                         "ops": {
                             "type": "array",
-                            "title": "Operations",
-                            "description": "All copy operation",
+                            "title": "操作。",
+                            "description": "所有复制操作。",
                             "items": {
                                 "additionalProperties": false,
                                 "properties": {
                                     "source": {
                                         "type": "string",
-                                        "title": "Source path"
+                                        "title": "源路径。"
                                     },
                                     "target": {
                                         "type": "string",
-                                        "title": "Target path"
+                                        "title": "目标路径。"
                                     },
                                     "op": {
                                         "enum": [
@@ -849,7 +818,7 @@
                                             "append",
                                             "merge"
                                         ],
-                                        "title": "Operation method"
+                                        "title": "操作方法。"
                                     }
                                 }
                             }
@@ -861,11 +830,9 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:explosion_decay",
-                                "explosion_decay"
+                                "minecraft:explosion_decay"
                             ],
-                            "title": "Explosion decay",
-                            "description": "Apply flat chance (equal to 1/explosion radius) for every item to be destroyed (items in stack are processed separately)"
+                            "title": "如果该方块是被爆炸破坏的，执行该函数的每个物品有 1/爆炸半径 的几率消失（一组物品会被分为多个单独的物品计算）；如果该方块是被正常挖掘的，该函数不会对物品造成任何影响。"
                         }
                     }
                 },
@@ -874,11 +841,10 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:limit_count",
-                                "limit_count"
+                                "minecraft:limit_count"
                             ],
-                            "title": "Limit count",
-                            "description": "Limit count of every item stack to range",
+                            "title": "限制每一种物品的堆叠数量的范围。",
+                            "description": "当物品的堆叠数量小于最小值时，会被设置为最小值；当大于最大值时，会被设置为最大值。",
                             "properties": {
                                 "limit": {
                                     "$ref": "../shared/range.json"
@@ -892,15 +858,14 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:set_contents",
-                                "set_contents"
+                                "minecraft:set_contents"
                             ],
-                            "title": "Set contents",
-                            "description": "Populate BlockEntityTag.Items (works for shulker boxes, chests, etc.) with items from entries"
+                            "title": "设置内容。",
+                            "description": "将指定物品设置到 BlockEntityTag.Items 这一标签。"
                         },
                         "entries": {
                             "type": "array",
-                            "description": "list of entries (same as in pool)",
+                            "description": "一系列项目（和 pool 的格式一致）",
                             "items": {
                                 "$ref": "#/definitions/entry"
                             }
@@ -912,19 +877,18 @@
                     "properties": {
                         "function": {
                             "enum": [
-                                "minecraft:set_loot_table",
-                                "set_loot_table"
+                                "minecraft:set_loot_table"
                             ],
-                            "title": "Set loot table",
-                            "description": "Set BlockEntityTag.LootTable and BlockEntityTag.LootPoolSeed tags",
+                            "title": "设置战利品表。",
+                            "description": "设置物品的 BlockEntityTag.LootTable 和 BlockEntityTag.LootPoolSeed 这两个 NBT。",
                             "properties": {
                                 "name": {
                                     "$ref": "../shared/resource_location.json",
-                                    "description": "ID of loot table"
+                                    "description": "战利品表的资源路径。"
                                 },
                                 "seed": {
                                     "type": "integer",
-                                    "description": "Seed (if omitted or 0, LootPoolSeed will not be set)"
+                                    "description": "种子。（如果缺省，或设置为 0，将不会设置 LootPoolSeed。）"
                                 }
                             }
                         }
@@ -940,16 +904,15 @@
                         "additionalProperties": false,
                         "type": {
                             "enum": [
-                                "item",
                                 "minecraft:item"
                             ],
-                            "title": "Item",
-                            "description": "This entry will give an item (if the conditions pass). The item type is defined in \"name\""
+                            "title": "物品。",
+                            "description": "在条件通过后返回一个物品。"
                         },
                         "name": {
                             "$ref": "../shared/item_name.json",
-                            "title": "Item",
-                            "description": "The item to give"
+                            "title": "物品。",
+                            "description": "给予的物品。"
                         }
                     }
                 },
@@ -958,16 +921,15 @@
                         "additionalProperties": false,
                         "type": {
                             "enum": [
-                                "loot_table",
                                 "minecraft:loot_table"
                             ],
-                            "title": "Loot table",
-                            "description": "This entry will give the result of another loot table specified in 'name'. These cannot be self referencing in any way, if they are self referencing, they don't run"
+                            "title": "战利品表。",
+                            "description": "返回另一个战利品表的结果。在任何情况下都不能做到自我引用。如果有自我引用，将不会被执行。"
                         },
                         "name": {
                             "$ref": "../shared/resource_location.json",
-                            "title": "Loot table",
-                            "description": "The loot table to be given"
+                            "title": "战利品表。",
+                            "description": "指定的战利品表。"
                         }
                     }
                 },
@@ -976,11 +938,10 @@
                         "additionalProperties": false,
                         "type": {
                             "enum": [
-                                "empty",
                                 "minecraft:empty"
                             ],
-                            "title": "Empty",
-                            "description": "An empty pool. No items will be granted"
+                            "title": "空的。",
+                            "description": "空的随机池。"
                         }
                     }
                 },
@@ -991,8 +952,7 @@
                             "enum": [
                                 "minecraft:alternatives"
                             ],
-                            "title": "Alternatives",
-                            "description": "Tests conditions of child entries and executes first that can run"
+                            "title": "从多个子项目中选择一个。游戏会返回第一个条件满足的子项目所返回的物品。"
                         },
                         "children": {
                             "type": "array",
@@ -1009,8 +969,8 @@
                             "enum": [
                                 "minecraft:dynamic"
                             ],
-                            "title": "Dynamic",
-                            "description": "Gets block specific drops"
+                            "title": "动态。",
+                            "description": "动态返回。其返回内容由执行它的方块所决定。"
                         }
                     },
                     "name": {
@@ -1027,8 +987,8 @@
                             "enum": [
                                 "minecraft:group"
                             ],
-                            "title": "Group",
-                            "description": "Executes child entries when own conditions pass. It behaves as multiple item entries (all with same weight and quality)"
+                            "title": "分组。",
+                            "description": "从所有满足条件的子项目中随机抽取。"
                         },
                         "children": {
                             "type": "array",
@@ -1045,8 +1005,7 @@
                             "enum": [
                                 "minecraft:sequence"
                             ],
-                            "title": "Sequence",
-                            "description": "Executes child entries until first one that can't run due to conditions"
+                            "title": "从前半部分满足条件的子项目中随机抽取。"
                         },
                         "children": {
                             "type": "array",
@@ -1063,18 +1022,18 @@
                             "enum": [
                                 "minecraft:tag"
                             ],
-                            "title": "Tag",
-                            "description": "Adds contents of item tag"
+                            "title": "标签。",
+                            "description": "返回指定物品标签的内容。"
                         },
                         "name": {
                             "$ref": "../shared/resource_location.json",
-                            "title": "Item tag",
-                            "description": "ID of the item tag"
+                            "title": "物品标签。",
+                            "description": "数据包物品标签的资源路径。"
                         },
                         "expand": {
                             "type": "boolean",
-                            "title": "Is expand",
-                            "description": "If false, entry will return all contents of the tag, otherwise entry will behave as multiple item entries (all with same weight and quality)"
+                            "title": "是否展开。",
+                            "description": "如果为 true，将会从物品标签内随机抽取出一个物品返回，否则会将物品标签内的所有物品都返回。"
                         }
                     }
                 }
@@ -1085,26 +1044,25 @@
             "properties": {
                 "quality": {
                     "type": "number",
-                    "title": "Weight based on luck",
-                    "description": "Change the weight based on the players' luck attribute. This is calculated by weight + (quality * luck)"
+                    "title": "基于幸运等级的几率。",
+                    "description": "每级幸运属性对权重的影响。"
                 },
                 "weight": {
                     "type": "number",
-                    "title": "Chance of this entry being used",
-                    "description": "The chance of this entry being used"
+                    "title": "权重。",
+                    "description": "该项目的基础权重。"
                 },
                 "type": {},
                 "functions": {
                     "type": "array",
-                    "title": "Entry functions",
+                    "title": "项目函数。",
                     "items": {
                         "$ref": "#/definitions/function"
                     }
                 },
                 "conditions": {
                     "$ref": "#/definitions/conditions",
-                    "title": "Entry conditions",
-                    "description": "The conditions which must pass in order for this entry to be used"
+                    "title": "项目条件。"
                 }
             }
         },
@@ -1130,7 +1088,7 @@
                                 "minecraft:binomial"
                             ],
                             "title": "Type",
-                            "description": "Specify random number generator. If omitted, defaults to uniform"
+                            "description": "指定随机数生成器。如果缺省，默认为 uniform。"
                         }
                     }
                 }
