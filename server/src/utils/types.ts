@@ -47,7 +47,7 @@ export type WorkspaceCache = {
                  * Shouldn't exist for `ResourceLocationType`.
                  */
                 range?: Range,
-            }
+            },
             /**
              * URIs of all files which have reference this data.
              */
@@ -59,11 +59,47 @@ export type WorkspaceCache = {
 /**
  * All possible types of a resource location.
  */
-type ResourceLocationType = 'advancement' | 'recipe' | 'loot_table' | 'function' | 'block_tag' |
-    'entity_type_tag' | 'fluid_tag' | 'function_tag' |'item_tag'
+export type ResourceLocationType = 'advancement' | 'recipe' | 'loot_table' | 'function' | 'block_tag' |
+    'entity_type_tag' | 'fluid_tag' | 'function_tag' | 'item_tag'
 /**
  * All possible types of a comment definition.
  * `name` stands for fake names of scoreboards.
  * `tag` stands for an entity tag.
+ * `sound` stands for an resource pack custom sound event. 
  */
-type DefinitionType = 'name' | 'tag'
+export type DefinitionType = 'name' | 'tag' | 'sound'
+
+/**
+ * All possible command argument types.
+ */
+export type ArgumentType =
+    'string' | 'vec2' | 'vec3' | 'nbt_value' | 'target_selector' | 'number' | 'boolean' |
+    'command' | 'comment' | 'empty_line' | 'error' | ResourceLocationType
+
+/**
+ * A command tree node used in commands.json.
+ */
+export interface CommandTreeNode {
+    /**
+     * The parser to use.
+     */
+    parser: ArgumentType,
+    /**
+     * All parameters for the parser.
+     */
+    params?: object,
+    /**
+     * Human-readable command/argument description.
+     * Expects a long sentense for the first node of each command to describe the command,
+     * and a short description for non-string parameters.
+     */
+    description: string,
+    /**
+     * All children of the command node.
+     */
+    children?: CommandTreeNode[],
+    /**
+     * Whether the command is executable.
+     */
+    executable?: boolean
+}
