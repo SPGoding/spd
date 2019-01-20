@@ -7,7 +7,7 @@ const NBT_BYTE_REGEX = /^([0-1]b|true|false)$/
 const NBT_DOUBLE_REGEX = /^[+-]((\.[0-9]+)|([0-9]+\.)|([0-9]+\.[0-9]+)|[0-9]+[eE][0-9]+)$/
 const NBT_FLOAT_REGEX = /^[+-]((\.[0-9]+)[fF]|([0-9]+\.)[fF]|([0-9]+\.[0-9]+)[fF]|[0-9]+[eE][0-9]+[fF])$/
 
-export type NbtValue = NbtCompound | NbtList | NbtNumber | string
+export type NbtValue = NbtCompound | NbtList | NbtArray | NbtNumber | string
 
 export interface NbtCompound {
     [key: string]: NbtValue
@@ -18,9 +18,15 @@ export interface NbtList {
 }
 
 export type NbtNumberType = 'byte' | 'short' | 'long' | 'int' | 'float' | 'double'
+export type NbtArrayType = 'L' | 'I' | 'B'
 
 export interface NbtNumber {
     type: NbtNumberType
+    value: number
+}
+
+export interface NbtArray {
+    type: NbtArrayType
     value: number
 }
 
@@ -30,7 +36,7 @@ export class NbtParser implements ArgumentParser {
 
     parse(segments: string[], pos: number) : ArgumentParseResult {
         const nbt = segments[pos]
-        return {argument: this.parseCompound(nbt, 0)[0], pos: pos + 1}
+        return {argument: this.parseCompound(nbt, 0)[0]}
     }
 
     parseCompound(nbt: string, pos: number) : [NbtCompound, number] {
@@ -46,7 +52,7 @@ export class NbtParser implements ArgumentParser {
             }
             if(inBody) {
                 if(nbt[i] == ':') {
-                    keyName = nbt.slice(startPos, i - 1).trim()
+                    keyName = nbt.slice(startPos, i).trim()
                     inVal = true
                     startPos = i + 1       
                 }
@@ -56,17 +62,17 @@ export class NbtParser implements ArgumentParser {
                         compound[keyName] = result[0] 
                         i = result[1]
                         inVal = false
-                        startPos = nbt.slice(i, nbt.length - 1).search(',') + 1
+                        startPos = nbt.slice(i, nbt.length).search(',') + 1
                     }
                     if(nbt[i] == '[') {
-                        const result = this.parseList(nbt, i)
+                        const result = this.parseListOrArray(nbt, i)
                         compound[keyName] = result[0]
                         i = result[1]
                         inVal = false
-                        startPos = nbt.slice(i, nbt.length - 1).search(',') + 1
+                        startPos = nbt.slice(i, nbt.length).search(',') + 1
                     }
                     if(nbt[i] == ',') {
-                        const val = nbt.slice(startPos, i - 1).trim()
+                        const val = nbt.slice(startPos, i).trim()
                         const type = this.parseValueType(val)
                         inVal = false
                         if(type == 'string') {
@@ -97,33 +103,41 @@ export class NbtParser implements ArgumentParser {
         return [compound, -1]
     }
 
-    parseList(nbt: string, pos: number) : [NbtList, number] {
+    parseListOrArray(nbt: string, pos: number) : [NbtList | NbtArray, number] {
         let inBody : boolean
         let startPos : number
         let itemIndex = 0
-        const list : NbtList = {}
+        let isArray = false
+        const list : NbtList | NbtArray = {}
         for(let i = pos; i < nbt.length; i++) {
             if(!inBody && nbt[i] == '[') {
                 inBody = true
                 startPos = i + 1
             }
             if(inBody) {
+                if(nbt[i] == 'L' && itemIndex == 0 && this.parseValueType(nbt.slice(startPos, i + 1).trim()) == 'string') {
+                    isArray = true
+                }
                 if(nbt[i] == '{') {
                     const result = this.parseCompound(nbt, i)
                     list[itemIndex] = result[0] 
                     itemIndex++
                     i = result[1]
-                    startPos = nbt.slice(i, nbt.length - 1).search(',') + 1
+                    startPos = nbt.slice(i, nbt.length).search(',') + 1
                 }
                 if(nbt[i] == '[') {
-                    const result = this.parseList(nbt, i)
+                    const result = this.parseListOrArray(nbt, i)
                     list[itemIndex] = result[0]
                     itemIndex++
                     i = result[1]
-                    startPos = nbt.slice(i, nbt.length - 1).search(',') + 1
+                    startPos = nbt.slice(i, nbt.length).search(',') + 1
                 }
                 if(nbt[i] == ',') {
-                    const val = nbt.slice(startPos, i - 1).trim()
+                    if(isArray && itemIndex == 0) {
+                        itemIndex++
+                        continue
+                    }
+                    const val = nbt.slice(startPos, i).trim()
                     const type = this.parseValueType(val)
                     if(type == 'string') {
                         list[itemIndex] = val
