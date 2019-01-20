@@ -2,7 +2,7 @@ import { Range, Location } from 'vscode-languageserver'
 
 /**
  * Caches for making renaming faster.
- * Stored in each function's abstract syntax tree.
+ * Stored in each function's tree.
  * @see WorkspaceCache
  */
 export type LocalCache = {
@@ -36,16 +36,18 @@ export type LocalCache = {
 export type WorkspaceCache = {
     [type in ResourceLocationType | DefinitionType]?: {
         [id: string]: {
-            /**
-             * The file contains the definition (for `DefinitionType`), 
-             * or the file matched the resource location (for `ResourceLocationType`).
-             */
-            uri: string,
-            /**
-             * The definition range (for `DefinitionType`). 
-             * Shouldn't exist for `ResourceLocationType`.
-             */
-            range?: Range,
+            definition: {
+                /**
+                 * The file contains the definition (for `DefinitionType`), 
+                 * or the file matched the resource location (for `ResourceLocationType`).
+                 */
+                uri: string,
+                /**
+                 * The definition range (for `DefinitionType`). 
+                 * Shouldn't exist for `ResourceLocationType`.
+                 */
+                range?: Range,
+            }
             /**
              * URIs of all files which have reference this data.
              */
@@ -57,8 +59,11 @@ export type WorkspaceCache = {
 /**
  * All possible types of a resource location.
  */
-type ResourceLocationType = 'advancement' | 'recipe' | 'loot_table' | 'function'
+type ResourceLocationType = 'advancement' | 'recipe' | 'loot_table' | 'function' | 'block_tag' |
+    'entity_type_tag' | 'fluid_tag' | 'function_tag' |'item_tag'
 /**
  * All possible types of a comment definition.
+ * `name` stands for fake names of scoreboards.
+ * `tag` stands for an entity tag.
  */
 type DefinitionType = 'name' | 'tag'

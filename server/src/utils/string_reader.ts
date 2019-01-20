@@ -16,4 +16,14 @@ export class StringReader {
         this.pos += step
         return ans
     }
+
+    peak(step: number = 1) {
+        let ans: string
+
+        if (step > 0) {
+            ans = this.segments.slice(this.pos, this.pos + step).join(' ')
+        }
+        
+        return ans
+    }
 }

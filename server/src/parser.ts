@@ -1,11 +1,13 @@
 import { LocalCache } from './utils/types'
+import { NbtValue } from './argument_parsers/nbt_value'
+import { TargetSelector } from './argument_parsers/target_selector'
 
 /**
  * Parse a function file.
  * @param content The content of the file.
  */
 export function parseFunction(content: string) {
-    const lines = content.split(/\n/g)
+    const lines = content.split(/\r\n/g)
     const ans: Command[] = []
 
     for (const line of lines) {
@@ -20,8 +22,9 @@ export function parseFunction(content: string) {
  * @param command A command (Can't begin with slash `/`). 
  * Accepts comments (begin with `#`) and empty lines.
  */
-function parseCommand(command: string) {
+export function parseCommand(command: string) {
     const ans: Command = { args: [], cache: {} }
+    const segments: string[] = []
 
     // TODO: Here.
 
@@ -31,21 +34,21 @@ function parseCommand(command: string) {
 /**
  * Represents a command.
  */
-interface Command {
+export interface Command {
     /**
      * All arguments of the command.
      */
-    args: Argument[]
+    args: (Argument | NbtValue | TargetSelector)[]
     /**
      * The cache of the command.
      */
-    cache: LocalCache
+    cache?: LocalCache
 }
 
 /**
  * Represents a command argument.
  */
-interface Argument {
+export interface Argument {
     /**
      * The type of the argument. 
      * @example
@@ -61,20 +64,12 @@ interface Argument {
      * All errors of the argument.
      */
     errors: ParsingError[]
-    /**
-     * The data of the argument. Used by complex arguments such as NBTs and target selectors.
-     */
-    data?: object
-    /**
-     * The cache of the argument.
-     */
-    cache: LocalCache
 }
 
 /**
  * Represents an error occurred when parsing a command.
  */
-interface ParsingError {
+export interface ParsingError {
     /**
      * The range of the error: [start, end).
      */
@@ -90,3 +85,22 @@ interface ParsingError {
 }
 
 type ArgumentType = string | 'empty_line' | 'comment'
+
+export interface ArgumentParser {
+    parse(segments: string[], pos: number): ArgumentParseResult
+}
+
+export interface ArgumentParseResult {
+    /**
+     * Parsed argument object.
+     */
+    argument: Argument
+    /**
+     * The index of the segments where the next argument parser should start.
+     */
+    pos: number
+    /**
+     * Cache of the argument. Will be combined to `Command` which the argument belongs to.
+     */
+    cache?: LocalCache
+}
