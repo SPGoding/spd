@@ -1,0 +1,89 @@
+[
+    {
+        "parser": "string",
+        "params": {
+            "type": "word",
+            "accepts": [
+                "advancement"
+            ]
+        },
+        "description": "Grants or revokes advancements from players.",
+        "children": [
+            {
+                "parser": "string",
+                "params": {
+                    "type": "word",
+                    "accepts": [
+                        "grant",
+                        "revoke"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "players"
+                        },
+                        "description": "The target",
+                        "children": [
+                            {
+                                "parser": "string",
+                                "params": {
+                                    "type": "word",
+                                    "accepts": [
+                                        "only"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "advancement",
+                                        "description": "The advancement",
+                                        "children": [
+                                            {
+                                                "parser": "string",
+                                                "params": {
+                                                    "type": "phrase"
+                                                },
+                                                "description": "The criterion",
+                                                "executable": true
+                                            }
+                                        ],
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "string",
+                                "params": {
+                                    "type": "word",
+                                    "accepts": [
+                                        "until",
+                                        "from",
+                                        "through"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "advancement",
+                                        "description": "The advancement",
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "string",
+                                "params": {
+                                    "type": "word",
+                                    "accepts": [
+                                        "everything"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,129 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/node"
+    },
+    "definitions": {
+        "node": {
+            "type": "object",
+            "required": [
+                "parser"
+            ],
+            "properties": {
+                "parser": {
+                    "description": "The parser to use."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Human-readable command/argument description. Expects a long sentense for the first node of each command to describe the command, and a short description for non-string parameters."
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/node"
+                    },
+                    "description": "All children of the command node."
+                },
+                "executable": {
+                    "type": "boolean",
+                    "description": "Whether the command is executable."
+                }
+            },
+            "oneOf": [
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
+                                "string"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "accepts": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "description": "All acceptable strings for this node."
+                                },
+                                "type": {
+                                    "enum": [
+                                        "word",
+                                        "phrase",
+                                        "greedy"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "type"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
+                                "selector"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "enum": [
+                                        "players",
+                                        "entities"
+                                    ],
+                                    "description": "The kinds of entities which the node accepts."
+                                },
+                                "amount": {
+                                    "enum": [
+                                        "single",
+                                        "multiple"
+                                    ],
+                                    "description": "The amount which the node accepts."
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "amount"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
+                                "vec2",
+                                "vec3",
+                                "nbt_value",
+                                "number",
+                                "boolean",
+                                "command",
+                                "advancement",
+                                "loot_table",
+                                "function",
+                                "recipe",
+                                "block_tag",
+                                "entity_type_tag",
+                                "fluid_tag",
+                                "function_tag",
+                                "item_tag"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

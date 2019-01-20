@@ -1,6 +1,6 @@
-import { LocalCache } from './utils/types'
+import { LocalCache, ArgumentType } from './utils/types'
 import { NbtValue } from './argument_parsers/nbt_value'
-import { TargetSelector } from './argument_parsers/target_selector'
+import { Selector } from './argument_parsers/selector'
 
 /**
  * Parse a function file.
@@ -11,22 +11,8 @@ export function parseFunction(content: string) {
     const ans: Command[] = []
 
     for (const line of lines) {
-        ans.push(parseCommand(line))
+        // ans.push(parseCommand(line))
     }
-
-    return ans
-}
-
-/**
- * Parse a command.
- * @param command A command (Can't begin with slash `/`). 
- * Accepts comments (begin with `#`) and empty lines.
- */
-export function parseCommand(command: string) {
-    const ans: Command = { args: [], cache: {} }
-    const segments: string[] = []
-
-    // TODO: Here.
 
     return ans
 }
@@ -38,7 +24,7 @@ export interface Command {
     /**
      * All arguments of the command.
      */
-    args: (Argument | NbtValue | TargetSelector | Command)[]
+    args: (Argument | NbtValue | Selector | Command)[]
     /**
      * The cache of the command.
      */
@@ -81,30 +67,38 @@ export interface ParsingError {
      * A human-readable message.
      */
     message: string
+    /**
+     * The severity of the error.
+     * `warning`: We can guess out what it should be.
+     * `error`: What the fucking string is?!
+     */
+    severity: 'error' | 'warning'
 }
 
-type ArgumentType = string | 'empty_line' | 'comment'
-
 export interface ArgumentParser {
-    parse(segments: string[], pos: number): ArgumentParseResult
+    /**
+     * Parse the value as the argument.
+     * @param value The value.
+     */
+    parse(value: string): ArgumentParseResult
 }
 
 export interface ArgumentParseResult {
     /**
-     * Parsed argument object.
+     * The parsed argument result.
      */
-    argument: Argument | NbtValue | TargetSelector | Command
+    argument: Argument | NbtValue | Selector | Command
     /**
-     * The index of the segments where the next argument parser should start.
+     * The rest value which the next argument parser should parse.
      */
-    pos: number
+    rest: string
     /**
      * Cache of the argument. Will be combined to `Command` which the argument belongs to.
      */
-    cache?: LocalCache
+    cache: LocalCache
     /**
      * All errors eccured when parsing the argument. 
      * Will be combined to `Command` which the argument belongs to.
      */
-    errors?: ParsingError[]
+    errors: ParsingError[]
 }
