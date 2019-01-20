@@ -37,10 +37,6 @@
             9,
             10
         ],
-        "max-line-length": [
-            true,
-            100
-        ],
         "object-literal-key-quotes": [
             true,
             "as-needed"
