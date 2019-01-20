@@ -38,11 +38,15 @@ export interface Command {
     /**
      * All arguments of the command.
      */
-    args: (Argument | NbtValue | TargetSelector)[]
+    args: (Argument | NbtValue | TargetSelector | Command)[]
     /**
      * The cache of the command.
      */
     cache?: LocalCache
+    /**
+     * All errors of the argument.
+     */
+    errors?: ParsingError[]
 }
 
 /**
@@ -60,10 +64,6 @@ export interface Argument {
      * The raw string of the argument. Shoudn't contain spaces at sides.
      */
     value: string
-    /**
-     * All errors of the argument.
-     */
-    errors: ParsingError[]
 }
 
 /**
@@ -103,4 +103,9 @@ export interface ArgumentParseResult {
      * Cache of the argument. Will be combined to `Command` which the argument belongs to.
      */
     cache?: LocalCache
+    /**
+     * All errors eccured when parsing the argument. 
+     * Will be combined to `Command` which the argument belongs to.
+     */
+    errors?: ParsingError[]
 }
