@@ -77,7 +77,6 @@ export interface ParsingError {
         start: number
         end: number
     }
-    severity: 'error' | 'warning'
     /**
      * A human-readable message.
      */
@@ -94,7 +93,7 @@ export interface ArgumentParseResult {
     /**
      * Parsed argument object.
      */
-    argument: Argument
+    argument: Argument | NbtValue | TargetSelector | Command
     /**
      * The index of the segments where the next argument parser should start.
      */
