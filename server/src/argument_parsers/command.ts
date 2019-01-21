@@ -1,9 +1,7 @@
-import { ArgumentParser, Command, ArgumentParseResult, Argument } from '../parser'
+import { ArgumentParser, Command, ArgumentParseResult, Argument, containWtfError, downgradeWtfErrors } from '../parser'
 import { commandTree } from '../server'
 import { ArgumentType, CommandTreeNode } from '../utils/types'
 import { combineLocalCaches } from '../utils/utils'
-import { NbtValue } from './nbt_value'
-import { Selector } from './selector'
 
 /**
  * Parses a command.
@@ -11,14 +9,17 @@ import { Selector } from './selector'
  */
 export class CommandParser implements ArgumentParser {
     public parse(value: string) {
+        const args: Argument[] = []
+        const cmd: Command = { args, cache: {}, errors: [] }
         const ans: ArgumentParseResult = {
-            arguments: [], rest: '', cache: {}, errors: []
+            argument: cmd, rest: '', cache: {}, errors: []
         }
 
         if (value[0] === '#') {
-            ans.arguments.push({ type: 'comment', value: value } as Argument)
+            // TODO: #define support here.
+            args.push({ type: 'comment', value: value } as Argument)
         } else if (/^\s*$/.test(value)) {
-            ans.arguments.push({ type: 'empty_line', value: value } as Argument)
+            args.push({ type: 'empty_line', value: value } as Argument)
         } else {
             this.parseNodes(value, commandTree)
         }
@@ -39,11 +40,11 @@ export class CommandParser implements ArgumentParser {
     public parseOneNode(value: string, node: CommandTreeNode) {
         const parser = this.getArgumentParser(node.parser)
         const ans = parser.parse(value)
-        args.push(ans.argument)
 
-        if (!ans.errors || ans.errors.length === 0) {
-            const result = this.parseNodes(ans.rest, node.children, args)
+        if (!containWtfError(ans.errors)) {
+            const result = this.parseNodes(ans.rest, node.children)
             combineLocalCaches(ans.cache, result.cache)
+            downgradeWtfErrors(result.errors)
             ans.errors.push(...result.errors)
         }
 
@@ -52,13 +53,11 @@ export class CommandParser implements ArgumentParser {
 
     public parseNodes(value: string, nodes: CommandTreeNode[]): ArgumentParseResult {
         if (nodes.length === 1) {
-            return this.parseOneNode(value, nodes[0], args)
+            return this.parseOneNode(value, nodes[0])
         } else {
-            const parsers: string[] = []
             for (const node of nodes) {
-                parsers.push(node.parser)
                 const result = this.parseOneNode(value, node)
-                if (!result.errors || result.errors.length === 0) {
+                if (!containWtfError(result.errors)) {
                     return result
                 }
             }
@@ -68,7 +67,11 @@ export class CommandParser implements ArgumentParser {
                     value: value
                 },
                 rest: '', cache: {},
-                errors: []
+                errors: [{
+                    range: { start: 0, end: value.length },
+                    message: 'Failed to match all nodes',
+                    severity: 'wtf'
+                }]
             }
         }
     }

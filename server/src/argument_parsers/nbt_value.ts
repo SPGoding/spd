@@ -1,9 +1,9 @@
 import { ArgumentParser, ArgumentParseResult, ParsingError } from '../parser'
 
 const NBT_INT_REGEX = /^[+-][0-9]+$/
-const NBT_SHORT_REGEX = /^[+-][0-9]+s$/
-const NBT_LONG_REGEX = /^[+-][0-9]+l$/
-const NBT_BYTE_REGEX = /^([0-1]b|true|false)$/
+const NBT_SHORT_REGEX = /^[+-][0-9]+[sS]$/
+const NBT_LONG_REGEX = /^[+-][0-9]+[lL]$/
+const NBT_BYTE_REGEX = /^([0-9]+[bB]|true|false)$/
 const NBT_DOUBLE_REGEX = /^[+-]((\.[0-9]+)|([0-9]+\.)|([0-9]+\.[0-9]+)|[0-9]+[eE][0-9]+)$/
 const NBT_FLOAT_REGEX = /^[+-]((\.[0-9]+)[fF]|([0-9]+\.)[fF]|([0-9]+\.[0-9]+)[fF]|[0-9]+[eE][0-9]+[fF])$/
 

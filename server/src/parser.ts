@@ -28,11 +28,11 @@ export interface Command {
     /**
      * The cache of the command.
      */
-    cache?: LocalCache
+    cache: LocalCache
     /**
-     * All errors of the argument.
+     * All errors of the command.
      */
-    errors?: ParsingError[]
+    errors: ParsingError[]
 }
 
 /**
@@ -69,10 +69,36 @@ export interface ParsingError {
     message: string
     /**
      * The severity of the error.
-     * `warning`: We can guess out what it should be.
-     * `error`: What the fucking string is?!
+     * `oops`: We can guess out what it should be.
+     * `wtf`: What the fucking string it is?!
      */
-    severity: 'error' | 'warning'
+    severity: 'oops' | 'wtf'
+}
+
+/**
+ * Whether the input parsing errors contain severity 'wtf'.
+ * @param errors The parsing errors.
+ */
+export function containWtfError(errors: ParsingError[]) {
+    for (const error of errors) {
+        if (error.severity === 'wtf') {
+            return true
+        }
+    }
+
+    return false
+}
+
+/**
+ * Set all 'wtf' parsing errors to severity 'oops'.
+ * @param errors The parsing errors.
+ */
+export function downgradeWtfErrors(errors: ParsingError[]) {
+    for (const error of errors) {
+        if (error.severity === 'wtf') {
+            error.severity = 'oops'
+        }
+    }
 }
 
 export interface ArgumentParser {

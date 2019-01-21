@@ -104,6 +104,43 @@
                     "properties": {
                         "parser": {
                             "enum": [
+                                "nbt_value"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "accepts": {
+                                    "enum": [
+                                        "compound",
+                                        "list",
+                                        "byte",
+                                        "short",
+                                        "integer",
+                                        "long",
+                                        "float",
+                                        "double",
+                                        "string",
+                                        "byte_array",
+                                        "integer_array",
+                                        "long_array"
+                                    ],
+                                    "description": "The kinds of NBT values which the node accepts."
+                                }
+                            },
+                            "required": [
+                                "accepts"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
                                 "vec2",
                                 "vec3",
                                 "nbt_value",
