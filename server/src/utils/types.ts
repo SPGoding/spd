@@ -73,7 +73,7 @@ export type DefinitionType = 'name' | 'tag' | 'sound'
  * All possible command argument types.
  */
 export type ArgumentType =
-    'string' | 'vec2' | 'vec3' | 'nbt_value' | 'target_selector' | 'number' | 'boolean' |
+    'literal' | 'string' | 'vec2' | 'vec3' | 'nbt_value' | 'target_selector' | 'number' | 'boolean' |
     'command' | 'comment' | 'empty_line' | 'error' | ResourceLocationType
 
 /**

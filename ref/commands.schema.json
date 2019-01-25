@@ -35,7 +35,7 @@
                     "properties": {
                         "parser": {
                             "enum": [
-                                "string"
+                                "literal"
                             ]
                         },
                         "params": {
@@ -47,7 +47,27 @@
                                         "type": "string"
                                     },
                                     "description": "All acceptable strings for this node."
-                                },
+                                }
+                            },
+                            "required": [
+                                "accepts"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
+                                "string"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
                                 "type": {
                                     "enum": [
                                         "word",

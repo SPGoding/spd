@@ -75,38 +75,13 @@ export interface ParsingError {
     severity: 'oops' | 'wtf'
 }
 
-/**
- * Whether the input parsing errors contain severity 'wtf'.
- * @param errors The parsing errors.
- */
-export function containWtfError(errors: ParsingError[]) {
-    for (const error of errors) {
-        if (error.severity === 'wtf') {
-            return true
-        }
-    }
-
-    return false
-}
-
-/**
- * Set all 'wtf' parsing errors to severity 'oops'.
- * @param errors The parsing errors.
- */
-export function downgradeWtfErrors(errors: ParsingError[]) {
-    for (const error of errors) {
-        if (error.severity === 'wtf') {
-            error.severity = 'oops'
-        }
-    }
-}
-
 export interface ArgumentParser {
     /**
      * Parse the value as the argument.
      * @param value The value.
+     * @param params The parameters for the parser. 
      */
-    parse(value: string): ArgumentParseResult
+    parse(value: string, params?: object): ArgumentParseResult
 }
 
 export interface ArgumentParseResult {

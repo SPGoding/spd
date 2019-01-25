@@ -7,7 +7,9 @@ import { LocalCache, DefinitionType } from './types'
  */
 export function combineLocalCaches(origin: LocalCache, override: LocalCache) {
     for (const key of ['name', 'tag', 'sound']) {
-        origin.definitions[key].push(...override.definitions[key])
+        if (origin.definitions && origin.definitions[key]) {
+            origin.definitions[key].push(...override.definitions[key])
+        }
     }
     for (const key of ['name', 'tag', 'sound', 'advancement', 'recipe', 'loot_table',
         'function', 'block_tag', 'entity_type_tag', 'fluid_tag', 'function_tag', 'item_tag']) {

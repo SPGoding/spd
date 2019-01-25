@@ -1,8 +1,7 @@
 [
     {
-        "parser": "string",
+        "parser": "literal",
         "params": {
-            "type": "word",
             "accepts": [
                 "advancement"
             ]
@@ -10,9 +9,8 @@
         "description": "Grants or revokes advancements from players.",
         "children": [
             {
-                "parser": "string",
+                "parser": "literal",
                 "params": {
-                    "type": "word",
                     "accepts": [
                         "grant",
                         "revoke"
@@ -28,9 +26,8 @@
                         "description": "The target",
                         "children": [
                             {
-                                "parser": "string",
+                                "parser": "literal",
                                 "params": {
-                                    "type": "word",
                                     "accepts": [
                                         "only"
                                     ]
@@ -54,9 +51,8 @@
                                 ]
                             },
                             {
-                                "parser": "string",
+                                "parser": "literal",
                                 "params": {
-                                    "type": "word",
                                     "accepts": [
                                         "until",
                                         "from",
@@ -72,9 +68,8 @@
                                 ]
                             },
                             {
-                                "parser": "string",
+                                "parser": "literal",
                                 "params": {
-                                    "type": "word",
                                     "accepts": [
                                         "everything"
                                     ]
