@@ -2,9 +2,9 @@ import * as assert from 'power-assert'
 import { describe, it } from 'mocha'
 import { LiteralParser } from '../../argument_parsers/literal'
 
-describe('LiteralParser Tests', () => {
+describe.only('LiteralParser Tests', () => {
     describe('parse() tests', () => {
-        it('Should parse single accept', () => {
+        it('Should parse when accepts single string', () => {
             const parser = new LiteralParser()
 
             const result = parser.parse('foo bar', { accepts: ['foo'] })
@@ -16,7 +16,7 @@ describe('LiteralParser Tests', () => {
                 rest: 'bar', cache: {}, errors: []
             })
         })
-        it('Should parse multiple accepts', () => {
+        it('Should parse when accepts multiple strings', () => {
             const parser = new LiteralParser()
 
             const result1 = parser.parse('foo baz', { accepts: ['foo', 'bar'] })
@@ -35,10 +35,10 @@ describe('LiteralParser Tests', () => {
                 rest: 'baz', cache: {}, errors: []
             })
         })
-        it('Should return errors when not matching', () => {
+        it('Should return errors when does not accept', () => {
             const parser = new LiteralParser()
 
-            const result = parser.parse('foo bar', { accepts: ['baz'] })
+            const result = parser.parse('foo bar', { accepts: ['baz', 'qux'] })
 
             assert.deepStrictEqual(result, {
                 argument: {
@@ -47,7 +47,7 @@ describe('LiteralParser Tests', () => {
                 errors: [{
                     severity: 'wtf',
                     range: { start: 0, end: 3 },
-                    message: "Expected 'baz' but got 'foo'."
+                    message: "Expected 'baz' or 'qux' but got 'foo'."
                 }],
                 rest: 'bar', cache: {}
             })

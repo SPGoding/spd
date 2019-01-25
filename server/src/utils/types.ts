@@ -14,7 +14,7 @@ export type LocalCache = {
      * { tag: ['foo'] }
      */
     definitions?: {
-        [type in DefinitionType]?: string[]
+        [type in DefinitionType]: string[]
     },
     /**
      * All references.
