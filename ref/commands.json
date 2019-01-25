@@ -2,7 +2,7 @@
     {
         "parser": "literal",
         "params": {
-            "accepts": [
+            "expected": [
                 "advancement"
             ]
         },
@@ -11,7 +11,7 @@
             {
                 "parser": "literal",
                 "params": {
-                    "accepts": [
+                    "expected": [
                         "grant",
                         "revoke"
                     ]
@@ -28,7 +28,7 @@
                             {
                                 "parser": "literal",
                                 "params": {
-                                    "accepts": [
+                                    "expected": [
                                         "only"
                                     ]
                                 },
@@ -53,7 +53,7 @@
                             {
                                 "parser": "literal",
                                 "params": {
-                                    "accepts": [
+                                    "expected": [
                                         "until",
                                         "from",
                                         "through"
@@ -70,7 +70,7 @@
                             {
                                 "parser": "literal",
                                 "params": {
-                                    "accepts": [
+                                    "expected": [
                                         "everything"
                                     ]
                                 }

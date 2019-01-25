@@ -2,6 +2,7 @@ import { ArgumentParser, Command, ArgumentParseResult, Argument, ParsingError } 
 import { commandTree } from '../server'
 import { ArgumentType, CommandTreeNode } from '../utils/types'
 import { combineLocalCaches } from '../utils/utils'
+import { LiteralParser } from './literal'
 
 /**
  * Parses a command.
@@ -34,6 +35,8 @@ export class CommandParser implements ArgumentParser {
         switch (parser) {
             case 'command':
                 return new CommandParser()
+            case 'literal':
+                return new LiteralParser()
             // TODO: Add more parsers here.
             default:
                 throw `Unknown parser "${parser}"`

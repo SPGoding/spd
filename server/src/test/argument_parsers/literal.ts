@@ -4,10 +4,10 @@ import { LiteralParser } from '../../argument_parsers/literal'
 
 describe.only('LiteralParser Tests', () => {
     describe('parse() tests', () => {
-        it('Should parse when accepts single string', () => {
+        it('Should parse when a single string is expected', () => {
             const parser = new LiteralParser()
 
-            const result = parser.parse('foo bar', { accepts: ['foo'] })
+            const result = parser.parse('foo bar', { expected: ['foo'] })
 
             assert.deepStrictEqual(result, {
                 argument: {
@@ -16,11 +16,11 @@ describe.only('LiteralParser Tests', () => {
                 rest: 'bar', cache: {}, errors: []
             })
         })
-        it('Should parse when accepts multiple strings', () => {
+        it('Should parse when multiple strings are expected', () => {
             const parser = new LiteralParser()
 
-            const result1 = parser.parse('foo baz', { accepts: ['foo', 'bar'] })
-            const result2 = parser.parse('bar baz', { accepts: ['foo', 'bar'] })
+            const result1 = parser.parse('foo baz', { expected: ['foo', 'bar'] })
+            const result2 = parser.parse('bar baz', { expected: ['foo', 'bar'] })
 
             assert.deepStrictEqual(result1, {
                 argument: {
@@ -35,10 +35,10 @@ describe.only('LiteralParser Tests', () => {
                 rest: 'baz', cache: {}, errors: []
             })
         })
-        it('Should return errors when does not accept', () => {
+        it("Should return errors when actual string isn't expected", () => {
             const parser = new LiteralParser()
 
-            const result = parser.parse('foo bar', { accepts: ['baz', 'qux'] })
+            const result = parser.parse('foo bar', { expected: ['baz', 'qux'] })
 
             assert.deepStrictEqual(result, {
                 argument: {

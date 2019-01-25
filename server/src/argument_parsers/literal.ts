@@ -2,7 +2,7 @@ import { ArgumentParser, ArgumentParseResult, ParsingError } from '../parser'
 import { convertArrayToString } from '../utils/utils'
 
 export interface LiteralParserParams {
-    accepts: string[]
+    expected: string[]
 }
 
 export class LiteralParser implements ArgumentParser {
@@ -10,15 +10,15 @@ export class LiteralParser implements ArgumentParser {
         const segments = input.split(/\s/g)
         const value = segments[0]
         const rest = segments.slice(1).join(' ')
-        const errors: ParsingError[] = [];
+        const errors: ParsingError[] = []
 
-        if (params.accepts.indexOf(value) === -1) {
+        if (params.expected.indexOf(value) === -1) {
             errors.push({
                 range: {
                     start: 0,
                     end: value.length
                 },
-                message: `Expected ${convertArrayToString(params.accepts)} but got '${value}'.`,
+                message: `Expected ${convertArrayToString(params.expected)} but got '${value}'.`,
                 severity: 'wtf'
             })
         }
