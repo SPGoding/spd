@@ -1,6 +1,7 @@
 import { LocalCache, ArgumentType } from './utils/types'
 import { NbtValue } from './argument_parsers/nbt_value'
 import { Selector } from './argument_parsers/selector'
+import { LiteralParserParams } from './argument_parsers/literal'
 
 /**
  * Parse a function file.
@@ -77,11 +78,11 @@ export interface ParsingError {
 
 export interface ArgumentParser {
     /**
-     * Parse the value as the argument.
-     * @param value The value.
-     * @param params The parameters for the parser. 
+     * Parse the input value as the argument.
+     * @param input The input value.
+     * @param params The parameters for the parser.
      */
-    parse(value: string, params?: object): ArgumentParseResult
+    parse(input: string, params?: LiteralParserParams): ArgumentParseResult
 }
 
 export interface ArgumentParseResult {
