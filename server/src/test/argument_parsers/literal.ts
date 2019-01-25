@@ -2,7 +2,7 @@ import * as assert from 'power-assert'
 import { describe, it } from 'mocha'
 import { LiteralParser } from '../../argument_parsers/literal'
 
-describe.only('LiteralParser Tests', () => {
+describe('LiteralParser Tests', () => {
     describe('parse() tests', () => {
         it('Should parse when a single string is expected', () => {
             const parser = new LiteralParser()

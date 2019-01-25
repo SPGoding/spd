@@ -93,7 +93,7 @@ export interface CommandTreeNode {
      * Expects a long sentense for the first node of each command to describe the command,
      * and a short description for non-string parameters.
      */
-    description: string,
+    description?: string,
     /**
      * All children of the command node.
      */

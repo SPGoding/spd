@@ -1,7 +1,6 @@
 import { LocalCache, ArgumentType } from './utils/types'
 import { NbtValue } from './argument_parsers/nbt_value'
 import { Selector } from './argument_parsers/selector'
-import { LiteralParserParams } from './argument_parsers/literal'
 
 /**
  * Parse a function file.
@@ -25,7 +24,7 @@ export interface Command {
     /**
      * All arguments of the command.
      */
-    args: (Argument | NbtValue | Selector | Command)[]
+    args: Argument[]
     /**
      * The cache of the command.
      */
@@ -39,7 +38,7 @@ export interface Command {
 /**
  * Represents a command argument.
  */
-export interface Argument {
+export interface SimpleArgument {
     /**
      * The type of the argument. 
      * @example
@@ -82,14 +81,14 @@ export interface ArgumentParser {
      * @param input The input value.
      * @param params The parameters for the parser.
      */
-    parse(input: string, params?: LiteralParserParams): ArgumentParseResult
+    parse(input: string, params?: object): ArgumentParseResult
 }
 
 export interface ArgumentParseResult {
     /**
      * The parsed argument result.
      */
-    argument: Argument | NbtValue | Selector | Command
+    argument: Argument
     /**
      * The rest value which the next argument parser should parse.
      */
@@ -104,3 +103,5 @@ export interface ArgumentParseResult {
      */
     errors: ParsingError[]
 }
+
+export type Argument = SimpleArgument | NbtValue | Selector | Command

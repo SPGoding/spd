@@ -1,7 +1,7 @@
 import { ArgumentParser, ArgumentParseResult, ParsingError } from '../parser'
 import { convertArrayToString } from '../utils/utils'
 
-export interface LiteralParserParams {
+interface LiteralParserParams {
     expected: string[]
 }
 

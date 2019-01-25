@@ -31,15 +31,16 @@ export class NbtParser implements ArgumentParser {
     parsingErrors: ParsingError[]
 
     parse(segments: string): ArgumentParseResult {
-        return { argument: null, rest: null, cache: null, errors: this.parsingErrors }
+        throw 'UnimplementedException'
+        // return { argument: null, rest: null, cache: null, errors: this.parsingErrors }
     }
 
     parseCompound(nbt: string, pos: number): [NbtCompound, number] {
-        let inBody: boolean
-        let inVal: boolean
-        let startPos: number
-        let compoundStart: number
-        let keyName: string
+        let inBody = false
+        let inVal = false
+        let startPos = 0
+        let compoundStart = 0
+        let keyName = ''
         const compound: NbtCompound = {}
         for (let i = pos; i < nbt.length; i++) {
             if (!inBody && nbt[i] === '{') {
@@ -107,9 +108,9 @@ export class NbtParser implements ArgumentParser {
     }
 
     parseListOrArray(nbt: string, pos: number): [NbtList, number] {
-        let inBody: boolean
-        let startPos: number
-        let listStart: number
+        let inBody = false
+        let startPos = 0
+        let listStart = 0
         let itemIndex = 0
         let isArray = false
         const list: NbtList = { type: 'string' }

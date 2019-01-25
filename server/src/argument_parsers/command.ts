@@ -1,8 +1,13 @@
-import { ArgumentParser, Command, ArgumentParseResult, Argument, ParsingError } from '../parser'
-import { commandTree } from '../server'
-import { ArgumentType, CommandTreeNode } from '../utils/types'
+import * as fs from 'fs'
+import * as path from 'path'
+import { ArgumentParser, Argument, Command, ArgumentParseResult, SimpleArgument, ParsingError } from '../parser'
+import { ArgumentType, CommandTreeNode, LocalCache } from '../utils/types'
 import { combineLocalCaches } from '../utils/utils'
 import { LiteralParser } from './literal'
+
+const commandTree = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '../../../ref/commands.json'), { encoding: 'utf8' })
+) as CommandTreeNode[]
 
 /**
  * Parses a command.
@@ -43,16 +48,20 @@ export class CommandParser implements ArgumentParser {
         }
     }
 
-    public parseOneNode(value: string, node: CommandTreeNode, args: Argument[]): ArgumentParseResult {
+    public parseOneNode(value: string, node: CommandTreeNode, inputArgs: Argument[]): CommandParseResult {
         const parser = this.getArgumentParser(node.parser)
-        const result = parser.parse(value)
+        const result = parser.parse(value, node.params)
+
+        var args = [...inputArgs, result.argument]
 
         if (!containWtfError(result.errors)) {
             if (node.children) {
-                const subResult = this.parseNodes(result.rest, node.children, args)
+                const subResult = this.parseNodes(result.rest, node.children, args, value.length - result.rest.length)
                 combineLocalCaches(result.cache, subResult.cache)
                 downgradeWtfErrors(subResult.errors)
                 result.errors.push(...subResult.errors)
+                args = [...subResult.argument.args]
+                result.rest = subResult.rest
             }
         }
 
@@ -60,36 +69,39 @@ export class CommandParser implements ArgumentParser {
             argument: {
                 cache: result.cache,
                 errors: result.errors,
-                args: [...args, result.argument]
+                args
             },
             rest: result.rest,
             cache: result.cache,
             errors: result.errors
         }
-    }   
+    }
 
-    public parseNodes(value: string, nodes: CommandTreeNode[], args: Argument[]): ArgumentParseResult {
+    public parseNodes(value: string, nodes: CommandTreeNode[], inputArgs: Argument[], skippedNum = 0): CommandParseResult {
         if (nodes.length === 1) {
-            return this.parseOneNode(value, nodes[0], args)
+            return skipPos(this.parseOneNode(value, nodes[0], inputArgs),skippedNum)
         } else {
             for (const node of nodes) {
-                const result = this.parseOneNode(value, node, args)
+                const result = this.parseOneNode(value, node, inputArgs)
+
                 if (!containWtfError(result.errors)) {
-                    return result
+                    return skipPos(result,skippedNum)
                 }
             }
-            return {
+
+            const errors: ParsingError[] = [{
+                range: { start: 0, end: value.length },
+                message: 'Failed to match all nodes.',
+                severity: 'wtf'
+            }]
+
+            return skipPos({
                 argument: {
-                    type: 'error',
-                    value: value
+                    args: [...inputArgs, { type: 'error', value }],
+                    cache: {}, errors
                 },
-                rest: '', cache: {},
-                errors: [{
-                    range: { start: 0, end: value.length },
-                    message: 'Failed to match all nodes',
-                    severity: 'wtf'
-                }]
-            }
+                rest: '', cache: {}, errors
+            },skippedNum)
         }
     }
 }
@@ -118,4 +130,25 @@ function downgradeWtfErrors(errors: ParsingError[]) {
             error.severity = 'oops'
         }
     }
+}
+
+/**
+ * Skip specific number of the `ParsingError.range` of the result.
+ * @param result The result.
+ * @param skippedNum The specific number.
+ */
+function skipPos(result: CommandParseResult, skippedNum: number): CommandParseResult {
+    result.errors = result.errors.map(v => {
+        v.range.start += skippedNum
+        v.range.end += skippedNum
+        return v
+    })
+    return result
+}
+
+interface CommandParseResult extends ArgumentParseResult {
+    argument: Command
+    rest: string
+    cache: LocalCache
+    errors: ParsingError[]
 }
