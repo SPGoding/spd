@@ -1,19 +1,17 @@
 [
     {
-        "parser": "string",
+        "parser": "literal",
         "params": {
-            "type": "word",
-            "accepts": [
+            "expected": [
                 "advancement"
             ]
         },
         "description": "Grants or revokes advancements from players.",
         "children": [
             {
-                "parser": "string",
+                "parser": "literal",
                 "params": {
-                    "type": "word",
-                    "accepts": [
+                    "expected": [
                         "grant",
                         "revoke"
                     ]
@@ -28,10 +26,9 @@
                         "description": "The target",
                         "children": [
                             {
-                                "parser": "string",
+                                "parser": "literal",
                                 "params": {
-                                    "type": "word",
-                                    "accepts": [
+                                    "expected": [
                                         "only"
                                     ]
                                 },
@@ -54,10 +51,9 @@
                                 ]
                             },
                             {
-                                "parser": "string",
+                                "parser": "literal",
                                 "params": {
-                                    "type": "word",
-                                    "accepts": [
+                                    "expected": [
                                         "until",
                                         "from",
                                         "through"
@@ -72,10 +68,9 @@
                                 ]
                             },
                             {
-                                "parser": "string",
+                                "parser": "literal",
                                 "params": {
-                                    "type": "word",
-                                    "accepts": [
+                                    "expected": [
                                         "everything"
                                     ]
                                 }

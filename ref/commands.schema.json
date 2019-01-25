@@ -35,19 +35,39 @@
                     "properties": {
                         "parser": {
                             "enum": [
+                                "literal"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "expected": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "description": "All strings that are expected for this node."
+                                }
+                            },
+                            "required": [
+                                "expected"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
                                 "string"
                             ]
                         },
                         "params": {
                             "additionalProperties": false,
                             "properties": {
-                                "accepts": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    },
-                                    "description": "All acceptable strings for this node."
-                                },
                                 "type": {
                                     "enum": [
                                         "word",
@@ -110,7 +130,7 @@
                         "params": {
                             "additionalProperties": false,
                             "properties": {
-                                "accepts": {
+                                "expected": {
                                     "enum": [
                                         "compound",
                                         "list",
@@ -125,11 +145,11 @@
                                         "integer_array",
                                         "long_array"
                                     ],
-                                    "description": "The kinds of NBT values which the node accepts."
+                                    "description": "The kinds of NBT values which are expected."
                                 }
                             },
                             "required": [
-                                "accepts"
+                                "expected"
                             ]
                         }
                     },

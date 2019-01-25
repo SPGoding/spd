@@ -1,7 +1,8 @@
-import { ArgumentParser, Command, ArgumentParseResult, Argument, containWtfError, downgradeWtfErrors } from '../parser'
+import { ArgumentParser, Command, ArgumentParseResult, Argument, ParsingError } from '../parser'
 import { commandTree } from '../server'
 import { ArgumentType, CommandTreeNode } from '../utils/types'
 import { combineLocalCaches } from '../utils/utils'
+import { LiteralParser } from './literal'
 
 /**
  * Parses a command.
@@ -12,16 +13,19 @@ export class CommandParser implements ArgumentParser {
         const args: Argument[] = []
         const cmd: Command = { args, cache: {}, errors: [] }
         const ans: ArgumentParseResult = {
-            argument: cmd, rest: '', cache: {}, errors: []
+            argument: cmd, rest: '', cache: cmd.cache, errors: cmd.errors
         }
 
         if (value[0] === '#') {
-            // TODO: #define support here.
+            // TODO: #define #region support here.
             args.push({ type: 'comment', value: value } as Argument)
         } else if (/^\s*$/.test(value)) {
             args.push({ type: 'empty_line', value: value } as Argument)
         } else {
-            this.parseNodes(value, commandTree)
+            const result = this.parseNodes(value, commandTree, args)
+            ans.argument = result.argument
+            combineLocalCaches(ans.cache, result.cache)
+            ans.errors.push(...result.errors)
         }
 
         return ans
@@ -31,32 +35,45 @@ export class CommandParser implements ArgumentParser {
         switch (parser) {
             case 'command':
                 return new CommandParser()
+            case 'literal':
+                return new LiteralParser()
             // TODO: Add more parsers here.
             default:
                 throw `Unknown parser "${parser}"`
         }
     }
 
-    public parseOneNode(value: string, node: CommandTreeNode) {
+    public parseOneNode(value: string, node: CommandTreeNode, args: Argument[]): ArgumentParseResult {
         const parser = this.getArgumentParser(node.parser)
-        const ans = parser.parse(value)
+        const result = parser.parse(value)
 
-        if (!containWtfError(ans.errors)) {
-            const result = this.parseNodes(ans.rest, node.children)
-            combineLocalCaches(ans.cache, result.cache)
-            downgradeWtfErrors(result.errors)
-            ans.errors.push(...result.errors)
+        if (!containWtfError(result.errors)) {
+            if (node.children) {
+                const subResult = this.parseNodes(result.rest, node.children, args)
+                combineLocalCaches(result.cache, subResult.cache)
+                downgradeWtfErrors(subResult.errors)
+                result.errors.push(...subResult.errors)
+            }
         }
 
-        return ans
-    }
+        return {
+            argument: {
+                cache: result.cache,
+                errors: result.errors,
+                args: [...args, result.argument]
+            },
+            rest: result.rest,
+            cache: result.cache,
+            errors: result.errors
+        }
+    }   
 
-    public parseNodes(value: string, nodes: CommandTreeNode[]): ArgumentParseResult {
+    public parseNodes(value: string, nodes: CommandTreeNode[], args: Argument[]): ArgumentParseResult {
         if (nodes.length === 1) {
-            return this.parseOneNode(value, nodes[0])
+            return this.parseOneNode(value, nodes[0], args)
         } else {
             for (const node of nodes) {
-                const result = this.parseOneNode(value, node)
+                const result = this.parseOneNode(value, node, args)
                 if (!containWtfError(result.errors)) {
                     return result
                 }
@@ -73,6 +90,32 @@ export class CommandParser implements ArgumentParser {
                     severity: 'wtf'
                 }]
             }
+        }
+    }
+}
+
+/**
+ * Whether the input parsing errors contain severity 'wtf'.
+ * @param errors The parsing errors.
+ */
+function containWtfError(errors: ParsingError[]) {
+    for (const error of errors) {
+        if (error.severity === 'wtf') {
+            return true
+        }
+    }
+
+    return false
+}
+
+/**
+ * Set all 'wtf' parsing errors to severity 'oops'.
+ * @param errors The parsing errors.
+ */
+function downgradeWtfErrors(errors: ParsingError[]) {
+    for (const error of errors) {
+        if (error.severity === 'wtf') {
+            error.severity = 'oops'
         }
     }
 }

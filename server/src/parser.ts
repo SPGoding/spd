@@ -1,6 +1,7 @@
 import { LocalCache, ArgumentType } from './utils/types'
 import { NbtValue } from './argument_parsers/nbt_value'
 import { Selector } from './argument_parsers/selector'
+import { LiteralParserParams } from './argument_parsers/literal'
 
 /**
  * Parse a function file.
@@ -75,38 +76,13 @@ export interface ParsingError {
     severity: 'oops' | 'wtf'
 }
 
-/**
- * Whether the input parsing errors contain severity 'wtf'.
- * @param errors The parsing errors.
- */
-export function containWtfError(errors: ParsingError[]) {
-    for (const error of errors) {
-        if (error.severity === 'wtf') {
-            return true
-        }
-    }
-
-    return false
-}
-
-/**
- * Set all 'wtf' parsing errors to severity 'oops'.
- * @param errors The parsing errors.
- */
-export function downgradeWtfErrors(errors: ParsingError[]) {
-    for (const error of errors) {
-        if (error.severity === 'wtf') {
-            error.severity = 'oops'
-        }
-    }
-}
-
 export interface ArgumentParser {
     /**
-     * Parse the value as the argument.
-     * @param value The value.
+     * Parse the input value as the argument.
+     * @param input The input value.
+     * @param params The parameters for the parser.
      */
-    parse(value: string): ArgumentParseResult
+    parse(input: string, params?: LiteralParserParams): ArgumentParseResult
 }
 
 export interface ArgumentParseResult {
