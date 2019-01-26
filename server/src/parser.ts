@@ -32,7 +32,7 @@ export interface Command {
     /**
      * All errors of the command.
      */
-    errors: ParsingError[]
+    errors: ParsingProblem[]
 }
 
 /**
@@ -55,7 +55,7 @@ export interface SimpleArgument {
 /**
  * Represents an error occurred when parsing a command.
  */
-export interface ParsingError {
+export interface ParsingProblem {
     /**
      * The range of the error: [start, end).
      */
@@ -69,10 +69,11 @@ export interface ParsingError {
     message: string
     /**
      * The severity of the error.
-     * `oops`: We can guess out what it should be.
-     * `wtf`: What the fucking string it is?!
+     * `info`: Could parse, but it may not work as expectation.
+     * `warning`: Failed to parse, though we can guess out what it should be.
+     * `error`: Failed to parse. What the fucking string it is?!
      */
-    severity: 'oops' | 'wtf'
+    severity: 'info' | 'warning' | 'error'
 }
 
 export interface ArgumentParser {
@@ -101,7 +102,7 @@ export interface ArgumentParseResult {
      * All errors eccured when parsing the argument. 
      * Will be combined to `Command` which the argument belongs to.
      */
-    errors: ParsingError[]
+    errors: ParsingProblem[]
 }
 
 export type Argument = SimpleArgument | NbtValue | Selector | Command

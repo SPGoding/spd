@@ -65,13 +65,13 @@ describe.only('CommandParser tests', () => {
                     errors: [{
                         range: { start: 0, end: 3 },
                         message: 'Failed to match all nodes.',
-                        severity: 'wtf'
+                        severity: 'error'
                     }]
                 },
                 errors: [{
                     range: { start: 0, end: 3 },
                     message: 'Failed to match all nodes.',
-                    severity: 'wtf'
+                    severity: 'error'
                 }], rest: '', cache: {}
             })
         })
@@ -84,13 +84,13 @@ describe.only('CommandParser tests', () => {
                     errors: [{
                         range: { start: 0, end: 3 },
                         message: "Expected 'foo' but got 'bar'.",
-                        severity: 'wtf'
+                        severity: 'error'
                     }]
                 },
                 errors: [{
                     range: { start: 0, end: 3 },
                     message: "Expected 'foo' but got 'bar'.",
-                    severity: 'wtf'
+                    severity: 'error'
                 }], rest: '', cache: {}
             })
         })
@@ -114,11 +114,11 @@ describe.only('CommandParser tests', () => {
                 argument: {
                     args: [{ type: 'literal', value: 'qux' }, { type: 'error', value: 'baz' }],
                     cache: {}, errors: [{
-                        range: { start: 4, end: 7 }, severity: 'oops',
+                        range: { start: 4, end: 7 }, severity: 'warning',
                         message: 'Failed to match all nodes.'
                     }]
                 }, errors: [{
-                    range: { start: 4, end: 7 }, severity: 'oops',
+                    range: { start: 4, end: 7 }, severity: 'warning',
                     message: 'Failed to match all nodes.'
                 }],
                 rest: '', cache: {}

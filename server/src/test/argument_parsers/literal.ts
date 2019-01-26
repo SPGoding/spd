@@ -45,7 +45,7 @@ describe('LiteralParser Tests', () => {
                     type: 'literal', value: 'foo'
                 },
                 errors: [{
-                    severity: 'wtf',
+                    severity: 'error',
                     range: { start: 0, end: 3 },
                     message: "Expected 'baz' or 'qux' but got 'foo'."
                 }],

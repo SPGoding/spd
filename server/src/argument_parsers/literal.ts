@@ -1,4 +1,4 @@
-import { ArgumentParser, ArgumentParseResult, ParsingError } from '../parser'
+import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
 import { convertArrayToString } from '../utils/utils'
 
 interface LiteralParserParams {
@@ -10,7 +10,7 @@ export class LiteralParser implements ArgumentParser {
         const segments = input.split(/\s/g)
         const value = segments[0]
         const rest = segments.slice(1).join(' ')
-        const errors: ParsingError[] = []
+        const errors: ParsingProblem[] = []
 
         if (params.expected.indexOf(value) === -1) {
             errors.push({
@@ -19,7 +19,7 @@ export class LiteralParser implements ArgumentParser {
                     end: value.length
                 },
                 message: `Expected ${convertArrayToString(params.expected)} but got '${value}'.`,
-                severity: 'wtf'
+                severity: 'error'
             })
         }
 

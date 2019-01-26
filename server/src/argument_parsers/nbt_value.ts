@@ -1,4 +1,4 @@
-import { ArgumentParser, ArgumentParseResult, ParsingError } from '../parser'
+import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
 
 const NBT_INT_REGEX = /^([+-]?)[0-9]+$/
 const NBT_SHORT_REGEX = /^([+-]?)[0-9]+[sS]$/
@@ -28,7 +28,7 @@ export interface NbtNumber {
 
 export class NbtParser implements ArgumentParser {
 
-    parsingErrors: ParsingError[]
+    parsingErrors: ParsingProblem[]
 
     parse(segments: string): ArgumentParseResult {
         throw 'UnimplementedException'
@@ -102,7 +102,7 @@ export class NbtParser implements ArgumentParser {
         this.parsingErrors.push({
             range: { start: compoundStart, end: nbt.length },
             message: 'Compound not enclosing!',
-            severity: 'oops'
+            severity: 'warning'
         })
         return [compound, -1]
     }
@@ -137,7 +137,7 @@ export class NbtParser implements ArgumentParser {
                         this.parsingErrors.push({
                             range: { start: startPos, end: i },
                             message: 'Considering it is an array, but met unexpected type assignment!',
-                            severity: 'oops'
+                            severity: 'warning'
                         })
                     }
                 }
@@ -163,7 +163,7 @@ export class NbtParser implements ArgumentParser {
                         this.parsingErrors.push({
                             range: { start: startPos, end: i - 1 },
                             message: 'Detected current item type does not match previous detected types!',
-                            severity: 'oops'
+                            severity: 'warning'
                         })
                     }
                     if (type === 'string') {
@@ -194,7 +194,7 @@ export class NbtParser implements ArgumentParser {
         this.parsingErrors.push({
             range: { start: listStart, end: nbt.length },
             message: 'List not enclosing!',
-            severity: 'oops'
+            severity: 'warning'
         })
         return [list, -1]
     }

@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { ArgumentParser, Argument, Command, ArgumentParseResult, SimpleArgument, ParsingError } from '../parser'
+import { ArgumentParser, Argument, Command, ArgumentParseResult, SimpleArgument, ParsingProblem } from '../parser'
 import { ArgumentType, CommandTreeNode, LocalCache } from '../utils/types'
 import { combineLocalCaches } from '../utils/utils'
 import { LiteralParser } from './literal'
@@ -54,11 +54,11 @@ export class CommandParser implements ArgumentParser {
 
         var args = [...inputArgs, result.argument]
 
-        if (!containWtfError(result.errors)) {
+        if (!containError(result.errors)) {
             if (node.children) {
                 const subResult = this.parseNodes(result.rest, node.children, args, value.length - result.rest.length)
                 combineLocalCaches(result.cache, subResult.cache)
-                downgradeWtfErrors(subResult.errors)
+                downgradeErrors(subResult.errors)
                 result.errors.push(...subResult.errors)
                 args = [...subResult.argument.args]
                 result.rest = subResult.rest
@@ -84,15 +84,15 @@ export class CommandParser implements ArgumentParser {
             for (const node of nodes) {
                 const result = this.parseOneNode(value, node, inputArgs)
 
-                if (!containWtfError(result.errors)) {
+                if (!containError(result.errors)) {
                     return skipPos(result,skippedNum)
                 }
             }
 
-            const errors: ParsingError[] = [{
+            const errors: ParsingProblem[] = [{
                 range: { start: 0, end: value.length },
                 message: 'Failed to match all nodes.',
-                severity: 'wtf'
+                severity: 'error'
             }]
 
             return skipPos({
@@ -107,12 +107,12 @@ export class CommandParser implements ArgumentParser {
 }
 
 /**
- * Whether the input parsing errors contain severity 'wtf'.
- * @param errors The parsing errors.
+ * Whether the input parsing problems contain severity 'error'.
+ * @param errors The parsing problems.
  */
-function containWtfError(errors: ParsingError[]) {
+function containError(errors: ParsingProblem[]) {
     for (const error of errors) {
-        if (error.severity === 'wtf') {
+        if (error.severity === 'error') {
             return true
         }
     }
@@ -121,13 +121,13 @@ function containWtfError(errors: ParsingError[]) {
 }
 
 /**
- * Set all 'wtf' parsing errors to severity 'oops'.
- * @param errors The parsing errors.
+ * Set all 'error' parsing problems to severity 'warning'.
+ * @param errors The parsing problems.
  */
-function downgradeWtfErrors(errors: ParsingError[]) {
+function downgradeErrors(errors: ParsingProblem[]) {
     for (const error of errors) {
-        if (error.severity === 'wtf') {
-            error.severity = 'oops'
+        if (error.severity === 'error') {
+            error.severity = 'warning'
         }
     }
 }
@@ -150,5 +150,5 @@ interface CommandParseResult extends ArgumentParseResult {
     argument: Command
     rest: string
     cache: LocalCache
-    errors: ParsingError[]
+    errors: ParsingProblem[]
 }
