@@ -1,14 +1,13 @@
 {
-    "$comment": "Some descriptions in this file are from Minecraft WIKI: http://minecraft.gamepedia.com/Tag",
     "$schema": "http://json-schema.org/schema#",
     "$id": "https://raw.githubusercontent.com/Levertion/minecraft-json-schemas/master/java/data/tags/function.json",
     "type": "object",
-    "title": "Root tag",
+    "title": "根标签",
     "additionalProperties": false,
     "properties": {
         "replace": {
             "type": "boolean",
-            "title": "If true, functions in this file will compeletely replace functions of the same tag from lower priority datapacks"
+            "title": "如果为 true，该标签会完全替换掉更低优先级的数据包中定义的相同标签的方块。"
         },
         "values": {
             "type": "array",
@@ -16,15 +15,15 @@
                 "oneOf": [
                     {
                         "$ref": "../../shared/resource_location.json",
-                        "description": "A function resource location"
+                        "description": "一个函数资源路径。"
                     },
                     {
                         "$ref": "../../shared/tag_location.json",
-                        "description": "A function tag"
+                        "description": "一个函数标签。"
                     }
                 ]
             },
-            "title": "A list of functions"
+            "title": "一系列函数。"
         }
     }
 }

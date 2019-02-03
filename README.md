@@ -28,10 +28,17 @@ TODO
 ](https://github.com/Microsoft/vscode/issues/2810))
 - Open VS Code in this folder.
 - Execute `Run Build Task` command (defaults to `Ctrl + Shift + B`) to compile the client and server.
-- Switch to the Debug viewlet.
+
+### Debugging
+
+- Switch to the Debug viewlet (defaults to `Ctrl + Shift + D`).
 - Select `Launch Client` from the drop down.
 - Run the lauch config.
     - If you want to debug the server as well, use the launch configuration `Attach to Server`
+
+### Testing
+
+- Execute `Run Test Task` command (defaults to `Ctrl + R T`) to test both server and client.
 
 ## Special Thanks To
 

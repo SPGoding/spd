@@ -2,12 +2,12 @@
     "type": "object",
     "$schema": "http://json-schema.org/schema#",
     "$id": "https://raw.githubusercontent.com/Levertion/minecraft-json-schemas/master/java/data/pack.mcmeta.json",
-    "title": "Resource pack information",
-    "description": "Information about a resource pack",
+    "title": "数据包信息。",
+    "description": "有关该数据包的信息。",
     "additionalProperties": false,
     "defaultSnippets": [
         {
-            "label": "Default (data) pack.mcmeta",
+            "label": "默认 pack.mcmeta",
             "body": {
                 "pack": {
                     "description": "${1:${TM_DIRECTORY/(?:.*[\\\\/])?([^\\\\/]*)/$1/}}: $2",
@@ -20,18 +20,18 @@
         "pack": {
             "type": "object",
             "additionalProperties": false,
-            "description": "Information about the datapack",
+            "description": "有关该数据包的信息",
             "properties": {
                 "pack_format": {
                     "default": 1,
                     "type": "integer",
-                    "title": "Datapack version",
-                    "description": "This is 1 for 1.13"
+                    "title": "数据包版本",
+                    "description": "对于 1.13 版本应采用「1」。游戏对此并没有限制，事实上可以填写任意整型数字。"
                 },
                 "description": {
                     "type": "string",
-                    "title": "Pack description",
-                    "description": "The description for this pack. Any text which doesn't fit on two lines will be removed"
+                    "title": "数据包描述",
+                    "description": "对该数据包的描述。在两行里放不下的部分文字，将不会被显示。"
                 }
             },
             "required": ["pack_format", "description"]

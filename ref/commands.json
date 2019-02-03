@@ -1,0 +1,84 @@
+[
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "advancement"
+            ]
+        },
+        "description": "Grants or revokes advancements from players.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "grant",
+                        "revoke"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "players"
+                        },
+                        "description": "The target",
+                        "children": [
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "only"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "advancement",
+                                        "description": "The advancement",
+                                        "children": [
+                                            {
+                                                "parser": "string",
+                                                "params": {
+                                                    "type": "phrase"
+                                                },
+                                                "description": "The criterion",
+                                                "executable": true
+                                            }
+                                        ],
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "until",
+                                        "from",
+                                        "through"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "advancement",
+                                        "description": "The advancement",
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "everything"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vscode_1 = require("vscode");
 const vscode_languageclient_1 = require("vscode-languageclient");
 function activate(context) {
     const module = context.asAbsolutePath('./server/out/server.js');
@@ -25,7 +24,6 @@ function activate(context) {
     };
     const client = new vscode_languageclient_1.LanguageClient('SPD Language Server', serverOptions, clientOptions);
     const disposable = client.start();
-    vscode_1.window.showWarningMessage(context.storagePath);
     context.subscriptions.push(disposable);
 }
 exports.activate = activate;

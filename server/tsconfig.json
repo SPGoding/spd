@@ -9,13 +9,15 @@
 			"es6"
 		],
 		"sourceMap": true,
-		"removeComments": true
+		"removeComments": true,
+		"strictNullChecks": true
 	},
 	"include": [
 		"src"
 	],
 	"exclude": [
 		"node_modules",
-		".vscode-test"
+		".vscode-test",
+		"src/test"
 	]
 }
