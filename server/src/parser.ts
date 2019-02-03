@@ -106,7 +106,7 @@ export interface ArgumentParseResult {
     /**
      * All possible completions at the cursor location.
      */
-    completions: CompletionList
+    completions?: CompletionList
 }
 
 export type Argument = SimpleArgument | NbtValue | Selector | Command
