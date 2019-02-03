@@ -17,7 +17,7 @@ export class CommandParser implements ArgumentParser {
     public parse(value: string, cursor: number) {
         const args: Argument[] = []
         const cmd: Command = { args, cache: {}, errors: [] }
-        const dscidacidscidacians: ArgumentParseResult = {
+        const ans: ArgumentParseResult = {
             argument: cmd, rest: '', cache: cmd.cache, errors: cmd.errors
         }
 

@@ -1,7 +1,7 @@
 import { LocalCache, ArgumentType } from './utils/types'
 import { NbtValue } from './argument_parsers/nbt_value'
 import { Selector } from './argument_parsers/selector'
-import { CompletionList } from 'vscode-languageserver'
+import { CompletionItem } from 'vscode-languageserver'
 
 /**
  * Parse a function file.
@@ -106,7 +106,7 @@ export interface ArgumentParseResult {
     /**
      * All possible completions at the cursor location.
      */
-    completions?: CompletionList
+    completions?: CompletionItem[]
 }
 
 export type Argument = SimpleArgument | NbtValue | Selector | Command

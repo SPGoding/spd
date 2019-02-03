@@ -1,5 +1,6 @@
 import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
 import { convertArrayToString } from '../utils/utils'
+import { CompletionItem } from 'vscode-languageserver';
 
 interface LiteralParserParams {
     expected: string[]
@@ -11,6 +12,7 @@ export class LiteralParser implements ArgumentParser {
         const value = segments[0]
         const rest = segments.slice(1).join(' ')
         const errors: ParsingProblem[] = []
+        let completions: CompletionItem[] | undefined
 
         if (params.expected.indexOf(value) === -1) {
             errors.push({
@@ -23,14 +25,24 @@ export class LiteralParser implements ArgumentParser {
             })
         }
 
+        if (cursor === undefined) {
+            completions = undefined
+        } else {
+            completions = []
+            for (const expected of params.expected) {
+                completions.push(CompletionItem.create(expected))
+            }
+        }
+
         return {
             argument: {
                 value: value,
                 type: 'literal'
             },
+            completions,
+            errors: errors,
             rest,
-            cache: {},
-            errors: errors
+            cache: {}
         }
     }
 }
