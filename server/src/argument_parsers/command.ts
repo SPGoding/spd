@@ -79,13 +79,13 @@ export class CommandParser implements ArgumentParser {
 
     public parseNodes(value: string, nodes: CommandTreeNode[], inputArgs: Argument[], skippedNum = 0): CommandParseResult {
         if (nodes.length === 1) {
-            return skipPos(this.parseOneNode(value, nodes[0], inputArgs),skippedNum)
+            return addPos(this.parseOneNode(value, nodes[0], inputArgs),skippedNum)
         } else {
             for (const node of nodes) {
                 const result = this.parseOneNode(value, node, inputArgs)
 
                 if (!containError(result.errors)) {
-                    return skipPos(result,skippedNum)
+                    return addPos(result,skippedNum)
                 }
             }
 
@@ -95,7 +95,7 @@ export class CommandParser implements ArgumentParser {
                 severity: 'error'
             }]
 
-            return skipPos({
+            return addPos({
                 argument: {
                     args: [...inputArgs, { type: 'error', value }],
                     cache: {}, errors
@@ -133,14 +133,14 @@ function downgradeErrors(errors: ParsingProblem[]) {
 }
 
 /**
- * Skip specific number of the `ParsingError.range` of the result.
+ * Add specific number of the `ParsingError.range` of the result.
  * @param result The result.
- * @param skippedNum The specific number.
+ * @param addedNum The specific number.
  */
-function skipPos(result: CommandParseResult, skippedNum: number): CommandParseResult {
+function addPos(result: CommandParseResult, addedNum: number): CommandParseResult {
     result.errors = result.errors.map(v => {
-        v.range.start += skippedNum
-        v.range.end += skippedNum
+        v.range.start += addedNum
+        v.range.end += addedNum
         return v
     })
     return result
