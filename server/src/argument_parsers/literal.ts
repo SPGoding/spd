@@ -6,7 +6,7 @@ interface LiteralParserParams {
 }
 
 export class LiteralParser implements ArgumentParser {
-    parse(input: string, params: LiteralParserParams): ArgumentParseResult {
+    parse(input: string, cursor: number, params: LiteralParserParams): ArgumentParseResult {
         const segments = input.split(/\s/g)
         const value = segments[0]
         const rest = segments.slice(1).join(' ')

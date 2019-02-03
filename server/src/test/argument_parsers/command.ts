@@ -5,6 +5,7 @@ import { CommandTreeNode } from '../../utils/types'
 
 const parser = new CommandParser()
 
+//#region Test data
 /**
  * Allows: `foo|bar`
  */
@@ -35,6 +36,7 @@ const deepNode: CommandTreeNode = {
     params: { expected: ['qux'] },
     children: twoNodesArray
 }
+//#endregion
 
 describe.only('CommandParser tests', () => {
     describe('parseNodes() tests', () => {

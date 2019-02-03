@@ -1,4 +1,4 @@
-import { Range, Location } from 'vscode-languageserver'
+import { Range } from 'vscode-languageserver'
 
 /**
  * Caches for making renaming faster.
@@ -59,8 +59,9 @@ export type WorkspaceCache = {
 /**
  * All possible types of a resource location.
  */
-export type ResourceLocationType = 'advancement' | 'recipe' | 'loot_table' | 'function' | 'block_tag' |
-    'entity_type_tag' | 'fluid_tag' | 'function_tag' | 'item_tag'
+export type ResourceLocationType =
+    | 'advancement' | 'recipe' | 'loot_table' | 'function' | 'block_tag'
+    | 'entity_type_tag' | 'fluid_tag' | 'function_tag' | 'item_tag'
 /**
  * All possible types of a comment definition.
  * `name` stands for fake names of scoreboards.
@@ -73,8 +74,8 @@ export type DefinitionType = 'name' | 'tag' | 'sound'
  * All possible command argument types.
  */
 export type ArgumentType =
-    'literal' | 'string' | 'vec2' | 'vec3' | 'nbt_value' | 'target_selector' | 'number' | 'boolean' |
-    'command' | 'comment' | 'empty_line' | 'error' | ResourceLocationType
+    | ResourceLocationType | DefinitionType | 'literal' | 'string' | 'number' | 'boolean' | 'comment' | 'empty_line'
+    | 'error' | 'vec2' | 'vec3' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector'
 
 /**
  * A command tree node used in commands.json.

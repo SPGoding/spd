@@ -1,6 +1,7 @@
 import { LocalCache, ArgumentType } from './utils/types'
 import { NbtValue } from './argument_parsers/nbt_value'
 import { Selector } from './argument_parsers/selector'
+import { CompletionList } from 'vscode-languageserver'
 
 /**
  * Parse a function file.
@@ -40,10 +41,7 @@ export interface Command {
  */
 export interface SimpleArgument {
     /**
-     * The type of the argument. 
-     * @example
-     * 'literal'
-     * 'comment'
+     * The type of the argument.
      */
     type: ArgumentType
     /**
@@ -80,9 +78,11 @@ export interface ArgumentParser {
     /**
      * Parse the input value as the argument.
      * @param input The input value.
+     * @param cursor The location of the cursor. Should be undefined when cursor is
+     * not in the range of the input string.
      * @param params The parameters for the parser.
      */
-    parse(input: string, params?: object): ArgumentParseResult
+    parse(input: string, cursor: number | undefined, params?: object): ArgumentParseResult
 }
 
 export interface ArgumentParseResult {
@@ -103,6 +103,10 @@ export interface ArgumentParseResult {
      * Will be combined to `Command` which the argument belongs to.
      */
     errors: ParsingProblem[]
+    /**
+     * All possible completions at the cursor location.
+     */
+    completions: CompletionList
 }
 
 export type Argument = SimpleArgument | NbtValue | Selector | Command

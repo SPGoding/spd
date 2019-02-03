@@ -14,7 +14,7 @@ const commandTree = JSON.parse(
  * Accepts comments (begin with `#`) and empty lines.
  */
 export class CommandParser implements ArgumentParser {
-    public parse(value: string) {
+    public parse(value: string, cursor: number) {
         const args: Argument[] = []
         const cmd: Command = { args, cache: {}, errors: [] }
         const ans: ArgumentParseResult = {
