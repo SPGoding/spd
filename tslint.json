@@ -34,8 +34,18 @@
         ],
         "max-line-length": [
             true,
-            100
+            120
         ],
-        "eofline": true
+        "eofline": true,
+        "prefer-conditional-expression": true,
+        "prefer-const": true,
+        "prefer-for-of": true,
+        "prefer-function-over-method": true,
+        "prefer-method-signature": true,
+        "prefer-object-spread": true,
+        "prefer-readonly": true,
+        "prefer-switch": true,
+        "prefer-template": true,
+        "prefer-while": true
     }
 }
