@@ -15,7 +15,7 @@ const commandTree = JSON.parse(
  * Accepts comments (begin with `#`) and empty lines.
  */
 export class CommandParser implements ArgumentParser {
-    public parse(value: string, cursor: number) {
+    public parse(value: string, cursor: number | undefined) {
         const args: Argument[] = []
         const cmd: Command = { args, cache: {}, errors: [] }
         const completions: CompletionItem[] = []
@@ -25,10 +25,16 @@ export class CommandParser implements ArgumentParser {
         }
 
         if (value[0] === '#') {
-            // TODO: #region support here.
+            // Completion
+            if (value.length === 1 && cursor === 1) {
+                completions.push(CompletionItem.create('define'))
+                completions.push(CompletionItem.create('region'))
+            }
+
+            // Further suppoer.
             if (value.slice(0, 8) === '#define ') {
                 // Completion.
-                if (cursor === 8) {
+                if (value.length === 8 && cursor === 8) {
                     const cpls = DefinitionTypes.map(v => CompletionItem.create(v))
                     completions.push(...cpls)
                 }
@@ -60,13 +66,15 @@ export class CommandParser implements ArgumentParser {
                         })
                         break
                 }
+            } else if (value.slice(0, 8) === '#region ') {
+                // TODO: #region support here.
             } else {
                 args.push({ type: 'comment', value: value } as Argument)
             }
         } else if (/^\s*$/.test(value)) {
             args.push({ type: 'empty_line', value: value } as Argument)
         } else {
-            const result = this.parseNodes(value, commandTree, args)
+            const result = this.parseNodes(value, commandTree, args, 0, cursor)
             ans.argument = result.argument
             combineLocalCaches(ans.cache, result.cache)
             ans.errors.push(...result.errors)
@@ -87,7 +95,8 @@ export class CommandParser implements ArgumentParser {
         }
     }
 
-    public parseOneNode(value: string, node: CommandTreeNode, inputArgs: Argument[], addedNum: number): CommandParseResult {
+    public parseOneNode(value: string, node: CommandTreeNode, inputArgs: Argument[],
+        addedNum: number, cursor: number | undefined): CommandParseResult {
         const parser = this.getArgumentParser(node.parser)
         const result = parser.parse(value, cursor, node.params)
 
@@ -95,7 +104,9 @@ export class CommandParser implements ArgumentParser {
 
         if (!containError(result.errors)) {
             if (node.children) {
-                const subResult = this.parseNodes(result.rest, node.children, args, value.length - result.rest.length)
+                const addedNum = value.length - result.rest.length
+                const subResult = this.parseNodes(result.rest, node.children, args, addedNum,
+                    cursor !== undefined ? cursor - addedNum : undefined)
                 combineLocalCaches(result.cache, subResult.cache)
                 downgradeErrors(subResult.errors)
                 result.errors.push(...subResult.errors)
@@ -115,12 +126,13 @@ export class CommandParser implements ArgumentParser {
         return addPos(ans, addedNum)
     }
 
-    public parseNodes(value: string, nodes: CommandTreeNode[], inputArgs: Argument[], addedNum = 0): CommandParseResult {
+    public parseNodes(value: string, nodes: CommandTreeNode[], inputArgs: Argument[],
+        addedNum: number, cursor: number | undefined): CommandParseResult {
         if (nodes.length === 1) {
-            return this.parseOneNode(value, nodes[0], inputArgs, addedNum)
+            return this.parseOneNode(value, nodes[0], inputArgs, addedNum, cursor)
         } else {
             for (const node of nodes) {
-                const result = this.parseOneNode(value, node, inputArgs, addedNum)
+                const result = this.parseOneNode(value, node, inputArgs, addedNum, cursor)
 
                 if (!containError(result.errors)) {
                     return result

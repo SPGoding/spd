@@ -25,7 +25,7 @@ export class LiteralParser implements ArgumentParser {
             })
         }
 
-        if (cursor === undefined) {
+        if (cursor !== 0) {
             completions = undefined
         } else {
             completions = []
