@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { ArgumentParser, Argument, Command, ArgumentParseResult, SimpleArgument, ParsingProblem } from '../parser'
 import { ArgumentType, CommandTreeNode, LocalCache, DefinitionTypes } from '../utils/types'
-import { combineLocalCaches } from '../utils/utils'
+import { combineLocalCaches, convertArrayToString } from '../utils/utils'
 import { LiteralParser } from './literal'
 import { CompletionItem } from 'vscode-languageserver';
 
@@ -51,7 +51,13 @@ export class CommandParser implements ArgumentParser {
                         }
                         break
                     default:
-                        
+                        ans.errors.push({
+                            severity: 'warning',
+                            range: { start: 8, end: segments[1].length + 8 },
+                            message: `Expected ${
+                                convertArrayToString(DefinitionTypes)
+                                } but got '${segments[1]}'.`
+                        })
                         break
                 }
             } else {
