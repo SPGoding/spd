@@ -67,7 +67,7 @@ export interface ParsingProblem {
     message: string
     /**
      * The severity of the error.
-     * `info`: Could parse, but it may not work as expectation.
+     * `info`: Could parse, but it may not work as user's expectation.
      * `warning`: Failed to parse, though we can guess out what it should be.
      * `error`: Failed to parse. What the fucking string it is?!
      */

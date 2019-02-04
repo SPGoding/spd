@@ -4,7 +4,7 @@ import { ArgumentParser, Argument, Command, ArgumentParseResult, SimpleArgument,
 import { ArgumentType, CommandTreeNode, LocalCache, DefinitionTypes } from '../utils/types'
 import { combineLocalCaches, convertArrayToString } from '../utils/utils'
 import { LiteralParser } from './literal'
-import { CompletionItem } from 'vscode-languageserver';
+import { CompletionItem } from 'vscode-languageserver'
 
 const commandTree = JSON.parse(
     fs.readFileSync(path.join(__dirname, '../../../ref/commands.json'), { encoding: 'utf8' })

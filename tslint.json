@@ -55,6 +55,7 @@
         "prefer-readonly": true,
         "prefer-switch": true,
         "prefer-template": true,
-        "prefer-while": true
+        "prefer-while": true,
+        "no-switch-case-fall-through": true
     }
 }

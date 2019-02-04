@@ -83,8 +83,7 @@ export const DefinitionTypes: DefinitionType[] = ['name', 'tag', 'sound']
  * All possible command argument types.
  */
 export type ArgumentType =
-    | ResourceLocationType | DefinitionType | 'literal' | 'string' | 'number' | 'boolean' | 'comment' | 'empty_line'
-    | 'error' | 'vec2' | 'vec3' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector' | 'comment_definition'
+    | ResourceLocationType | DefinitionType | 'literal' | 'string' | 'number' | 'boolean' | 'comment' | 'empty_line' | 'error' | 'vec2' | 'vec3' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector' | 'comment_definition'
 export const ArgumentTypes: ArgumentType[] = [
     ...ResourceLocationTypes, ...DefinitionTypes, 'literal', 'string', 'number', 'boolean', 'comment', 'empty_line',
     'error', 'vec2', 'vec3', 'command', 'nbt_path', 'nbt_value', 'target_selector', 'comment_definition'

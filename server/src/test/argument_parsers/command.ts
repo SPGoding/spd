@@ -41,7 +41,7 @@ const deepNode: CommandTreeNode = {
 describe.only('CommandParser tests', () => {
     describe('parseNodes() tests', () => {
         it('Should parse when value matches the first node', () => {
-            const result = parser.parseNodes('foo', twoNodesArray, [])
+            const result = parser.parseNodes('foo', twoNodesArray, [], 0, 0)
 
             assert.deepStrictEqual(result, {
                 argument: {
@@ -50,7 +50,7 @@ describe.only('CommandParser tests', () => {
             })
         })
         it('Should parse when value matches the second node', () => {
-            const result = parser.parseNodes('bar', twoNodesArray, [])
+            const result = parser.parseNodes('bar', twoNodesArray, [], 0, 0)
 
             assert.deepStrictEqual(result, {
                 argument: {
@@ -59,7 +59,7 @@ describe.only('CommandParser tests', () => {
             })
         })
         it('Should return error when value fails to match all nodes', () => {
-            const result = parser.parseNodes('baz', twoNodesArray, [])
+            const result = parser.parseNodes('baz', twoNodesArray, [], 0, 0)
 
             assert.deepStrictEqual(result, {
                 argument: {
@@ -78,7 +78,7 @@ describe.only('CommandParser tests', () => {
             })
         })
         it('Should return error when value fails to match the only node', () => {
-            const result = parser.parseNodes('bar', oneNodeArray, [])
+            const result = parser.parseNodes('bar', oneNodeArray, [], 0, 0)
 
             assert.deepStrictEqual(result, {
                 argument: {
@@ -99,7 +99,7 @@ describe.only('CommandParser tests', () => {
     })
     describe('parseOneNode() tests', () => {
         it('Should parse children', () => {
-            const result = parser.parseOneNode('qux bar', deepNode, [])
+            const result = parser.parseOneNode('qux bar', deepNode, [], 0, 0)
 
             assert.deepStrictEqual(result, {
                 argument: {
@@ -110,7 +110,7 @@ describe.only('CommandParser tests', () => {
             })
         })
         it('Should return error when the second parser returns error', () => {
-            const result = parser.parseOneNode('qux baz', deepNode, [])
+            const result = parser.parseOneNode('qux baz', deepNode, [], 0, 0)
 
             assert.deepStrictEqual(result, {
                 argument: {
