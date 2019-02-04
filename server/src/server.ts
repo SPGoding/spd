@@ -21,7 +21,7 @@ connection.onInitialize((params) => {
                 resolveProvider: true
             },
             signatureHelpProvider: {
-                triggerCharacters: [' ']
+                triggerCharacters: [' ', ',', '\r\n']
             },
             textDocumentSync: {
                 change: TextDocumentSyncKind.Incremental,

@@ -14,7 +14,10 @@ export type LocalCache = {
      * { tag: ['foo'] }
      */
     definitions?: {
-        [type in DefinitionType]: string[]
+        [type in DefinitionType]?: {
+            id: string,
+            description?: string
+        }[]
     },
     /**
      * All references.
@@ -62,6 +65,11 @@ export type WorkspaceCache = {
 export type ResourceLocationType =
     | 'advancement' | 'recipe' | 'loot_table' | 'function' | 'block_tag'
     | 'entity_type_tag' | 'fluid_tag' | 'function_tag' | 'item_tag'
+export const ResourceLocationTypes: ResourceLocationType[] = [
+    'advancement', 'recipe', 'loot_table', 'function', 'block_tag',
+    'entity_type_tag', 'fluid_tag', 'function_tag', 'item_tag'
+]
+
 /**
  * All possible types of a comment definition.
  * `name` stands for fake names of scoreboards.
@@ -69,13 +77,18 @@ export type ResourceLocationType =
  * `sound` stands for an resource pack custom sound event. 
  */
 export type DefinitionType = 'name' | 'tag' | 'sound'
+export const DefinitionTypes: DefinitionType[] = ['name', 'tag', 'sound']
 
 /**
  * All possible command argument types.
  */
 export type ArgumentType =
     | ResourceLocationType | DefinitionType | 'literal' | 'string' | 'number' | 'boolean' | 'comment' | 'empty_line'
-    | 'error' | 'vec2' | 'vec3' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector'
+    | 'error' | 'vec2' | 'vec3' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector' | 'comment_definition'
+export const ArgumentTypes: ArgumentType[] = [
+    ...ResourceLocationTypes, ...DefinitionTypes, 'literal', 'string', 'number', 'boolean', 'comment', 'empty_line',
+    'error', 'vec2', 'vec3', 'command', 'nbt_path', 'nbt_value', 'target_selector', 'comment_definition'
+]
 
 /**
  * A command tree node used in commands.json.
