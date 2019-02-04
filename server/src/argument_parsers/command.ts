@@ -66,6 +66,7 @@ export class CommandParser implements ArgumentParser {
                         })
                         break
                 }
+                args.push({ type: 'comment_definition', value: value } as Argument)
             } else if (value.slice(0, 8) === '#region ') {
                 // TODO: #region support here.
             } else {
