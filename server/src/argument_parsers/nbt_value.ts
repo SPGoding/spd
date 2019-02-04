@@ -163,6 +163,9 @@ export class NbtParser implements ArgumentParser {
         let itemIndex = 0
         let isArray = false
         let isLast = false
+        let inQuote = false
+        let wasInQuote = false
+        let stringStart = 0
         const list: NbtList = { type: 'string' }
         for (let i = pos; i < nbt.length; i++) {
             if (!inBody && nbt[i] === '[') {
@@ -173,6 +176,15 @@ export class NbtParser implements ArgumentParser {
             }
             if (inBody) {
                 if (nbt[i] === ';' && itemIndex === 0) {
+                    if(list.type != 'string') {
+                        this.parsingErrors.push({
+                            range: { start: startPos, end: i },
+                            message: 'It seems that you are trying to assign the type twice.',
+                            severity: 'oops'
+                        })
+                        startPos = i + 1
+                        continue
+                    }
                     isArray = true
                     const typeIdentity = nbt.slice(startPos, i).trim()
                     if (typeIdentity === 'L') {
@@ -191,91 +203,111 @@ export class NbtParser implements ArgumentParser {
                             severity: 'oops'
                         })
                     }
-                    continue
-                }
-                if (nbt[i] === '{') {
-                    const itemStart = i
-                    const result = this.parseCompound(nbt, i)
-                    const nextComma = nbt.slice(result[1], nbt.length).search(',')
-                    i = result[1] + (nextComma === -1 ? 0 : nextComma)
-                    if(nextComma === -1) {
-                        isLast = true
-                    }
-                    if (!isArray && itemIndex === 0) {
-                        list.type = 'compound'
-                    }
-                    if(list.type != 'compound') {
-                        this.parsingErrors.push({
-                            range: { start: itemStart, end: i - 1 },
-                            message: 'Detected current item type does not match previous detected types!',
-                            severity: 'oops'
-                        })
-                    }
-                    list[itemIndex++] = result[0]
                     startPos = i + 1
                     continue
                 }
-                if (nbt[i] === '[') {
-                    const itemStart = i
-                    const result = this.parseListOrArray(nbt, i)
-                    const nextComma = nbt.slice(result[1], nbt.length).search(',')
-                    i = result[1] + (nextComma === -1 ? 1 : nextComma)
-                    if (!isArray && itemIndex === 0) {
-                        list.type = 'list'
+                if(nbt[i] === '"' && nbt[i - 1] !== '\\') {
+                    if(!inQuote) {
+                        stringStart = i
                     }
-                    if(list.type != 'list') {
-                        this.parsingErrors.push({
-                            range: { start: itemStart, end: i - 1 },
-                            message: 'Detected current item type does not match previous detected types!',
-                            severity: 'oops'
-                        })
-                    }
-                    list[itemIndex++] = result[0]
-                    startPos = i + 1
-                    continue
+                    inQuote = !inQuote
+                    wasInQuote = true
                 }
-                if (nbt[i] === ',' || nbt[i] === ']' && !isLast) {
-                    const val = nbt.slice(startPos, i).trim()
-                    const type = this.parseValueType(val)
-                    startPos = i + 1
-                    if (!isArray && itemIndex === 0) {
-                        list.type = type
-                    }
-                    if (list.type != type) {
-                        this.parsingErrors.push({
-                            range: { start: startPos, end: i - 1 },
-                            message: 'Detected current item type does not match previous detected types!',
-                            severity: 'oops'
-                        })
-                    }
-                    if (type === 'string') {
-                        list[itemIndex] = val
-                    }
-                    else if (type === 'int' || type === 'short' || type === 'long') {
-                        list[itemIndex] = { type: type, value: parseInt(val) }
-                    }
-                    else if (type === 'byte') {
-                        if (val[0] === '0' || val[0] === '1') {
-                            list[itemIndex] = { type: type, value: val[0] === '0' ? 0 : 1 }
+                if(!inQuote) {
+                    if (nbt[i] === '{') {
+                        const itemStart = i
+                        const result = this.parseCompound(nbt, i)
+                        const nextComma = nbt.slice(result[1], nbt.length).search(',')
+                        i = result[1] + (nextComma === -1 ? 0 : nextComma)
+                        if(nextComma === -1) {
+                            isLast = true
                         }
-                        else {
-                            list[itemIndex] = { type: type, value: val === 'false' ? 0 : 1 }
+                        if (!isArray && itemIndex === 0) {
+                            list.type = 'compound'
                         }
+                        if(list.type != 'compound') {
+                            this.parsingErrors.push({
+                                range: { start: itemStart, end: i },
+                                message: 'Detected current item type does not match previous detected types!',
+                                severity: 'oops'
+                            })
+                        }
+                        list[itemIndex++] = result[0]
+                        startPos = i + 1
+                        continue
                     }
-                    else if (type === 'double' || type === 'float') {
-                        list[itemIndex] = { type: type, value: parseFloat(val) }
+                    if (nbt[i] === '[') {
+                        const itemStart = i
+                        const result = this.parseListOrArray(nbt, i)
+                        const nextComma = nbt.slice(result[1], nbt.length).search(',')
+                       i = result[1] + (nextComma === -1 ? 1 : nextComma)
+                        if (!isArray && itemIndex === 0) {
+                            list.type = 'list'
+                        }
+                        if(list.type != 'list') {
+                            this.parsingErrors.push({
+                                range: { start: itemStart, end: i },
+                                message: 'Detected current item type does not match previous detected types!',
+                                severity: 'oops'
+                            })
+                        }
+                        list[itemIndex++] = result[0]
+                        startPos = i + 1
+                        continue
                     }
-                    itemIndex++
-                }
-                if (nbt[i] === ']') {
-                    inBody = false
-                    return [list, i]
+                    if (nbt[i] === ',' || nbt[i] === ']' && !isLast) {
+                        const valStart = startPos
+                        const val = nbt.slice(startPos, i).trim()
+                        const type = this.parseValueType(val)
+                        startPos = i + 1
+                        if (!isArray && itemIndex === 0) {
+                            list.type = type
+                        }
+                        if (list.type != type) {
+                            this.parsingErrors.push({
+                                range: { start: valStart, end: i },
+                                message: 'Detected current item type does not match previous detected types!',
+                                severity: 'oops'
+                            })
+                        }
+                        if (type === 'string') {
+                            if(!wasInQuote) {
+                                if(!UNQUOTED_SUPPORT.test(val)) {
+                                    this.parsingErrors.push({
+                                        range: { start: valStart, end: i },
+                                        message: 'Unexpected char(s) detected in string!',
+                                        severity: 'oops'
+                                    })
+                                }
+                            }
+                            list[itemIndex] = wasInQuote ? unescape(dequote(val)) : val
+                        }
+                        else if (type === 'int' || type === 'short' || type === 'long') {
+                            list[itemIndex] = { type: type, value: parseInt(val) }
+                        }
+                        else if (type === 'byte') {
+                            if (val[0] === '0' || val[0] === '1') {
+                                list[itemIndex] = { type: type, value: val[0] === '0' ? 0 : 1 }
+                            }
+                            else {
+                                list[itemIndex] = { type: type, value: val === 'false' ? 0 : 1 }
+                            }
+                        }
+                        else if (type === 'double' || type === 'float') {
+                            list[itemIndex] = { type: type, value: parseFloat(val) }
+                        }
+                        itemIndex++
+                    }
+                    if (nbt[i] === ']') {
+                        inBody = false
+                        return [list, i]
+                    }
                 }
             }
         }
         this.parsingErrors.push({
-            range: { start: listStart, end: nbt.length },
-            message: 'List not enclosing!',
+            range: { start: inQuote ? stringStart : listStart, end: nbt.length },
+            message: inQuote ? 'String not enclosing!' : 'List not enclosing!',
             severity: 'oops'
         })
         return [list, -1]
