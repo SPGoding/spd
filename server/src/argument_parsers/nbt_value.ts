@@ -12,6 +12,13 @@ const UNESCAPE_PATTERN = /\\("|\\)/g
 
 const UNQUOTED_SUPPORT = /[a-zA-Z0-9\-_\.]/
 
+const BYTE_RANGE = [-128, 127]
+const SHORT_RANGE = [-32768, 32767]
+const INT_RANGE = [-2147483648, 2147483647]
+const LONG_RANGE = [-9223372036854775808, 9223372036854775807]
+const FLOAT_RANGE = [-3.4E38, 3.4E38]
+const DOUBLE_RANGE = [-1.8E308, 1.8E308]
+
 export function escape(data: string) {
     return data.replace(ESCAPE_PATTERN, '\\$1')
 }
@@ -314,17 +321,26 @@ export class NbtParser implements ArgumentParser {
     }
 
     parseValueType(num: string): NbtNumberType | 'string' {
-        const regexs: [RegExp, NbtNumberType][] = [
-            [NBT_INT_REGEX, 'int'],
-            [NBT_SHORT_REGEX, 'short'],
-            [NBT_LONG_REGEX, 'long'],
-            [NBT_BYTE_REGEX, 'byte'],
-            [NBT_FLOAT_REGEX, 'float'],
-            [NBT_DOUBLE_REGEX, 'double']
+        const regexs: [RegExp, NbtNumberType, number[]][] = [
+            [NBT_INT_REGEX, 'int', INT_RANGE],
+            [NBT_SHORT_REGEX, 'short', SHORT_RANGE],
+            [NBT_LONG_REGEX, 'long', LONG_RANGE],
+            [NBT_BYTE_REGEX, 'byte', BYTE_RANGE],
+            [NBT_FLOAT_REGEX, 'float', FLOAT_RANGE],
+            [NBT_DOUBLE_REGEX, 'double', DOUBLE_RANGE]
         ]
         for (const regex of regexs) {
             if (regex[0].test(num)) {
-                return regex[1]
+                let n = 0
+                if(regex[1] == 'float' || regex[1] == 'double') {
+                    n = parseFloat(num)
+                }
+                else {
+                    n = parseInt(num)
+                }
+                if(n >= regex[2][0] && n <= regex[2][1]) {
+                    return regex[1]
+                }
             }
         }
         return 'string'

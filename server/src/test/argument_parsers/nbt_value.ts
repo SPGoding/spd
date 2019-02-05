@@ -18,6 +18,7 @@ const TEST_DUPLICATED_ASSIGNMENT = '[I;L;1]'
 const TEST_FAULT_QUOTE_LIST = '[fuck,"fuck]'
 const TEST_FAULT_TYPE_ARRAY = '[I;fuck]'
 const TEST_FAULT_TYPE_LIST = '[1.0,1]'
+const TEST_INT_OUT_OF_RANGE_LIST = '[2147483648]'
 
 describe.only('NbtParser tests', () => {
     describe('parseCompound() tests', () => {
@@ -152,6 +153,13 @@ describe.only('NbtParser tests', () => {
                     value: 3
                 },
                 type: 'int'
+            })
+        })
+        it('Should be string-typed', () => {
+            const parser = new NbtParser()
+            assert.deepStrictEqual(parser.parseListOrArray(TEST_INT_OUT_OF_RANGE_LIST, 0)[0], {
+                0: '2147483648',
+                type: 'string'
             })
         })
     })
