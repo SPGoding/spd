@@ -6,7 +6,7 @@ interface NumberParserParams {
     max?: number
 }
 
-export class VectorParser implements ArgumentParser {
+export class NumberParser implements ArgumentParser {
     parse(input: string, _cursor: number | undefined, params: NumberParserParams): ArgumentParseResult {
         const segments = input.split(/\s/g)
         const errors: ParsingProblem[] = []
