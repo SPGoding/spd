@@ -7,7 +7,18 @@ const TEST_NUMBER_NBT_LIST = '[0.0d, 1.0d, 2.0d]'
 const TEST_STRING_NBT_LIST = '[a,b,c,d,e]'
 const TEST_LIST_NBT_LIST = '[[1,2,3],[4,5,6]]'
 const TEST_COMPOUND_NBT_LIST = '[{name:sf,age:unknown},{name:spg,age:-1}]'
-const TEST_QUOTED_STRING = '{string:"I am a {} {} fucking string","\\"\\\\\"":fuck}'
+const TEST_QUOTED_STRING = '{string:"I am a {} {} fucking string","\\"\\\\"":fuck}'
+const TEST_QUOTED_LIST = '["quote","\\"FUCKING\\\\ \\\\QUOTE\\""]'
+const TEST_NBT_ARRAY = '[I;1,2,3]'
+const TEST_ERROR_COMPOUND = '{wow:notenclosing'
+const TEST_ERROR_FAULT_QUOTE_COMPOUND = '{wow:"fuck}'
+const TEST_ERROR_LIST = '[fuck,fuck'
+const TEST_FAULT_ASSIGNMENT = '[FUCK;fuck,fuck]'
+const TEST_DUPLICATED_ASSIGNMENT = '[I;L;1]'
+const TEST_FAULT_QUOTE_LIST = '[fuck,"fuck]'
+const TEST_FAULT_TYPE_ARRAY = '[I;fuck]'
+const TEST_FAULT_TYPE_LIST = '[1.0,1]'
+const TEST_INT_OUT_OF_RANGE_LIST = '[2147483648]'
 
 describe('NbtParser tests', () => {
     describe('parseCompound() tests', () => {
@@ -116,6 +127,157 @@ describe('NbtParser tests', () => {
                     }
                 },
                 type: 'compound'
+            })
+        })
+        it('Should correctly parse quoted string', () => {
+            const parser = new NbtParser()
+            assert.deepStrictEqual(parser.parseListOrArray(TEST_QUOTED_LIST, 0)[0], {
+                0: 'quote',
+                1: '"FUCKING\\ \\QUOTE"',
+                type: 'string'
+            })
+        })
+        it('Should correctly parse nbt array', () => {
+            const parser = new NbtParser()
+            assert.deepStrictEqual(parser.parseListOrArray(TEST_NBT_ARRAY, 0)[0], {
+                0: {
+                    type: 'int',
+                    value: 1
+                },
+                1: {
+                    type: 'int',
+                    value: 2
+                },
+                2: {
+                    type: 'int',
+                    value: 3
+                },
+                type: 'int'
+            })
+        })
+        it('Should be string-typed', () => {
+            const parser = new NbtParser()
+            assert.deepStrictEqual(parser.parseListOrArray(TEST_INT_OUT_OF_RANGE_LIST, 0)[0], {
+                0: '2147483648',
+                type: 'string'
+            })
+        })
+    })
+    describe('Parsing error test', () => {
+        describe('Compound error', () => {
+            it('Should produce compound not enclosing error', () => {
+                const parser = new NbtParser()
+                parser.parseCompound(TEST_ERROR_COMPOUND, 0)
+                assert.deepStrictEqual(parser.parsingProblems, [
+                    {
+                        range: {
+                            start: 0,
+                            end: 17
+                        },
+                        message: 'Compound not enclosing!',
+                        severity: 'warning'
+                    }
+                ])
+            })
+            it('Should produce quotation mark not enclosing error', () => {
+                const parser = new NbtParser()
+                parser.parseCompound(TEST_ERROR_FAULT_QUOTE_COMPOUND, 0)
+                assert.deepStrictEqual(parser.parsingProblems, [
+                    {
+                        range: {
+                            start: 5,
+                            end: 11
+                        },
+                        message: 'String not enclosing!',
+                        severity: 'warning'
+                    }
+                ])
+            })
+        })
+        describe('List or Array error', () => {
+            it('Should produce list not enclosing error', () => {
+                const parser = new NbtParser()
+                parser.parseListOrArray(TEST_ERROR_LIST,0)
+                assert.deepStrictEqual(parser.parsingProblems, [
+                    {
+                        range: {
+                            start: 0,
+                            end: 10
+                        },
+                        message: 'List not enclosing!',
+                        severity: 'warning'
+                    }
+                ])
+            })
+            it('Should produce quotation mark not enclosing error', () => {
+                const parser = new NbtParser()
+                parser.parseListOrArray(TEST_FAULT_QUOTE_LIST,0)
+                assert.deepStrictEqual(parser.parsingProblems, [
+                    {
+                        range: {
+                            start: 6,
+                            end: 12
+                        },
+                        message: 'String not enclosing!',
+                        severity: 'warning'
+                    }
+                ])
+            })
+            it('Should produce fault type assignment error', () => {
+                const parser = new NbtParser()
+                parser.parseListOrArray(TEST_FAULT_ASSIGNMENT,0)
+                assert.deepStrictEqual(parser.parsingProblems, [
+                    {
+                        range: {
+                            start: 1,
+                            end: 5
+                        },
+                        message: 'Considering it is an array, but met unexpected type assignment!',
+                        severity: 'warning'
+                    }
+                ])
+            })
+            it('Should produce duplicated assignment error', () => {
+                const parser = new NbtParser()
+                parser.parseListOrArray(TEST_DUPLICATED_ASSIGNMENT,0)
+                assert.deepStrictEqual(parser.parsingProblems, [
+                    {
+                        range: {
+                            start: 3,
+                            end: 4
+                        },
+                        message: 'It seems that you are trying to assign the type twice.',
+                        severity: 'warning'
+                    }
+                ])
+            })
+            it('Should produce fault type error of an array', () => {
+                const parser = new NbtParser()
+                parser.parseListOrArray(TEST_FAULT_TYPE_ARRAY, 0)
+                assert.deepStrictEqual(parser.parsingProblems, [
+                    {
+                        range: {
+                            start: 3,
+                            end: 7
+                        },
+                        message: 'Detected current item type does not match previous detected types!',
+                        severity: 'warning'
+                    }
+                ])
+            })
+            it('Should produce fault type error of an list', () => {
+                const parser = new NbtParser()
+                parser.parseListOrArray(TEST_FAULT_TYPE_LIST, 0)
+                assert.deepStrictEqual(parser.parsingProblems, [
+                    {
+                        range: {
+                            start: 5,
+                            end: 6
+                        },
+                        message: 'Detected current item type does not match previous detected types!',
+                        severity: 'warning'
+                    }
+                ])
             })
         })
     })
