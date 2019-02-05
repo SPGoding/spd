@@ -16,11 +16,8 @@ export class LiteralParser implements ArgumentParser {
 
         if (params.expected.indexOf(value) === -1) {
             errors.push({
-                range: {
-                    start: 0,
-                    end: value.length
-                },
-                message: `Expected ${convertArrayToString(params.expected)} but got '${value}'.`,
+                message: `Expected ${convertArrayToString(params.expected)} but got: '${value}'.`,
+                range: { start: 0, end: value.length },
                 severity: 'error'
             })
         }
@@ -34,15 +31,19 @@ export class LiteralParser implements ArgumentParser {
             }
         }
 
-        return {
+        const ans: ArgumentParseResult = {
             argument: {
                 value: value,
                 type: 'literal'
             },
-            completions,
             errors: errors,
             rest,
             cache: {}
         }
+        if (completions) {
+            ans.completions = completions
+        }
+
+        return ans
     }
 }

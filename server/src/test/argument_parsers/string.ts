@@ -2,7 +2,7 @@ import * as assert from 'power-assert'
 import { describe, it } from 'mocha'
 import { StringParser } from '../../argument_parsers/string'
 
-describe.only('StringParser Tests', () => {
+describe('StringParser Tests', () => {
     describe('parse() tests', () => {
         it('Should parse word string', () => {
             const parser = new StringParser()

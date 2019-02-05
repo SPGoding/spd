@@ -85,13 +85,13 @@ describe('CommandParser tests', () => {
                     args: [{ type: 'literal', value: 'bar' }], cache: {},
                     errors: [{
                         range: { start: 0, end: 3 },
-                        message: "Expected 'foo' but got 'bar'.",
+                        message: "Expected 'foo' but got: 'bar'.",
                         severity: 'error'
                     }]
                 },
                 errors: [{
                     range: { start: 0, end: 3 },
-                    message: "Expected 'foo' but got 'bar'.",
+                    message: "Expected 'foo' but got: 'bar'.",
                     severity: 'error'
                 }], rest: '', cache: {}
             })

@@ -39,9 +39,9 @@ export class StringParser implements ArgumentParser {
                                     break
                                 } else {
                                     errors.push({
-                                        severity: 'warning',
+                                        message: 'Found traling data after quote.',
                                         range: { start: index + 1, end: input.length },
-                                        message: 'Found traling data after quote.'
+                                        severity: 'warning'
                                     })
                                     hasEnded = true
                                     break
@@ -51,9 +51,9 @@ export class StringParser implements ArgumentParser {
                     }
                     if (!hasEnded) {
                         errors.push({
-                            severity: 'warning',
+                            message: `Expected an ending quote '"'.`,
                             range: { start: 0, end: input.length },
-                            message: `Expected an ending quote '"'.`
+                            severity: 'warning'
                         })
                     }
                 }

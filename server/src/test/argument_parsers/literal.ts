@@ -47,7 +47,7 @@ describe('LiteralParser Tests', () => {
                 errors: [{
                     severity: 'error',
                     range: { start: 0, end: 3 },
-                    message: "Expected 'baz' or 'qux' but got 'foo'."
+                    message: "Expected 'baz' or 'qux' but got: 'foo'."
                 }],
                 rest: 'bar', cache: {}
             })
@@ -60,7 +60,7 @@ describe('LiteralParser Tests', () => {
             assert.deepStrictEqual(result, {
                 argument: {
                     type: 'literal', value: 'foo'
-                }, erros: [], rest: '', cache: {},
+                }, errors: [], rest: '', cache: {},
                 completions: [{ label: 'foo' }, { label: 'bar' }]
             })
         })
