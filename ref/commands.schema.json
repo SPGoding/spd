@@ -156,8 +156,7 @@
                     "required": [
                         "params"
                     ]
-                },
-                
+                },                
                 {
                     "properties": {
                         "parser": {
@@ -186,13 +185,35 @@
                     "required": [
                         "params"
                     ]
+                },                
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
+                                "vector"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "dimension": {
+                                    "type": "number",
+                                    "description": "The dimension of the vector."
+                                }
+                            },
+                            "required": [
+                                "dimension"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
                 },
                 {
                     "properties": {
                         "parser": {
                             "enum": [
-                                "vec2",
-                                "vec3",
                                 "nbt_value",
                                 "boolean",
                                 "command",

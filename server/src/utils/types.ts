@@ -82,6 +82,10 @@ export const DefinitionTypes: DefinitionType[] = ['name', 'tag', 'sound']
 /**
  * All possible command argument types.
  */
+/*
+ * TODO: Parsers
+ * vec2 vec3 nbt_path target_selector ResourceLocationTypes DefinitionTypes
+ */
 export type ArgumentType =
     | ResourceLocationType | DefinitionType | 'literal' | 'string' | 'number' | 'boolean' | 'comment' | 'empty_line' | 'error' | 'vec2' | 'vec3' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector' | 'comment_definition'
 export const ArgumentTypes: ArgumentType[] = [
