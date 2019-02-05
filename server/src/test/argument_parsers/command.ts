@@ -38,7 +38,7 @@ const deepNode: CommandTreeNode = {
 }
 //#endregion
 
-describe.only('CommandParser tests', () => {
+describe('CommandParser tests', () => {
     describe('parseNodes() tests', () => {
         it('Should parse when value matches the first node', () => {
             const result = parser.parseNodes('foo', twoNodesArray, [], 0, 0)
