@@ -14,11 +14,17 @@ export class LiteralParser implements ArgumentParser {
         const errors: ParsingProblem[] = []
         let completions: CompletionItem[] | undefined
 
-        if (params.expected.indexOf(value) === -1) {
+        if (value !== '' && params.expected.indexOf(value.toLowerCase()) === -1) {
             errors.push({
                 message: `Expected ${convertArrayToString(params.expected)} but got: '${value}'.`,
                 range: { start: 0, end: value.length },
                 severity: 'error'
+            })
+        } else if (value !== '' && params.expected.indexOf(value) === -1) {
+            errors.push({
+                message: `Expected '${value.toLowerCase()}' (lower-cased) but got: '${value}'.`,
+                range: { start: 0, end: value.length },
+                severity: 'warning'
             })
         }
 

@@ -157,6 +157,36 @@
                         "params"
                     ]
                 },
+                
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
+                                "number"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "min": {
+                                    "type": "number",
+                                    "description": "The minimum value."
+                                },
+                                "max": {
+                                    "type": "number",
+                                    "description": "The maximum value."
+                                },
+                                "isInteger": {
+                                    "type": "boolean",
+                                    "description": "Whether it's an integer."
+                                }
+                            }
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
                 {
                     "properties": {
                         "parser": {
@@ -164,7 +194,6 @@
                                 "vec2",
                                 "vec3",
                                 "nbt_value",
-                                "number",
                                 "boolean",
                                 "command",
                                 "advancement",

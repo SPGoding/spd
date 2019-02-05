@@ -52,16 +52,32 @@ describe('LiteralParser Tests', () => {
                 rest: 'bar', cache: {}
             })
         })
-        it('Should return completions', () => {
+        it("Should return errors when actual string isn't lower-case", () => {
             const parser = new LiteralParser()
 
-            const result = parser.parse('foo', 0, { expected: ['foo', 'bar'] })
+            const result = parser.parse('FOO bar', undefined, { expected: ['foo'] })
 
             assert.deepStrictEqual(result, {
                 argument: {
-                    type: 'literal', value: 'foo'
-                }, errors: [], rest: '', cache: {},
-                completions: [{ label: 'foo' }, { label: 'bar' }]
+                    type: 'literal', value: 'FOO'
+                },
+                errors: [{
+                    severity: 'warning',
+                    range: { start: 0, end: 3 },
+                    message: "Expected 'foo' (lower-cased) but got: 'FOO'."
+                }],
+                rest: 'bar', cache: {}
+            })
+        })
+        it('Should return completions', () => {
+            const parser = new LiteralParser()
+
+            const result = parser.parse('', 0, { expected: ['foo', 'bar'] })
+
+            assert.deepStrictEqual(result, {
+                argument: { type: 'literal', value: '' },
+                completions: [{ label: 'foo' }, { label: 'bar' }],
+                errors: [], rest: '', cache: {}
             })
         })
     })
