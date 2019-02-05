@@ -11,17 +11,17 @@ export class LiteralParser implements ArgumentParser {
         const segments = input.split(/\s/g)
         const value = segments[0]
         const rest = segments.slice(1).join(' ')
-        const errors: ParsingProblem[] = []
+        const problems: ParsingProblem[] = []
         let completions: CompletionItem[] | undefined
 
         if (value !== '' && params.expected.indexOf(value.toLowerCase()) === -1) {
-            errors.push({
+            problems.push({
                 message: `Expected ${convertArrayToString(params.expected)} but got: '${value}'.`,
                 range: { start: 0, end: value.length },
                 severity: 'error'
             })
         } else if (value !== '' && params.expected.indexOf(value) === -1) {
-            errors.push({
+            problems.push({
                 message: `Expected '${value.toLowerCase()}' (lower-cased) but got: '${value}'.`,
                 range: { start: 0, end: value.length },
                 severity: 'warning'
@@ -42,7 +42,7 @@ export class LiteralParser implements ArgumentParser {
                 value: value,
                 type: 'literal'
             },
-            errors: errors,
+            errors: problems,
             rest,
             cache: {}
         }

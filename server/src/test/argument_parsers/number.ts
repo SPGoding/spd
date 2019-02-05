@@ -44,7 +44,7 @@ describe('NumberParser Tests', () => {
                 }]
             })
         })
-        it('Should return error when parsing non-integers', () => {
+        it('Should return warning when parsing non-integers', () => {
             const parser = new NumberParser()
 
             const result = parser.parse('2.0 foo', undefined, { isInteger: true })
@@ -60,7 +60,7 @@ describe('NumberParser Tests', () => {
                 }]
             })
         })
-        it('Should return error when parsing numbers smaller than min', () => {
+        it('Should return warning when parsing numbers smaller than min', () => {
             const parser = new NumberParser()
 
             const result = parser.parse('-1 foo', undefined, { min: 0 })
@@ -76,7 +76,7 @@ describe('NumberParser Tests', () => {
                 }]
             })
         })
-        it('Should return error when parsing numbers larger than max', () => {
+        it('Should return warning when parsing numbers larger than max', () => {
             const parser = new NumberParser()
 
             const result = parser.parse('128 foo', undefined, { max: 127 })

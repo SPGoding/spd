@@ -7,7 +7,7 @@ interface VectorParserParams {
 export class VectorParser implements ArgumentParser {
     parse(input: string, _cursor: number | undefined, params: VectorParserParams): ArgumentParseResult {
         const segments = input.split(/\s/g)
-        const errors: ParsingProblem[] = []
+        const problems: ParsingProblem[] = []
         const value = segments[0]
         const rest = segments.slice(1).join(' ')
 
@@ -17,7 +17,7 @@ export class VectorParser implements ArgumentParser {
             argument: {
                 value, type: 'vector'
             },
-            errors, rest, cache: {}
+            errors: problems, rest, cache: {}
         }
     }
 }

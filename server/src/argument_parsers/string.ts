@@ -7,7 +7,7 @@ interface StringParserParams {
 export class StringParser implements ArgumentParser {
     parse(input: string, _cursor: number | undefined, params: StringParserParams): ArgumentParseResult {
         const segments = input.split(/\s/g)
-        const errors: ParsingProblem[] = []
+        const problems: ParsingProblem[] = []
         let value = input
         let rest = ''
 
@@ -38,7 +38,7 @@ export class StringParser implements ArgumentParser {
                                     hasEnded = true
                                     break
                                 } else {
-                                    errors.push({
+                                    problems.push({
                                         message: 'Found traling data after quote.',
                                         range: { start: index + 1, end: input.length },
                                         severity: 'warning'
@@ -50,7 +50,7 @@ export class StringParser implements ArgumentParser {
                         }
                     }
                     if (!hasEnded) {
-                        errors.push({
+                        problems.push({
                             message: `Expected an ending quote '"'.`,
                             range: { start: 0, end: input.length },
                             severity: 'warning'
@@ -67,7 +67,7 @@ export class StringParser implements ArgumentParser {
             argument: {
                 value, type: 'string'
             },
-            errors, rest, cache: {}
+            errors: problems, rest, cache: {}
         }
     }
 }

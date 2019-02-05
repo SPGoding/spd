@@ -52,7 +52,7 @@ describe('StringParser Tests', () => {
                 rest: 'baz', cache: {}, errors: []
             })
         })
-        it('Should return error when missing ending quote', () => {
+        it('Should return warning when missing ending quote', () => {
             const parser = new StringParser()
 
             const result = parser.parse('"foo bar', undefined, { type: 'phrase' })
@@ -67,7 +67,7 @@ describe('StringParser Tests', () => {
                 }], rest: '', cache: {},
             })
         })
-        it('Should return error when having trailing data after quote', () => {
+        it('Should return warning when having trailing data after quote', () => {
             const parser = new StringParser()
 
             const result = parser.parse('"foo"bar', undefined, { type: 'phrase' })

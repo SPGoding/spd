@@ -35,7 +35,7 @@ describe('LiteralParser Tests', () => {
                 rest: 'baz', cache: {}, errors: []
             })
         })
-        it("Should return errors when actual string isn't expected", () => {
+        it("Should return error when actual string isn't expected", () => {
             const parser = new LiteralParser()
 
             const result = parser.parse('foo bar', undefined, { expected: ['baz', 'qux'] })
@@ -52,7 +52,7 @@ describe('LiteralParser Tests', () => {
                 rest: 'bar', cache: {}
             })
         })
-        it("Should return errors when actual string isn't lower-case", () => {
+        it("Should return warning when actual string isn't lower-case", () => {
             const parser = new LiteralParser()
 
             const result = parser.parse('FOO bar', undefined, { expected: ['foo'] })

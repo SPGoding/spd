@@ -9,7 +9,7 @@ interface NumberParserParams {
 export class NumberParser implements ArgumentParser {
     parse(input: string, _cursor: number | undefined, params: NumberParserParams): ArgumentParseResult {
         const segments = input.split(/\s/g)
-        const errors: ParsingProblem[] = []
+        const problems: ParsingProblem[] = []
         const value = segments[0]
         const rest = segments.slice(1).join(' ')
 
@@ -17,7 +17,7 @@ export class NumberParser implements ArgumentParser {
             const num = parseFloat(value)
             if (params.isInteger) {
                 if (value.indexOf('.') !== -1) {
-                    errors.push({
+                    problems.push({
                         message: `Expected an integer but got: '${value}'.`,
                         range: { start: 0, end: value.length },
                         severity: 'warning'
@@ -25,21 +25,21 @@ export class NumberParser implements ArgumentParser {
                 }
             }
             if (params.min !== undefined && num < params.min) {
-                errors.push({
+                problems.push({
                     message: `Expected a number which is larger than ${params.min} but got: '${value}'.`,
                     range: { start: 0, end: value.length },
                     severity: 'warning'
                 })
             }
             if (params.max !== undefined && num > params.max) {
-                errors.push({
+                problems.push({
                     message: `Expected a number which is smaller than ${params.max} but got: '${value}'.`,
                     range: { start: 0, end: value.length },
                     severity: 'warning'
                 })
             }
         } else {
-            errors.push({
+            problems.push({
                 message: `Expected a number but got: '${value}'.`,
                 range: { start: 0, end: value.length },
                 severity: 'error'
@@ -50,7 +50,7 @@ export class NumberParser implements ArgumentParser {
             argument: {
                 value, type: 'number'
             },
-            errors, rest, cache: {}
+            errors: problems, rest, cache: {}
         }
     }
 }

@@ -56,7 +56,7 @@ describe('BooleanParser Tests', () => {
                 }]
             })
         })
-        it('Should return error when parsing non-lower-cased', () => {
+        it('Should return warning when parsing non-lower-cased', () => {
             const parser = new BooleanParser()
 
             const result = parser.parse('trUE bar', undefined)

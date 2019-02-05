@@ -4,8 +4,24 @@ const NBT_INT_REGEX = /^([+-]?)[0-9]+$/
 const NBT_SHORT_REGEX = /^([+-]?)[0-9]+[sS]$/
 const NBT_LONG_REGEX = /^([+-]?)[0-9]+[lL]$/
 const NBT_BYTE_REGEX = /^([0-9]+[bB]|true|false)$/
-const NBT_DOUBLE_REGEX = /^([+-]?)((\.[0-9]+)|([0-9]+\.)|([0-9]+\.[0-9]+)|[0-9]+[eE][0-9]+)$/
+const NBT_DOUBLE_REGEX = /^([+-]?)((\.[0-9]+)|([0-9]+\.)|([0-9]+\.[0-9]+)|[0-9]+[eE][0-9]+)([dD]?)$/
 const NBT_FLOAT_REGEX = /^([+-]?)((\.[0-9]+)[fF]|([0-9]+\.)[fF]|([0-9]+\.[0-9]+)[fF]|[0-9]+[eE][0-9]+[fF])$/
+
+const ESCAPE_PATTERN = /("|\\)/g
+const UNESCAPE_PATTERN = /\\("|\\)/g
+
+const UNQUOTED_SUPPORT = /[a-zA-Z0-9\-_\.]/
+
+export function escape(data: string) {
+    return data.replace(ESCAPE_PATTERN, '\\$1')
+}
+export function unescape(data: string) {
+    return data.replace(UNESCAPE_PATTERN, '$1')
+}
+
+export function dequote(data: string) {
+    return data.slice(data.search('"') + 1, data.lastIndexOf('"'))
+}
 
 export type NbtValue = NbtCompound | NbtList | NbtNumber | string
 
@@ -30,7 +46,7 @@ export class NbtParser implements ArgumentParser {
 
     parsingErrors: ParsingProblem[]
 
-    parse(segments: string): ArgumentParseResult {
+    parse(value: string, cursor: number | undefined, params: object /* NbtStructureTree */): ArgumentParseResult {
         throw 'UnimplementedException'
         // return { argument: null, rest: null, cache: null, errors: this.parsingErrors }
     }
@@ -38,70 +54,103 @@ export class NbtParser implements ArgumentParser {
     parseCompound(nbt: string, pos: number): [NbtCompound, number] {
         let inBody = false
         let inVal = false
+        let inQuote = false
+        let wasInQuote = false
         let startPos = 0
         let compoundStart = 0
         let keyName = ''
+        let stringStart = 0
         const compound: NbtCompound = {}
         for (let i = pos; i < nbt.length; i++) {
             if (!inBody && nbt[i] === '{') {
                 inBody = true
                 startPos = i + 1
                 compoundStart = i
+                continue
             }
             if (inBody) {
-                if (nbt[i] === ':') {
-                    keyName = nbt.slice(startPos, i).trim()
-                    inVal = true
-                    startPos = i + 1
+                if (nbt[i] === '"' && nbt[i - 1] !== '\\') {
+                    if (!inQuote) {
+                        stringStart = i
+                    }
+                    inQuote = !inQuote
+                    wasInQuote = true
                 }
-                if (inVal) {
-                    if (nbt[i] === '{') {
-                        const result = this.parseCompound(nbt, i)
-                        compound[keyName] = result[0]
-                        i = nbt.slice(result[1], nbt.length).search(',') + result[1] + 1
-                        inVal = false
-                        startPos = i
-                    }
-                    if (nbt[i] === '[') {
-                        const result = this.parseListOrArray(nbt, i)
-                        compound[keyName] = result[0]
-                        i = nbt.slice(result[1], nbt.length).search(',') + result[1] + 1
-                        inVal = false
-                        startPos = i
-                    }
-                    if (nbt[i] === ',' || nbt[i] === '}') {
-                        const val = nbt.slice(startPos, i).trim()
+                if (!inQuote) {
+                    if (nbt[i] === ':') {
+                        keyName = nbt.slice(startPos, i).trim()
+                        if (wasInQuote) {
+                            keyName = unescape(dequote(keyName))
+                            wasInQuote = false
+                        }
+                        inVal = true
                         startPos = i + 1
-                        const type = this.parseValueType(val)
-                        inVal = false
-                        if (type === 'string') {
-                            compound[keyName] = val
+                        continue
+                    }
+                    if (inVal) {
+                        if (nbt[i] === '{') {
+                            const result = this.parseCompound(nbt, i)
+                            compound[keyName] = result[0]
+                            const nextComma = nbt.slice(result[1], nbt.length).search(',')
+                            i = result[1] + (nextComma === -1 ? 0 : nextComma)
+                            inVal = false
+                            startPos = i + 1
+                            continue
                         }
-                        else if (type === 'int' || type === 'short' || type === 'long') {
-                            compound[keyName] = { type: type, value: parseInt(val) }
+                        if (nbt[i] === '[') {
+                            const result = this.parseListOrArray(nbt, i)
+                            compound[keyName] = result[0]
+                            const nextComma = nbt.slice(result[1], nbt.length).search(',')
+                            i = result[1] + (nextComma === -1 ? 0 : nextComma)
+                            inVal = false
+                            startPos = i + 1
+                            continue
                         }
-                        else if (type === 'byte') {
-                            if (val[0] === '0' || val[0] === '1') {
-                                compound[keyName] = { type: type, value: val[0] === '0' ? 0 : 1 }
+                        if (nbt[i] === ',' || nbt[i] === '}') {
+                            const valStart = startPos
+                            const val = nbt.slice(startPos, i).trim()
+                            startPos = i + 1
+                            const type = this.parseValueType(val)
+                            inVal = false
+                            if (type === 'string') {
+                                if (!wasInQuote) {
+                                    if (!UNQUOTED_SUPPORT.test(val)) {
+                                        this.parsingErrors.push({
+                                            range: { start: valStart, end: i },
+                                            message: 'Unexpected char(s) detected in string!',
+                                            severity: 'warning'
+                                        })
+                                    }
+                                }
+                                compound[keyName] = wasInQuote ? unescape(dequote(val)) : val
+                                wasInQuote = false
                             }
-                            else {
-                                compound[keyName] = { type: type, value: val === 'false' ? 0 : 1 }
+                            else if (type === 'int' || type === 'short' || type === 'long') {
+                                compound[keyName] = { type: type, value: parseInt(val) }
                             }
-                        }
-                        else if (type === 'double' || type === 'float') {
-                            compound[keyName] = { type: type, value: parseFloat(val) }
+                            else if (type === 'byte') {
+                                if (val[0] === '0' || val[0] === '1') {
+                                    compound[keyName] = { type: type, value: val[0] === '0' ? 0 : 1 }
+                                }
+                                else {
+                                    compound[keyName] = { type: type, value: val === 'false' ? 0 : 1 }
+                                }
+                            }
+                            else if (type === 'double' || type === 'float') {
+                                compound[keyName] = { type: type, value: parseFloat(val) }
+                            }
                         }
                     }
-                }
-                if (nbt[i] === '}') {
-                    inBody = false
-                    return [compound, i]
+                    if (nbt[i] === '}') {
+                        inBody = false
+                        return [compound, i]
+                    }
                 }
             }
         }
         this.parsingErrors.push({
-            range: { start: compoundStart, end: nbt.length },
-            message: 'Compound not enclosing!',
+            range: { start: inQuote ? stringStart : compoundStart, end: nbt.length },
+            message: inQuote ? 'String not enclosing!' : 'Compound not enclosing!',
             severity: 'warning'
         })
         return [compound, -1]
@@ -113,12 +162,14 @@ export class NbtParser implements ArgumentParser {
         let listStart = 0
         let itemIndex = 0
         let isArray = false
+        let isLast = false
         const list: NbtList = { type: 'string' }
         for (let i = pos; i < nbt.length; i++) {
             if (!inBody && nbt[i] === '[') {
                 inBody = true
                 startPos = i + 1
                 listStart = i
+                continue
             }
             if (inBody) {
                 if (nbt[i] === ';' && itemIndex === 0) {
@@ -140,22 +191,53 @@ export class NbtParser implements ArgumentParser {
                             severity: 'warning'
                         })
                     }
+                    continue
                 }
                 if (nbt[i] === '{') {
+                    const itemStart = i
                     const result = this.parseCompound(nbt, i)
-                    list[itemIndex] = result[0]
-                    i = nbt.slice(result[1], nbt.length).search(',') + result[1] + 1
-                    startPos = i
+                    const nextComma = nbt.slice(result[1], nbt.length).search(',')
+                    i = result[1] + (nextComma === -1 ? 0 : nextComma)
+                    if (nextComma === -1) {
+                        isLast = true
+                    }
+                    if (!isArray && itemIndex === 0) {
+                        list.type = 'compound'
+                    }
+                    if (list.type != 'compound') {
+                        this.parsingErrors.push({
+                            range: { start: itemStart, end: i - 1 },
+                            message: 'Detected current item type does not match previous detected types!',
+                            severity: 'warning'
+                        })
+                    }
+                    list[itemIndex++] = result[0]
+                    startPos = i + 1
+                    continue
                 }
                 if (nbt[i] === '[') {
+                    const itemStart = i
                     const result = this.parseListOrArray(nbt, i)
+                    const nextComma = nbt.slice(result[1], nbt.length).search(',')
+                    i = result[1] + (nextComma === -1 ? 1 : nextComma)
+                    if (!isArray && itemIndex === 0) {
+                        list.type = 'list'
+                    }
+                    if (list.type != 'list') {
+                        this.parsingErrors.push({
+                            range: { start: itemStart, end: i - 1 },
+                            message: 'Detected current item type does not match previous detected types!',
+                            severity: 'warning'
+                        })
+                    }
                     list[itemIndex++] = result[0]
-                    i = nbt.slice(result[1], nbt.length).search(',') + result[1] + 1
-                    startPos = i
+                    startPos = i + 1
+                    continue
                 }
-                if (nbt[i] === ',') {
+                if (nbt[i] === ',' || nbt[i] === ']' && !isLast) {
                     const val = nbt.slice(startPos, i).trim()
                     const type = this.parseValueType(val)
+                    startPos = i + 1
                     if (!isArray && itemIndex === 0) {
                         list.type = type
                     }
@@ -170,18 +252,18 @@ export class NbtParser implements ArgumentParser {
                         list[itemIndex] = val
                     }
                     else if (type === 'int' || type === 'short' || type === 'long') {
-                        list[itemIndex] = { type: type, val: parseInt(val) }
+                        list[itemIndex] = { type: type, value: parseInt(val) }
                     }
                     else if (type === 'byte') {
                         if (val[0] === '0' || val[0] === '1') {
-                            list[itemIndex] = { type: type, val: val[0] === '0' ? 0 : 1 }
+                            list[itemIndex] = { type: type, value: val[0] === '0' ? 0 : 1 }
                         }
                         else {
-                            list[itemIndex] = { type: type, val: val === 'false' ? 0 : 1 }
+                            list[itemIndex] = { type: type, value: val === 'false' ? 0 : 1 }
                         }
                     }
                     else if (type === 'double' || type === 'float') {
-                        list[itemIndex] = { type: type, val: parseFloat(val) }
+                        list[itemIndex] = { type: type, value: parseFloat(val) }
                     }
                     itemIndex++
                 }
