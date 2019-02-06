@@ -2,7 +2,7 @@ import * as assert from 'power-assert'
 import { describe, it } from 'mocha'
 import { VectorParser } from '../../argument_parsers/vector'
 
-describe.skip('VectorParser Tests', () => {
+describe('VectorParser Tests', () => {
     describe('parse() tests', () => {
         it('Should parse a vec3', () => {
             const parser = new VectorParser()
@@ -42,7 +42,7 @@ describe.skip('VectorParser Tests', () => {
                     type: 'vector', value: '~ ~ foo'
                 },
                 rest: 'bar', cache: {}, errors: [{
-                    message: "Expected a vector3 but got: 'foo ~ ~'.",
+                    message: "Expected a vector3 but got: '~ ~ foo'.",
                     range: { start: 0, end: 7 },
                     severity: 'warning'
                 }]
