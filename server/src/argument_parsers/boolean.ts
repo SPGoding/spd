@@ -10,13 +10,13 @@ export class BooleanParser implements ArgumentParser {
         let completions: CompletionItem[] | undefined
 
         // Parsing
-        if (value !== '' && ['true', 'false'].indexOf(value.toLowerCase()) === -1) {
+        if (['true', 'false'].indexOf(value.toLowerCase()) === -1) {
             problems.push({
                 message: `Expected a boolean value but got: '${value}'.`,
                 range: { start: 0, end: value.length },
-                severity: 'error'
+                severity: value === '' ? 'warning' : 'error'
             })
-        } else if (value !== '' && ['true', 'false'].indexOf(value) === -1) {
+        } else if (['true', 'false'].indexOf(value) === -1) {
             problems.push({
                 message: `Expected '${value.toLowerCase()}' (lower-cased) but got: '${value}'.`,
                 range: { start: 0, end: value.length },
@@ -26,7 +26,7 @@ export class BooleanParser implements ArgumentParser {
 
         // Completions
         if (cursor === 0) {
-            completions = [{ label: 'true' }, { label: 'false' }]
+            completions = [{ label: 'false' }, { label: 'true' }]
         }
 
         const ans: ArgumentParseResult = {

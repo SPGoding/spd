@@ -36,8 +36,12 @@ describe('BooleanParser Tests', () => {
             assert.deepStrictEqual(result, {
                 argument: {
                     type: 'boolean', value: ''
-                }, rest: '', cache: {}, errors: [],
-                completions: [{ label: 'true' }, { label: 'false' }]
+                }, rest: '', cache: {}, errors: [{
+                    message: "Expected a boolean value but got: ''.",
+                    range: { start: 0, end: 0 },
+                    severity: 'warning'
+                }],
+                completions: [{ label: 'false' }, { label: 'true' }]
             })
         })
         it('Should return error when parsing non-booleans', () => {

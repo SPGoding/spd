@@ -14,15 +14,16 @@ export class LiteralParser implements ArgumentParser {
         const problems: ParsingProblem[] = []
         let completions: CompletionItem[] | undefined
 
-        if (value !== '' && params.expected.indexOf(value.toLowerCase()) === -1) {
+        if (params.expected.map(e => e.toLowerCase()).indexOf(value.toLowerCase()) === -1) {
             problems.push({
                 message: `Expected ${convertArrayToString(params.expected)} but got: '${value}'.`,
                 range: { start: 0, end: value.length },
-                severity: 'error'
+                severity: value === '' ? 'warning' : 'error'
             })
-        } else if (value !== '' && params.expected.indexOf(value) === -1) {
+        } else if (params.expected.indexOf(value) === -1) {
+            const index = params.expected.map(e => e.toLowerCase()).indexOf(value.toLowerCase())
             problems.push({
-                message: `Expected '${value.toLowerCase()}' (lower-cased) but got: '${value}'.`,
+                message: `Expected '${params.expected[index]}' (case-sensitive) but got: '${value}'.`,
                 range: { start: 0, end: value.length },
                 severity: 'warning'
             })
