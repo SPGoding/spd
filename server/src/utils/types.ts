@@ -87,10 +87,10 @@ export const DefinitionTypes: DefinitionType[] = ['name', 'tag', 'sound']
  * nbt_path target_selector ResourceLocationTypes DefinitionTypes
  */
 export type ArgumentType =
-    | ResourceLocationType | DefinitionType | 'literal' | 'string' | 'number' | 'boolean' | 'comment' | 'empty_line' | 'error' | 'vector' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector' | 'comment_definition' | 'slot'
+    | ResourceLocationType | DefinitionType | 'literal' | 'string' | 'number' | 'boolean' | 'comment' | 'empty_line' | 'error' | 'vector' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector' | 'comment_definition' | 'slot' | 'mode' | 'color' | 'bossbar'
 export const ArgumentTypes: ArgumentType[] = [
     ...ResourceLocationTypes, ...DefinitionTypes, 'literal', 'string', 'number', 'boolean', 'comment', 'empty_line',
-    'error', 'vector', 'command', 'nbt_path', 'nbt_value', 'target_selector', 'comment_definition', 'slot'
+    'error', 'vector', 'command', 'nbt_path', 'nbt_value', 'target_selector', 'comment_definition', 'slot', 'mode', 'color', 'bossbar'
 ]
 
 /**

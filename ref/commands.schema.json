@@ -261,7 +261,11 @@
                                 "itemstack",
                                 "blockstate_predicate",
                                 "itemstack_predcate",
-                                "nbt_path"
+                                "nbt_path",
+                                "mode",
+                                "difficulty",
+                                "effect",
+                                "enchantment"
                             ]
                         }
                     }

@@ -242,6 +242,7 @@
                                         "players"
                                     ]
                                 },
+                                "executable": true,
                                 "children": [
                                     {
                                         "parser": "selector",
@@ -644,6 +645,269 @@
                                         "executable": true
                                     }
                                 ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "datapack"
+            ]
+        },
+        "description": "Enables or disables data packs.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "disable"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "string",
+                        "params": {
+                            "type": "phrase"
+                        },
+                        "description": "The datapack",
+                        "executable": true
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "enable"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "string",
+                        "params": {
+                            "type": "phrase"
+                        },
+                        "description": "The datapack",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "first",
+                                        "last"
+                                    ]
+                                },
+                                "executable": true
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "after",
+                                        "before"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "string",
+                                        "params": {
+                                            "type": "phrase"
+                                        },
+                                        "description": "An existing datapack",
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "list"
+                    ]
+                },
+                "executable": true,
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "available",
+                                "enabled"
+                            ]
+                        },
+                        "executable": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "defaultgamemode"
+            ]
+        },
+        "description": "Sets the default game mode.",
+        "children": [
+            {
+                "parser": "mode",
+                "description": "The mode",
+                "executable": true
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "difficulty"
+            ]
+        },
+        "description": "Sets the difficulty.",
+        "executable": true,
+        "children": [
+            {
+                "parser": "difficulty",
+                "description": "The difficulty",
+                "executable": true
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "effect"
+            ]
+        },
+        "description": "Manages status effects of entities.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "give"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "entities"
+                        },
+                        "description": "The targets",
+                        "children": [
+                            {
+                                "parser": "effect",
+                                "description": "The effect",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "number",
+                                        "params": {
+                                            "isInteger": true,
+                                            "min": 1,
+                                            "max": 1000000
+                                        },
+                                        "description": "The duration",
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "number",
+                                                "params": {
+                                                    "isInteger": true,
+                                                    "min": 0,
+                                                    "max": 255
+                                                },
+                                                "description": "The amplifier",
+                                                "executable": true,
+                                                "children": [
+                                                    {
+                                                        "parser": "boolean",
+                                                        "description": "Whether hide particles",
+                                                        "executable": true
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "clear"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "entities"
+                        },
+                        "description": "The targets",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "effect",
+                                "description": "The effect",
+                                "executable": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "enchant"
+            ]
+        },
+        "description": "Adds an enchantment to specific item",
+        "children": [
+            {
+                "parser": "selector",
+                "params": {
+                    "amount": "multiple",
+                    "type": "entities"
+                },
+                "description": "The targets",
+                "children": [
+                    {
+                        "parser": "enchantment",
+                        "description": "The enchantment ID",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "number",
+                                "params": {
+                                    "isInteger": true,
+                                    "min": 1,
+                                    "max": 5
+                                },
+                                "description": "The level",
+                                "executable": true
                             }
                         ]
                     }
