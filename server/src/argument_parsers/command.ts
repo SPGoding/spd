@@ -86,6 +86,8 @@ export class CommandParser implements ArgumentParser {
 
     private getArgumentParser(parser: ArgumentType): ArgumentParser {
         switch (parser) {
+            case 'boolean':
+                return new LiteralParser({ expected: ['false', 'true'] })
             case 'command':
                 return new CommandParser()
             case 'literal':

@@ -7,6 +7,8 @@ interface LiteralParserParams {
 }
 
 export class LiteralParser implements ArgumentParser {
+    constructor(private readonly params?: LiteralParserParams) { }
+
     parse(input: string, cursor: number | undefined, params: LiteralParserParams): ArgumentParseResult {
         const segments = input.split(/\s/g)
         const value = segments[0]
@@ -14,11 +16,15 @@ export class LiteralParser implements ArgumentParser {
         const problems: ParsingProblem[] = []
         let completions: CompletionItem[] | undefined
 
+        if (this.params) {
+            params = this.params
+        }
+
         if (params.expected.map(e => e.toLowerCase()).indexOf(value.toLowerCase()) === -1) {
             problems.push({
                 message: `Expected ${convertArrayToString(params.expected)} but got: '${value}'.`,
                 range: { start: 0, end: value.length },
-                severity: value === '' ? 'warning' : 'error'
+                severity: 'error'
             })
         } else if (params.expected.indexOf(value) === -1) {
             const index = params.expected.map(e => e.toLowerCase()).indexOf(value.toLowerCase())

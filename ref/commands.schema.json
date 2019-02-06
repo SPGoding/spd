@@ -16,7 +16,7 @@
                 },
                 "description": {
                     "type": "string",
-                    "description": "Human-readable command/argument description. Expects a long sentense for the first node of each command to describe the command, and a short description for non-string parameters."
+                    "description": "Human-readable command/argument description. Expects a long sentense for the first node of each command to describe the command, and a short description for non-literal parameters."
                 },
                 "children": {
                     "type": "array",
@@ -156,7 +156,7 @@
                     "required": [
                         "params"
                     ]
-                },                
+                },
                 {
                     "properties": {
                         "parser": {
@@ -185,7 +185,7 @@
                     "required": [
                         "params"
                     ]
-                },                
+                },
                 {
                     "properties": {
                         "parser": {
@@ -214,7 +214,37 @@
                     "properties": {
                         "parser": {
                             "enum": [
+                                "bossbar",
+                                "objective"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "enum": [
+                                        "keep",
+                                        "new",
+                                        "remove"
+                                    ],
+                                    "description": "What will be done to the argument."
+                                }
+                            },
+                            "required": [
+                                "type"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
                                 "nbt_value",
+                                "color",
                                 "boolean",
                                 "command",
                                 "advancement",
@@ -225,7 +255,13 @@
                                 "entity_type_tag",
                                 "fluid_tag",
                                 "function_tag",
-                                "item_tag"
+                                "item_tag",
+                                "json",
+                                "blockstate",
+                                "itemstack",
+                                "blockstate_predicate",
+                                "itemstack_predcate",
+                                "nbt_path"
                             ]
                         }
                     }

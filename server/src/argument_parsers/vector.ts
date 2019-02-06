@@ -6,7 +6,7 @@ interface VectorParserParams {
 }
 ['~', '~', '']
 export class VectorParser implements ArgumentParser {
-    private readonly ELEMENT_REGEX = /^~?[+-]?\d*\.?\d*$/
+    private readonly ELEMENT_REGEX = /^[~\^]?[+-]?\d*\.?\d*$/
 
     parse(input: string, cursor: number | undefined, params: VectorParserParams): ArgumentParseResult {
         const segments = input.split(/\s/g)

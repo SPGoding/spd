@@ -80,7 +80,7 @@ describe('LiteralParser Tests', () => {
                 errors: [{
                     message: "Expected 'bar' or 'foo' but got: ''.",
                     range: { start: 0, end: 0 },
-                    severity: 'warning'
+                    severity: 'error'
                 }], rest: '', cache: {}
             })
         })
