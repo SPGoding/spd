@@ -23,7 +23,7 @@
                             "amount": "multiple",
                             "type": "players"
                         },
-                        "description": "The target",
+                        "description": "target",
                         "children": [
                             {
                                 "parser": "literal",
@@ -35,14 +35,14 @@
                                 "children": [
                                     {
                                         "parser": "advancement",
-                                        "description": "The advancement",
+                                        "description": "advancement",
                                         "children": [
                                             {
                                                 "parser": "string",
                                                 "params": {
                                                     "type": "phrase"
                                                 },
-                                                "description": "The criterion",
+                                                "description": "criterion",
                                                 "executable": true
                                             }
                                         ],
@@ -62,7 +62,7 @@
                                 "children": [
                                     {
                                         "parser": "advancement",
-                                        "description": "The advancement",
+                                        "description": "advancement",
                                         "executable": true
                                     }
                                 ]
@@ -103,11 +103,11 @@
                         "params": {
                             "type": "new"
                         },
-                        "description": "The ID",
+                        "description": "bossbar",
                         "children": [
                             {
                                 "parser": "json",
-                                "description": "The display name",
+                                "description": "display name",
                                 "executable": true
                             }
                         ]
@@ -127,7 +127,7 @@
                         "params": {
                             "type": "keep"
                         },
-                        "description": "The ID",
+                        "description": "bossbar",
                         "children": [
                             {
                                 "parser": "literal",
@@ -167,7 +167,7 @@
                         "params": {
                             "type": "remove"
                         },
-                        "description": "The ID",
+                        "description": "bossbar",
                         "executable": true
                     }
                 ]
@@ -185,7 +185,7 @@
                         "params": {
                             "type": "keep"
                         },
-                        "description": "The ID",
+                        "description": "bossbar",
                         "children": [
                             {
                                 "parser": "literal",
@@ -197,7 +197,7 @@
                                 "children": [
                                     {
                                         "parser": "color",
-                                        "description": "The color",
+                                        "description": "color",
                                         "executable": true
                                     }
                                 ]
@@ -215,7 +215,7 @@
                                         "params": {
                                             "isInteger": true
                                         },
-                                        "description": "The max value",
+                                        "description": "max value",
                                         "executable": true
                                     }
                                 ]
@@ -230,7 +230,7 @@
                                 "children": [
                                     {
                                         "parser": "json",
-                                        "description": "The display name",
+                                        "description": "display name",
                                         "executable": true
                                     }
                                 ]
@@ -250,7 +250,7 @@
                                             "amount": "multiple",
                                             "type": "players"
                                         },
-                                        "description": "The players who can see the bar",
+                                        "description": "players",
                                         "executable": true
                                     }
                                 ]
@@ -274,7 +274,7 @@
                                                 "progress"
                                             ]
                                         },
-                                        "description": "The style",
+                                        "description": "style",
                                         "executable": true
                                     }
                                 ]
@@ -292,7 +292,7 @@
                                         "params": {
                                             "isInteger": true
                                         },
-                                        "description": "The value",
+                                        "description": "value",
                                         "executable": true
                                     }
                                 ]
@@ -307,7 +307,7 @@
                                 "children": [
                                     {
                                         "parser": "boolean",
-                                        "description": "The visibility",
+                                        "description": "visibility",
                                         "executable": true
                                     }
                                 ]
@@ -334,12 +334,12 @@
                     "amount": "multiple",
                     "type": "players"
                 },
-                "description": "The target",
+                "description": "target",
                 "executable": true,
                 "children": [
                     {
                         "parser": "itemstack",
-                        "description": "The item",
+                        "description": "item",
                         "executable": true,
                         "children": [
                             {
@@ -348,7 +348,7 @@
                                     "isInteger": true,
                                     "min": -1
                                 },
-                                "description": "The max count.",
+                                "description": "max count",
                                 "executable": true
                             }
                         ]
@@ -371,21 +371,21 @@
                 "params": {
                     "dimension": 3
                 },
-                "description": "The begin of source",
+                "description": "begin of source",
                 "children": [
                     {
                         "parser": "vector",
                         "params": {
                             "dimension": 3
                         },
-                        "description": "The end of source",
+                        "description": "end of source",
                         "children": [
                             {
                                 "parser": "vector",
                                 "params": {
                                     "dimension": 3
                                 },
-                                "description": "The destination",
+                                "description": "destination",
                                 "executable": true,
                                 "children": [
                                     {
@@ -408,7 +408,7 @@
                                                 "children": [
                                                     {
                                                         "parser": "blockstate",
-                                                        "description": "The block to copy",
+                                                        "description": "block",
                                                         "executable": true
                                                     }
                                                 ]
@@ -476,18 +476,18 @@
                                 "params": {
                                     "dimension": 3
                                 },
-                                "description": "The position",
+                                "description": "position",
                                 "executable": true,
                                 "children": [
                                     {
                                         "parser": "nbt_path",
-                                        "description": "The path",
+                                        "description": "path",
                                         "executable": true,
                                         "children": [
                                             {
                                                 "parser": "number",
                                                 "params": {},
-                                                "description": "The scale",
+                                                "description": "scale",
                                                 "executable": true
                                             }
                                         ]
@@ -510,18 +510,18 @@
                                     "amount": "single",
                                     "type": "entities"
                                 },
-                                "description": "The target",
+                                "description": "target",
                                 "executable": true,
                                 "children": [
                                     {
                                         "parser": "nbt_path",
-                                        "description": "The path",
+                                        "description": "path",
                                         "executable": true,
                                         "children": [
                                             {
                                                 "parser": "number",
                                                 "params": {},
-                                                "description": "The scale",
+                                                "description": "scale",
                                                 "executable": true
                                             }
                                         ]
@@ -553,11 +553,11 @@
                                 "params": {
                                     "dimension": 3
                                 },
-                                "description": "The position",
+                                "description": "position",
                                 "children": [
                                     {
                                         "parser": "nbt_value",
-                                        "description": "The NBT",
+                                        "description": "NBT",
                                         "executable": true
                                     }
                                 ]
@@ -578,11 +578,11 @@
                                     "amount": "single",
                                     "type": "entities"
                                 },
-                                "description": "The target",
+                                "description": "target",
                                 "children": [
                                     {
                                         "parser": "nbt_value",
-                                        "description": "The NBT",
+                                        "description": "NBT",
                                         "executable": true
                                     }
                                 ]
@@ -612,11 +612,11 @@
                                 "params": {
                                     "dimension": 3
                                 },
-                                "description": "The position",
+                                "description": "position",
                                 "children": [
                                     {
                                         "parser": "nbt_path",
-                                        "description": "The NBT path",
+                                        "description": "path",
                                         "executable": true
                                     }
                                 ]
@@ -637,11 +637,11 @@
                                     "amount": "single",
                                     "type": "entities"
                                 },
-                                "description": "The target",
+                                "description": "target",
                                 "children": [
                                     {
                                         "parser": "nbt_path",
-                                        "description": "The NBT path",
+                                        "description": "path",
                                         "executable": true
                                     }
                                 ]
@@ -674,7 +674,7 @@
                         "params": {
                             "type": "phrase"
                         },
-                        "description": "The datapack",
+                        "description": "datapack",
                         "executable": true
                     }
                 ]
@@ -692,7 +692,7 @@
                         "params": {
                             "type": "phrase"
                         },
-                        "description": "The datapack",
+                        "description": "datapack",
                         "executable": true,
                         "children": [
                             {
@@ -762,7 +762,7 @@
         "children": [
             {
                 "parser": "mode",
-                "description": "The mode",
+                "description": "mode",
                 "executable": true
             }
         ]
@@ -779,7 +779,7 @@
         "children": [
             {
                 "parser": "difficulty",
-                "description": "The difficulty",
+                "description": "difficulty",
                 "executable": true
             }
         ]
@@ -807,11 +807,11 @@
                             "amount": "multiple",
                             "type": "entities"
                         },
-                        "description": "The targets",
+                        "description": "target",
                         "children": [
                             {
                                 "parser": "effect",
-                                "description": "The effect",
+                                "description": "effect",
                                 "executable": true,
                                 "children": [
                                     {
@@ -821,7 +821,7 @@
                                             "min": 1,
                                             "max": 1000000
                                         },
-                                        "description": "The duration",
+                                        "description": "duration",
                                         "executable": true,
                                         "children": [
                                             {
@@ -831,7 +831,7 @@
                                                     "min": 0,
                                                     "max": 255
                                                 },
-                                                "description": "The amplifier",
+                                                "description": "amplifier",
                                                 "executable": true,
                                                 "children": [
                                                     {
@@ -863,12 +863,12 @@
                             "amount": "multiple",
                             "type": "entities"
                         },
-                        "description": "The targets",
+                        "description": "target",
                         "executable": true,
                         "children": [
                             {
                                 "parser": "effect",
-                                "description": "The effect",
+                                "description": "effect",
                                 "executable": true
                             }
                         ]
@@ -892,11 +892,11 @@
                     "amount": "multiple",
                     "type": "entities"
                 },
-                "description": "The targets",
+                "description": "target",
                 "children": [
                     {
                         "parser": "enchantment",
-                        "description": "The enchantment ID",
+                        "description": "enchantment",
                         "executable": true,
                         "children": [
                             {
@@ -906,8 +906,554 @@
                                     "min": 1,
                                     "max": 5
                                 },
-                                "description": "The level",
+                                "description": "level",
                                 "executable": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "execute"
+            ]
+        },
+        "description": "The best command ever in the universe.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "as"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "entities"
+                        },
+                        "description": "entity",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "at"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "entities"
+                        },
+                        "description": "entity",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "positioned"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "position",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "as"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "multiple",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "command",
+                                        "params": {
+                                            "redirect": "Root[10]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "align"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "axes",
+                        "description": "axes",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "facing"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "position",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "entity"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "multiple",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "command",
+                                        "params": {
+                                            "redirect": "Root[10]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "rotated"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "position",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "as"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "multiple",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "command",
+                                        "params": {
+                                            "redirect": "Root[10]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "in"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "dimension",
+                        "description": "dimension",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "anchored"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "eyes",
+                                "feet"
+                            ]
+                        },
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "if",
+                        "unless"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "block"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "position",
+                                "children": [
+                                    {
+                                        "parser": "blockstate_predicate",
+                                        "description": "block",
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "command",
+                                                "params": {
+                                                    "redirect": "Root[10]"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "blocks"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "begin",
+                                "children": [
+                                    {
+                                        "parser": "vector",
+                                        "params": {
+                                            "dimension": 3
+                                        },
+                                        "description": "end",
+                                        "children": [
+                                            {
+                                                "parser": "vector",
+                                                "params": {
+                                                    "dimension": 3
+                                                },
+                                                "description": "destination",
+                                                "children": [
+                                                    {
+                                                        "parser": "literal",
+                                                        "params": {
+                                                            "expected": [
+                                                                "all",
+                                                                "masked"
+                                                            ]
+                                                        },
+                                                        "executable": true,
+                                                        "children": [
+                                                            {
+                                                                "parser": "command",
+                                                                "params": {
+                                                                    "redirect": "Root[10]"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "data"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "single",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "children": [
+                                    {
+                                        "parser": "nbt_path",
+                                        "description": "path",
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "command",
+                                                "params": {
+                                                    "redirect": "Root[10]"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "entity"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "multiple",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "command",
+                                        "params": {
+                                            "redirect": "Root[10]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "score"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "score_holder",
+                                "params": {
+                                    "amount": "single"
+                                },
+                                "description": "source",
+                                "children": [
+                                    {
+                                        "parser": "objective",
+                                        "params": {
+                                            "type": "keep"
+                                        },
+                                        "description": "source objective",
+                                        "children": [
+                                            {
+                                                "parser": "literal",
+                                                "params": {
+                                                    "expected": [
+                                                        "<",
+                                                        "<=",
+                                                        "=",
+                                                        ">=",
+                                                        ">"
+                                                    ]
+                                                },
+                                                "children": [
+                                                    {
+                                                        "parser": "score_holder",
+                                                        "params": {
+                                                            "amount": "single"
+                                                        },
+                                                        "description": "target",
+                                                        "children": [
+                                                            {
+                                                                "parser": "objective",
+                                                                "params": {
+                                                                    "type": "keep"
+                                                                },
+                                                                "description": "target objective",
+                                                                "executable": true,
+                                                                "children": [
+                                                                    {
+                                                                        "parser": "command",
+                                                                        "params": {
+                                                                            "redirect": "Root[10]"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "parser": "literal",
+                                                "params": {
+                                                    "expected": [
+                                                        "matches"
+                                                    ]
+                                                },
+                                                "children": [
+                                                    {
+                                                        "parser": "range",
+                                                        "description": "range",
+                                                        "executable": true,
+                                                        "children": [
+                                                            {
+                                                                "parser": "command",
+                                                                "params": {
+                                                                    "redirect": "Root[10]"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     }
