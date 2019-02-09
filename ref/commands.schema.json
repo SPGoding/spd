@@ -28,6 +28,16 @@
                 "executable": {
                     "type": "boolean",
                     "description": "Whether the command is executable."
+                },
+                "permission": {
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "description": "Required op-persmission to run this command."
                 }
             },
             "oneOf": [
@@ -312,6 +322,7 @@
                                 "blockstate_predicate",
                                 "itemstack_predcate",
                                 "nbt_path",
+                                "nbt_number_type",
                                 "mode",
                                 "difficulty",
                                 "effect",
