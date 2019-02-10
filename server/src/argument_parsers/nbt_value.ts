@@ -3,7 +3,7 @@ import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
 const NBT_INT_REGEX = /^([+-]?)[0-9]+$/
 const NBT_SHORT_REGEX = /^([+-]?)[0-9]+[sS]$/
 const NBT_LONG_REGEX = /^([+-]?)[0-9]+[lL]$/
-const NBT_BYTE_REGEX = /^([0-9]+[bB]|true|false)$/
+const NBT_BYTE_REGEX = /^([0-9]+[bB]|[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$/
 const NBT_DOUBLE_REGEX = /^([+-]?)((\.[0-9]+)|([0-9]+\.)|([0-9]+\.[0-9]+)|[0-9]+[eE][0-9]+)([dD]?)$/
 const NBT_FLOAT_REGEX = /^([+-]?)((\.[0-9]+)[fF]|([0-9]+\.)[fF]|([0-9]+\.[0-9]+)[fF]|[0-9]+[eE][0-9]+[fF])$/
 
