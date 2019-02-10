@@ -23,7 +23,7 @@
                             "amount": "multiple",
                             "type": "players"
                         },
-                        "description": "The target",
+                        "description": "target",
                         "children": [
                             {
                                 "parser": "literal",
@@ -35,14 +35,14 @@
                                 "children": [
                                     {
                                         "parser": "advancement",
-                                        "description": "The advancement",
+                                        "description": "advancement",
                                         "children": [
                                             {
                                                 "parser": "string",
                                                 "params": {
                                                     "type": "phrase"
                                                 },
-                                                "description": "The criterion",
+                                                "description": "criterion",
                                                 "executable": true
                                             }
                                         ],
@@ -62,7 +62,7 @@
                                 "children": [
                                     {
                                         "parser": "advancement",
-                                        "description": "The advancement",
+                                        "description": "advancement",
                                         "executable": true
                                     }
                                 ]
@@ -79,6 +79,1728 @@
                     }
                 ]
             }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "bossbar"
+            ]
+        },
+        "description": "Creates, modifies or removes custom bossbars.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "add"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "bossbar",
+                        "params": {
+                            "type": "new"
+                        },
+                        "description": "bossbar",
+                        "children": [
+                            {
+                                "parser": "json",
+                                "description": "displayName",
+                                "executable": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "get"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "bossbar",
+                        "params": {
+                            "type": "keep"
+                        },
+                        "description": "bossbar",
+                        "children": [
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "max",
+                                        "players",
+                                        "value",
+                                        "visible"
+                                    ]
+                                },
+                                "executable": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "list"
+                    ]
+                },
+                "executable": true
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "remove"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "bossbar",
+                        "params": {
+                            "type": "remove"
+                        },
+                        "description": "bossbar",
+                        "executable": true
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "set"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "bossbar",
+                        "params": {
+                            "type": "keep"
+                        },
+                        "description": "bossbar",
+                        "children": [
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "color"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "color",
+                                        "description": "color",
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "max"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "number",
+                                        "params": {
+                                            "isInteger": true
+                                        },
+                                        "description": "maxValue",
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "name"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "json",
+                                        "description": "displayName",
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "players"
+                                    ]
+                                },
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "selector",
+                                        "params": {
+                                            "amount": "multiple",
+                                            "type": "players"
+                                        },
+                                        "description": "players",
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "style"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "literal",
+                                        "params": {
+                                            "expected": [
+                                                "notched_6",
+                                                "notched_10",
+                                                "notched_12",
+                                                "notched_20",
+                                                "progress"
+                                            ]
+                                        },
+                                        "description": "style",
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "value"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "number",
+                                        "params": {
+                                            "isInteger": true
+                                        },
+                                        "description": "value",
+                                        "executable": true
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "visible"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "boolean",
+                                        "description": "visibility",
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "clear"
+            ]
+        },
+        "description": "Clear players' items.",
+        "executable": true,
+        "children": [
+            {
+                "parser": "selector",
+                "params": {
+                    "amount": "multiple",
+                    "type": "players"
+                },
+                "description": "target",
+                "executable": true,
+                "children": [
+                    {
+                        "parser": "itemstack",
+                        "description": "item",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "number",
+                                "params": {
+                                    "isInteger": true,
+                                    "min": -1
+                                },
+                                "description": "maxCount",
+                                "executable": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "clone"
+            ]
+        },
+        "description": "Clones blocks from one region to another.",
+        "children": [
+            {
+                "parser": "vector",
+                "params": {
+                    "dimension": 3
+                },
+                "description": "begin",
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "end",
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "destination",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "literal",
+                                        "params": {
+                                            "expected": [
+                                                "filtered"
+                                            ]
+                                        },
+                                        "children": [
+                                            {
+                                                "parser": "literal",
+                                                "params": {
+                                                    "expected": [
+                                                        "force",
+                                                        "move",
+                                                        "normal"
+                                                    ]
+                                                },
+                                                "children": [
+                                                    {
+                                                        "parser": "blockstate",
+                                                        "description": "block",
+                                                        "executable": true
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "parser": "literal",
+                                        "params": {
+                                            "expected": [
+                                                "masked",
+                                                "replace"
+                                            ]
+                                        },
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "literal",
+                                                "params": {
+                                                    "expected": [
+                                                        "force",
+                                                        "move",
+                                                        "normal"
+                                                    ]
+                                                },
+                                                "executable": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "data"
+            ]
+        },
+        "description": "Gets, merges, or removes entity NBT data.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "get"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "block"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "pos",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "nbt_path",
+                                        "description": "path",
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "number",
+                                                "params": {},
+                                                "description": "scale",
+                                                "executable": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "entity"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "single",
+                                    "type": "entities"
+                                },
+                                "description": "target",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "nbt_path",
+                                        "description": "path",
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "number",
+                                                "params": {},
+                                                "description": "scale",
+                                                "executable": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "merge"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "block"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "pos",
+                                "children": [
+                                    {
+                                        "parser": "nbt_value",
+                                        "description": "NBT",
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "entity"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "single",
+                                    "type": "entities"
+                                },
+                                "description": "target",
+                                "children": [
+                                    {
+                                        "parser": "nbt_value",
+                                        "description": "NBT",
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "remove"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "block"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "pos",
+                                "children": [
+                                    {
+                                        "parser": "nbt_path",
+                                        "description": "path",
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "entity"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "single",
+                                    "type": "entities"
+                                },
+                                "description": "target",
+                                "children": [
+                                    {
+                                        "parser": "nbt_path",
+                                        "description": "path",
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "datapack"
+            ]
+        },
+        "description": "Enables or disables data packs.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "disable"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "string",
+                        "params": {
+                            "type": "phrase"
+                        },
+                        "description": "datapack",
+                        "executable": true
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "enable"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "string",
+                        "params": {
+                            "type": "phrase"
+                        },
+                        "description": "datapack",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "first",
+                                        "last"
+                                    ]
+                                },
+                                "executable": true
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "after",
+                                        "before"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "string",
+                                        "params": {
+                                            "type": "phrase"
+                                        },
+                                        "description": "datapack",
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "list"
+                    ]
+                },
+                "executable": true,
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "available",
+                                "enabled"
+                            ]
+                        },
+                        "executable": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "defaultgamemode"
+            ]
+        },
+        "description": "Sets the default game mode.",
+        "children": [
+            {
+                "parser": "mode",
+                "description": "mode",
+                "executable": true
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "difficulty"
+            ]
+        },
+        "description": "Sets the difficulty.",
+        "executable": true,
+        "children": [
+            {
+                "parser": "difficulty",
+                "description": "difficulty",
+                "executable": true
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "effect"
+            ]
+        },
+        "description": "Manages status effects of entities.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "give"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "entities"
+                        },
+                        "description": "target",
+                        "children": [
+                            {
+                                "parser": "effect",
+                                "description": "effect",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "number",
+                                        "params": {
+                                            "isInteger": true,
+                                            "min": 1,
+                                            "max": 1000000
+                                        },
+                                        "description": "duration",
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "number",
+                                                "params": {
+                                                    "isInteger": true,
+                                                    "min": 0,
+                                                    "max": 255
+                                                },
+                                                "description": "amplifier",
+                                                "executable": true,
+                                                "children": [
+                                                    {
+                                                        "parser": "boolean",
+                                                        "description": "hideParticles",
+                                                        "executable": true
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "clear"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "entities"
+                        },
+                        "description": "target",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "effect",
+                                "description": "effect",
+                                "executable": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "enchant"
+            ]
+        },
+        "description": "Adds an enchantment to specific item",
+        "children": [
+            {
+                "parser": "selector",
+                "params": {
+                    "amount": "multiple",
+                    "type": "entities"
+                },
+                "description": "target",
+                "children": [
+                    {
+                        "parser": "enchantment",
+                        "description": "enchantment",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "number",
+                                "params": {
+                                    "isInteger": true,
+                                    "min": 1,
+                                    "max": 5
+                                },
+                                "description": "level",
+                                "executable": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "execute"
+            ]
+        },
+        "description": "The best command ever in the universe.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "as"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "entities"
+                        },
+                        "description": "entity",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "at"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "entities"
+                        },
+                        "description": "entity",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "positioned"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "pos",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "as"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "multiple",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "command",
+                                        "params": {
+                                            "redirect": "Root[10]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "align"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "axes",
+                        "description": "axes",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "facing"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "pos",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "entity"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "multiple",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "command",
+                                        "params": {
+                                            "redirect": "Root[10]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "rotated"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "pos",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "as"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "multiple",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "command",
+                                        "params": {
+                                            "redirect": "Root[10]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "in"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "dimension",
+                        "description": "dimension",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "anchored"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "eyes",
+                                "feet"
+                            ]
+                        },
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "command",
+                                "params": {
+                                    "redirect": "Root[10]"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "if",
+                        "unless"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "block"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "pos",
+                                "children": [
+                                    {
+                                        "parser": "blockstate_predicate",
+                                        "description": "block",
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "command",
+                                                "params": {
+                                                    "redirect": "Root[10]"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "blocks"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "begin",
+                                "children": [
+                                    {
+                                        "parser": "vector",
+                                        "params": {
+                                            "dimension": 3
+                                        },
+                                        "description": "end",
+                                        "children": [
+                                            {
+                                                "parser": "vector",
+                                                "params": {
+                                                    "dimension": 3
+                                                },
+                                                "description": "destination",
+                                                "children": [
+                                                    {
+                                                        "parser": "literal",
+                                                        "params": {
+                                                            "expected": [
+                                                                "all",
+                                                                "masked"
+                                                            ]
+                                                        },
+                                                        "executable": true,
+                                                        "children": [
+                                                            {
+                                                                "parser": "command",
+                                                                "params": {
+                                                                    "redirect": "Root[10]"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "data"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "single",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "children": [
+                                    {
+                                        "parser": "nbt_path",
+                                        "description": "path",
+                                        "executable": true,
+                                        "children": [
+                                            {
+                                                "parser": "command",
+                                                "params": {
+                                                    "redirect": "Root[10]"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "entity"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "selector",
+                                "params": {
+                                    "amount": "multiple",
+                                    "type": "entities"
+                                },
+                                "description": "entity",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "command",
+                                        "params": {
+                                            "redirect": "Root[10]"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "score"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "score_holder",
+                                "params": {
+                                    "amount": "single"
+                                },
+                                "description": "source",
+                                "children": [
+                                    {
+                                        "parser": "objective",
+                                        "params": {
+                                            "type": "keep"
+                                        },
+                                        "description": "sourceObjective",
+                                        "children": [
+                                            {
+                                                "parser": "literal",
+                                                "params": {
+                                                    "expected": [
+                                                        "<",
+                                                        "<=",
+                                                        "=",
+                                                        ">=",
+                                                        ">"
+                                                    ]
+                                                },
+                                                "children": [
+                                                    {
+                                                        "parser": "score_holder",
+                                                        "params": {
+                                                            "amount": "single"
+                                                        },
+                                                        "description": "target",
+                                                        "children": [
+                                                            {
+                                                                "parser": "objective",
+                                                                "params": {
+                                                                    "type": "keep"
+                                                                },
+                                                                "description": "targetObjective",
+                                                                "executable": true,
+                                                                "children": [
+                                                                    {
+                                                                        "parser": "command",
+                                                                        "params": {
+                                                                            "redirect": "Root[10]"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "parser": "literal",
+                                                "params": {
+                                                    "expected": [
+                                                        "matches"
+                                                    ]
+                                                },
+                                                "children": [
+                                                    {
+                                                        "parser": "range",
+                                                        "description": "range",
+                                                        "executable": true,
+                                                        "children": [
+                                                            {
+                                                                "parser": "command",
+                                                                "params": {
+                                                                    "redirect": "Root[10]"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "store"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "literal",
+                        "params": {
+                            "expected": [
+                                "result",
+                                "success"
+                            ]
+                        },
+                        "children": [
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "block"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "vector",
+                                        "params": {
+                                            "dimension": 3
+                                        },
+                                        "description": "pos",
+                                        "children": [
+                                            {
+                                                "parser": "nbt_path",
+                                                "description": "path",
+                                                "children": [
+                                                    {
+                                                        "parser": "nbt_number_type",
+                                                        "description": "type",
+                                                        "children": [
+                                                            {
+                                                                "parser": "number",
+                                                                "params": {},
+                                                                "description": "scale",
+                                                                "executable": true,
+                                                                "children": [
+                                                                    {
+                                                                        "parser": "command",
+                                                                        "params": {
+                                                                            "redirect": "Root[10]"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "bossbar"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "bossbar",
+                                        "params": {
+                                            "type": "keep"
+                                        },
+                                        "description": "id",
+                                        "children": [
+                                            {
+                                                "parser": "literal",
+                                                "params": {
+                                                    "expected": [
+                                                        "max",
+                                                        "value"
+                                                    ]
+                                                },
+                                                "executable": true,
+                                                "children": [
+                                                    {
+                                                        "parser": "command",
+                                                        "params": {
+                                                            "redirect": "Root[10]"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "entity"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "selector",
+                                        "params": {
+                                            "amount": "single",
+                                            "type": "entities"
+                                        },
+                                        "description": "target",
+                                        "children": [
+                                            {
+                                                "parser": "nbt_path",
+                                                "description": "path",
+                                                "children": [
+                                                    {
+                                                        "parser": "nbt_number_type",
+                                                        "description": "type",
+                                                        "children": [
+                                                            {
+                                                                "parser": "number",
+                                                                "params": {},
+                                                                "description": "scale",
+                                                                "executable": true,
+                                                                "children": [
+                                                                    {
+                                                                        "parser": "command",
+                                                                        "params": {
+                                                                            "redirect": "Root[10]"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "score"
+                                    ]
+                                },
+                                "children": [
+                                    {
+                                        "parser": "score_holder",
+                                        "params": {
+                                            "amount": "single"
+                                        },
+                                        "description": "name",
+                                        "children": [
+                                            {
+                                                "parser": "objective",
+                                                "params": {
+                                                    "type": "keep"
+                                                },
+                                                "executable": true,
+                                                "children": [
+                                                    {
+                                                        "parser": "command",
+                                                        "params": {
+                                                            "redirect": "Root[10]"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "experience",
+                "xp"
+            ]
+        },
+        "description": "Modifies player's experience.",
+        "children": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "add",
+                        "set"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "multiple",
+                            "type": "players"
+                        },
+                        "description": "players",
+                        "executable": true,
+                        "children": [
+                            {
+                                "parser": "number",
+                                "params": {
+                                    "isInteger": true
+                                },
+                                "description": "amount",
+                                "children": [
+                                    {
+                                        "parser": "literal",
+                                        "params": {
+                                            "expected": [
+                                                "levels",
+                                                "points"
+                                            ]
+                                        },
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "query"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "single",
+                            "type": "players"
+                        },
+                        "description": "player",
+                        "children": [
+                            {
+                                "parser": "literal",
+                                "params": {
+                                    "expected": [
+                                        "levels",
+                                        "points"
+                                    ]
+                                },
+                                "executable": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "fill"
+            ]
+        },
+        "description": "Fills a region with a specific block",
+        "children": [
+            {
+                "parser": "vector",
+                "params": {
+                    "dimension": 3
+                },
+                "description": "begin",
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "end",
+                        "children": [
+                            {
+                                "parser": "blockstate",
+                                "description": "block",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "parser": "literal",
+                                        "params": {
+                                            "expected": [
+                                                "destroy",
+                                                "hollow",
+                                                "keep",
+                                                "outline"
+                                            ]
+                                        },
+                                        "executable": true
+                                    },
+                                    {
+                                        "parser": "literal",
+                                        "params": {
+                                            "expected": [
+                                                "replace"
+                                            ]
+                                        },
+                                        "children": [
+                                            {
+                                                "parser": "blockstate_predicate",
+                                                "description": "replaceBlock",
+                                                "executable": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "parser": "literal",
+        "params": {
+            "expected": [
+                "forceload"
+            ]
+        },
+        "description": "",
+        "permission": 4,
+        "children": [
+            
         ]
     }
 ]

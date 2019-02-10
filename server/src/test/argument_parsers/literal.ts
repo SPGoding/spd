@@ -52,19 +52,19 @@ describe('LiteralParser Tests', () => {
                 rest: 'bar', cache: {}
             })
         })
-        it("Should return warning when actual string isn't lower-case", () => {
+        it("Should return warning when actual string isn't expected case", () => {
             const parser = new LiteralParser()
 
-            const result = parser.parse('FOO bar', undefined, { expected: ['foo'] })
+            const result = parser.parse('logadmin bar', undefined, { expected: ['logAdmin'] })
 
             assert.deepStrictEqual(result, {
                 argument: {
-                    type: 'literal', value: 'FOO'
+                    type: 'literal', value: 'logadmin'
                 },
                 errors: [{
                     severity: 'warning',
-                    range: { start: 0, end: 3 },
-                    message: "Expected 'foo' (lower-cased) but got: 'FOO'."
+                    range: { start: 0, end: 8 },
+                    message: "Expected 'logAdmin' (case-sensitive) but got: 'logadmin'."
                 }],
                 rest: 'bar', cache: {}
             })
@@ -76,8 +76,12 @@ describe('LiteralParser Tests', () => {
 
             assert.deepStrictEqual(result, {
                 argument: { type: 'literal', value: '' },
-                completions: [{ label: 'foo' }, { label: 'bar' }],
-                errors: [], rest: '', cache: {}
+                completions: [{ label: 'bar' }, { label: 'foo' }],
+                errors: [{
+                    message: "Expected 'bar' or 'foo' but got: ''.",
+                    range: { start: 0, end: 0 },
+                    severity: 'error'
+                }], rest: '', cache: {}
             })
         })
     })

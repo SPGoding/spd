@@ -16,7 +16,7 @@
                 },
                 "description": {
                     "type": "string",
-                    "description": "Human-readable command/argument description. Expects a long sentense for the first node of each command to describe the command, and a short description for non-string parameters."
+                    "description": "Human-readable command/argument description. Expects a long sentense for the first node of each command to describe the command, and a short description for non-literal parameters."
                 },
                 "children": {
                     "type": "array",
@@ -28,6 +28,16 @@
                 "executable": {
                     "type": "boolean",
                     "description": "Whether the command is executable."
+                },
+                "permission": {
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "description": "Required op-persmission to run this command."
                 }
             },
             "oneOf": [
@@ -124,6 +134,33 @@
                     "properties": {
                         "parser": {
                             "enum": [
+                                "score_holder"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "amount": {
+                                    "enum": [
+                                        "single",
+                                        "multiple"
+                                    ],
+                                    "description": "The amount which the node accepts."
+                                }
+                            },
+                            "required": [
+                                "amount"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
                                 "nbt_value"
                             ]
                         },
@@ -156,7 +193,7 @@
                     "required": [
                         "params"
                     ]
-                },                
+                },
                 {
                     "properties": {
                         "parser": {
@@ -185,7 +222,7 @@
                     "required": [
                         "params"
                     ]
-                },                
+                },
                 {
                     "properties": {
                         "parser": {
@@ -214,9 +251,62 @@
                     "properties": {
                         "parser": {
                             "enum": [
+                                "bossbar",
+                                "objective"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "enum": [
+                                        "keep",
+                                        "new",
+                                        "remove"
+                                    ],
+                                    "description": "What will be done to the argument."
+                                }
+                            },
+                            "required": [
+                                "type"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
+                                "command"
+                            ]
+                        },
+                        "params": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "redirect": {
+                                    "type": "string",
+                                    "description": "From which node to parse the following command."
+                                }
+                            },
+                            "required": [
+                                "redirect"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "params"
+                    ]
+                },
+                {
+                    "properties": {
+                        "parser": {
+                            "enum": [
                                 "nbt_value",
+                                "color",
                                 "boolean",
-                                "command",
                                 "advancement",
                                 "loot_table",
                                 "function",
@@ -225,7 +315,21 @@
                                 "entity_type_tag",
                                 "fluid_tag",
                                 "function_tag",
-                                "item_tag"
+                                "item_tag",
+                                "json",
+                                "blockstate",
+                                "itemstack",
+                                "blockstate_predicate",
+                                "itemstack_predcate",
+                                "nbt_path",
+                                "nbt_number_type",
+                                "mode",
+                                "difficulty",
+                                "effect",
+                                "enchantment",
+                                "axes",
+                                "dimension",
+                                "range"
                             ]
                         }
                     }

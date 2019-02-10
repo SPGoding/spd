@@ -11,11 +11,11 @@ describe('convertArrayToString() tests', () => {
     it('Should work when the array contains two elements', () => {
         const result = convertArrayToString(['foo', 'bar'])
 
-        assert.deepStrictEqual(result, "'foo' or 'bar'")
+        assert.deepStrictEqual(result, "'bar' or 'foo'")
     })
     it('Should work when the array contains three elements', () => {
         const result = convertArrayToString(['foo', 'bar', 'baz'])
 
-        assert.deepStrictEqual(result, "'foo', 'bar' or 'baz'")
+        assert.deepStrictEqual(result, "'bar', 'baz' or 'foo'")
     })
 })
