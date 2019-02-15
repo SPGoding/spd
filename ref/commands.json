@@ -1523,9 +1523,135 @@
             "description": "Gets items from the specific loot table.",
             "children": [
                 {
-                    "template": "loot_target"
+                    "template": "loot_target",
+                    "children": [
+                        {
+                            "template": "loot_source",
+                            "executable": true
+                        }
+                    ]
                 }
             ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "me"
+                ]
+            },
+            "description": "Displays a message about yourself.",
+            "children": [
+                {
+                    "parser": "string",
+                    "params": {
+                        "type": "greedy"
+                    },
+                    "description": "message",
+                    "executable": true
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "msg",
+                    "tell",
+                    "w"
+                ]
+            },
+            "description": "Sends a private message.",
+            "children": [
+                {
+                    "parser": "selector",
+                    "params": {
+                        "amount": "multiple",
+                        "type": "players"
+                    },
+                    "description": "players",
+                    "children": [
+                        {
+                            "parser": "string",
+                            "params": {
+                                "type": "greedy"
+                            },
+                            "description": "message",
+                            "executable": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "op"
+                ]
+            },
+            "description": "Grants operator status to a player.",
+            "permission": 3,
+            "children": [
+                {
+                    "parser": "selector",
+                    "params": {
+                        "amount": "multiple",
+                        "type": "players"
+                    },
+                    "description": "players",
+                    "executable": true
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "pardon"
+                ]
+            },
+            "description": "Pardons a player.",
+            "permission": 3,
+            "children": [
+                {
+                    "parser": "selector",
+                    "params": {
+                        "amount": "multiple",
+                        "type": "players"
+                    },
+                    "description": "players",
+                    "executable": true
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "pardon-ip"
+                ]
+            },
+            "description": "Pardons an ip.",
+            "permission": 3,
+            "children": [
+                {
+                    "parser": "string",
+                    "params": {
+                        "type": "word"
+                    },
+                    "description": "ip",
+                    "executable": true
+                }
+            ]
+        },
+        {
+            "parser": "particle",
+            "params": {
+                "expected": [
+                    
+                ]
+            }
         }
     ],
     "templates": {
@@ -2242,7 +2368,92 @@
         },
         "loot_source": [
             {
-                "parser": ""
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "fish"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "loot_table",
+                        "description": "lootTable",
+                        "children": [
+                            {
+                                "parser": "vector",
+                                "params": {
+                                    "dimension": 3
+                                },
+                                "description": "fishingPos",
+                                "executable": true,
+                                "children": [
+                                    {
+                                        "template": "loot_tool",
+                                        "executable": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "kill"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "selector",
+                        "params": {
+                            "amount": "single",
+                            "type": "entities"
+                        },
+                        "description": "target",
+                        "executable": true
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "loot"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "loot_table",
+                        "description": "lootTable",
+                        "executable": true
+                    }
+                ]
+            },
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "mine"
+                    ]
+                },
+                "children": [
+                    {
+                        "parser": "vector",
+                        "params": {
+                            "dimension": 3
+                        },
+                        "description": "pos",
+                        "executable": true,
+                        "children": [
+                            {
+                                "template": "loot_tool",
+                                "executable": true
+                            }
+                        ]
+                    }
+                ]
             }
         ],
         "loot_target": [
@@ -2260,12 +2471,7 @@
                             "amount": "multiple",
                             "type": "players"
                         },
-                        "description": "player",
-                        "children": [
-                            {
-                                "template": "loot_source"
-                            }
-                        ]
+                        "description": "player"
                     }
                 ]
             },
@@ -2282,12 +2488,7 @@
                         "params": {
                             "dimension": 3
                         },
-                        "description": "pos",
-                        "children": [
-                            {
-                                "template": "loot_source"
-                            }
-                        ]
+                        "description": "pos"
                     }
                 ]
             },
@@ -2300,7 +2501,7 @@
                 },
                 "children": [
                     {
-                        "template": "nbt_holder_multiple",                        
+                        "template": "nbt_holder_multiple",
                         "children": [
                             {
                                 "parser": "slot",
@@ -2315,12 +2516,7 @@
                                             "isInteger": true,
                                             "min": 0
                                         },
-                                        "description": "count",
-                                        "children": [
-                                            {
-                                                "template": "loot_source"
-                                            }
-                                        ]
+                                        "description": "count"
                                     }
                                 ]
                             }
@@ -2341,14 +2537,24 @@
                         "params": {
                             "dimension": 3
                         },
-                        "description": "pos",
-                        "children": [
-                            {
-                                "template": "loot_source"
-                            }
-                        ]
+                        "description": "pos"
                     }
                 ]
+            }
+        ],
+        "loot_tool": [
+            {
+                "parser": "literal",
+                "params": {
+                    "expected": [
+                        "mainhand",
+                        "offhand"
+                    ]
+                }
+            },
+            {
+                "parser": "itemstack",
+                "description": "item"
             }
         ],
         "nbt_holder_multiple": [
