@@ -1,8 +1,30 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "type": "array",
-    "items": {
-        "$ref": "#/definitions/node"
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "commands": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/node"
+            }
+        },
+        "templates": {
+            "type": "object",
+            "additionalProperties": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/node"
+                        }
+                    },
+                    {
+                        "$ref": "#/definitions/node"
+                    }
+                ]
+            }
+        }
     },
     "definitions": {
         "node": {
@@ -10,327 +32,352 @@
             "required": [
                 "parser"
             ],
-            "properties": {
-                "parser": {
-                    "description": "The parser to use."
-                },
-                "description": {
-                    "type": "string",
-                    "description": "Human-readable command/argument description. Expects a long sentense for the first node of each command to describe the command, and a short description for non-literal parameters."
-                },
-                "children": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/node"
-                    },
-                    "description": "All children of the command node."
-                },
-                "executable": {
-                    "type": "boolean",
-                    "description": "Whether the command is executable."
-                },
-                "permission": {
-                    "enum": [
-                        0,
-                        1,
-                        2,
-                        3,
-                        4
-                    ],
-                    "description": "Required op-persmission to run this command."
-                }
-            },
-            "oneOf": [
+            "anyOf": [
                 {
                     "properties": {
                         "parser": {
-                            "enum": [
-                                "literal"
-                            ]
+                            "description": "The parser to use."
                         },
-                        "params": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "expected": {
+                        "description": {
+                            "type": "string",
+                            "description": "Human-readable command/argument description. Expects a long sentense for the first node of each command to describe the command, and a short description for non-literal parameters."
+                        },
+                        "children": {
+                            "oneOf": [
+                                {
                                     "type": "array",
                                     "items": {
-                                        "type": "string"
+                                        "$ref": "#/definitions/node"
                                     },
-                                    "description": "All strings that are expected for this node."
+                                    "description": "All children of the command node."
                                 }
-                            },
-                            "required": [
-                                "expected"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "params"
-                    ]
-                },
-                {
-                    "properties": {
-                        "parser": {
-                            "enum": [
-                                "string"
                             ]
                         },
-                        "params": {
-                            "additionalProperties": false,
+                        "executable": {
+                            "type": "boolean",
+                            "description": "Whether the command is executable."
+                        },
+                        "permission": {
+                            "enum": [
+                                0,
+                                1,
+                                2,
+                                3,
+                                4
+                            ],
+                            "description": "Required op-persmission to run this command."
+                        }
+                    },
+                    "oneOf": [
+                        {
                             "properties": {
-                                "type": {
+                                "parser": {
                                     "enum": [
-                                        "word",
-                                        "phrase",
-                                        "greedy"
+                                        "literal"
+                                    ]
+                                },
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "expected": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "description": "All strings that are expected for this node."
+                                        }
+                                    },
+                                    "required": [
+                                        "expected"
                                     ]
                                 }
                             },
                             "required": [
-                                "type"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "params"
-                    ]
-                },
-                {
-                    "properties": {
-                        "parser": {
-                            "enum": [
-                                "selector"
+                                "params"
                             ]
                         },
-                        "params": {
-                            "additionalProperties": false,
+                        {
                             "properties": {
-                                "type": {
+                                "parser": {
                                     "enum": [
-                                        "players",
-                                        "entities"
-                                    ],
-                                    "description": "The kinds of entities which the node accepts."
+                                        "string"
+                                    ]
                                 },
-                                "amount": {
-                                    "enum": [
-                                        "single",
-                                        "multiple"
-                                    ],
-                                    "description": "The amount which the node accepts."
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "type": {
+                                            "enum": [
+                                                "word",
+                                                "phrase",
+                                                "greedy"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "type"
+                                    ]
                                 }
                             },
                             "required": [
-                                "type",
-                                "amount"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "params"
-                    ]
-                },
-                {
-                    "properties": {
-                        "parser": {
-                            "enum": [
-                                "score_holder"
+                                "params"
                             ]
                         },
-                        "params": {
-                            "additionalProperties": false,
+                        {
                             "properties": {
-                                "amount": {
+                                "parser": {
                                     "enum": [
-                                        "single",
-                                        "multiple"
-                                    ],
-                                    "description": "The amount which the node accepts."
-                                }
-                            },
-                            "required": [
-                                "amount"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "params"
-                    ]
-                },
-                {
-                    "properties": {
-                        "parser": {
-                            "enum": [
-                                "nbt_value"
-                            ]
-                        },
-                        "params": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "expected": {
-                                    "enum": [
-                                        "compound",
-                                        "list",
-                                        "byte",
-                                        "short",
-                                        "integer",
-                                        "long",
-                                        "float",
-                                        "double",
-                                        "string",
-                                        "byte_array",
-                                        "integer_array",
-                                        "long_array"
-                                    ],
-                                    "description": "The kinds of NBT values which are expected."
-                                }
-                            },
-                            "required": [
-                                "expected"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "params"
-                    ]
-                },
-                {
-                    "properties": {
-                        "parser": {
-                            "enum": [
-                                "number"
-                            ]
-                        },
-                        "params": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "min": {
-                                    "type": "number",
-                                    "description": "The minimum value."
+                                        "selector"
+                                    ]
                                 },
-                                "max": {
-                                    "type": "number",
-                                    "description": "The maximum value."
-                                },
-                                "isInteger": {
-                                    "type": "boolean",
-                                    "description": "Whether it's an integer."
-                                }
-                            }
-                        }
-                    },
-                    "required": [
-                        "params"
-                    ]
-                },
-                {
-                    "properties": {
-                        "parser": {
-                            "enum": [
-                                "vector"
-                            ]
-                        },
-                        "params": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "dimension": {
-                                    "type": "number",
-                                    "description": "The dimension of the vector."
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "type": {
+                                            "enum": [
+                                                "players",
+                                                "entities"
+                                            ],
+                                            "description": "The kinds of entities which the node accepts."
+                                        },
+                                        "amount": {
+                                            "enum": [
+                                                "single",
+                                                "multiple"
+                                            ],
+                                            "description": "The amount which the node accepts."
+                                        }
+                                    },
+                                    "required": [
+                                        "type",
+                                        "amount"
+                                    ]
                                 }
                             },
                             "required": [
-                                "dimension"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "params"
-                    ]
-                },
-                {
-                    "properties": {
-                        "parser": {
-                            "enum": [
-                                "bossbar",
-                                "objective"
+                                "params"
                             ]
                         },
-                        "params": {
-                            "additionalProperties": false,
+                        {
                             "properties": {
-                                "type": {
+                                "parser": {
                                     "enum": [
-                                        "keep",
-                                        "new",
-                                        "remove"
-                                    ],
-                                    "description": "What will be done to the argument."
+                                        "score_holder"
+                                    ]
+                                },
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "amount": {
+                                            "enum": [
+                                                "single",
+                                                "multiple"
+                                            ],
+                                            "description": "The amount which the node accepts."
+                                        }
+                                    },
+                                    "required": [
+                                        "amount"
+                                    ]
                                 }
                             },
                             "required": [
-                                "type"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "params"
-                    ]
-                },
-                {
-                    "properties": {
-                        "parser": {
-                            "enum": [
-                                "command"
+                                "params"
                             ]
                         },
-                        "params": {
-                            "additionalProperties": false,
+                        {
                             "properties": {
-                                "redirect": {
-                                    "type": "string",
-                                    "description": "From which node to parse the following command."
+                                "parser": {
+                                    "enum": [
+                                        "nbt_value"
+                                    ]
+                                },
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "expected": {
+                                            "enum": [
+                                                "compound",
+                                                "list",
+                                                "byte",
+                                                "short",
+                                                "integer",
+                                                "long",
+                                                "float",
+                                                "double",
+                                                "string",
+                                                "byte_array",
+                                                "integer_array",
+                                                "long_array"
+                                            ],
+                                            "description": "The kinds of NBT values which are expected."
+                                        }
+                                    },
+                                    "required": [
+                                        "expected"
+                                    ]
                                 }
                             },
                             "required": [
-                                "redirect"
+                                "params"
                             ]
+                        },
+                        {
+                            "properties": {
+                                "parser": {
+                                    "enum": [
+                                        "number"
+                                    ]
+                                },
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "min": {
+                                            "type": "number",
+                                            "description": "The minimum value."
+                                        },
+                                        "max": {
+                                            "type": "number",
+                                            "description": "The maximum value."
+                                        },
+                                        "isInteger": {
+                                            "type": "boolean",
+                                            "description": "Whether it's an integer."
+                                        }
+                                    }
+                                }
+                            },
+                            "required": [
+                                "params"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "parser": {
+                                    "enum": [
+                                        "vector"
+                                    ]
+                                },
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "dimension": {
+                                            "type": "number",
+                                            "description": "The dimension of the vector."
+                                        }
+                                    },
+                                    "required": [
+                                        "dimension"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "params"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "parser": {
+                                    "enum": [
+                                        "bossbar",
+                                        "objective"
+                                    ]
+                                },
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "type": {
+                                            "enum": [
+                                                "keep",
+                                                "new",
+                                                "remove"
+                                            ],
+                                            "description": "What will be done to the argument."
+                                        }
+                                    },
+                                    "required": [
+                                        "type"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "params"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "parser": {
+                                    "enum": [
+                                        "command"
+                                    ]
+                                },
+                                "params": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "redirect": {
+                                            "type": "string",
+                                            "description": "From which node to parse the following command."
+                                        }
+                                    },
+                                    "required": [
+                                        "redirect"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "params"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "parser": {
+                                    "anyOf": [
+                                        {
+                                            "enum": [
+                                                "nbt_value",
+                                                "advancement",
+                                                "loot_table",
+                                                "function",
+                                                "recipe",
+                                                "block_tag",
+                                                "entity_type_tag",
+                                                "fluid_tag",
+                                                "function_tag",
+                                                "item_tag",
+                                                "json",
+                                                "blockstate",
+                                                "itemstack",
+                                                "blockstate_predicate",
+                                                "itemstack_predcate",
+                                                "nbt_path",
+                                                "nbt_number_type",
+                                                "effect",
+                                                "enchantment",
+                                                "axes",
+                                                "dimension",
+                                                "range",
+                                                "slot"
+                                            ]
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "description": {},
+                                "executable": {},
+                                "permission": {},
+                                "children": {}
+                            },
+                            "additionalProperties": false
                         }
-                    },
-                    "required": [
-                        "params"
                     ]
                 },
                 {
+                    "type": "object",
                     "properties": {
-                        "parser": {
-                            "enum": [
-                                "nbt_value",
-                                "color",
-                                "boolean",
-                                "advancement",
-                                "loot_table",
-                                "function",
-                                "recipe",
-                                "block_tag",
-                                "entity_type_tag",
-                                "fluid_tag",
-                                "function_tag",
-                                "item_tag",
-                                "json",
-                                "blockstate",
-                                "itemstack",
-                                "blockstate_predicate",
-                                "itemstack_predcate",
-                                "nbt_path",
-                                "nbt_number_type",
-                                "mode",
-                                "difficulty",
-                                "effect",
-                                "enchantment",
-                                "axes",
-                                "dimension",
-                                "range"
-                            ]
+                        "template": {
+                            "type": "string"
                         }
                     }
                 }
