@@ -97,7 +97,7 @@ export class CommandParser implements ArgumentParser {
     }
 
     public parseOneNode(value: string, node: CommandTreeNode, inputArgs: Argument[],
-        addedNum: number, cursor: number | undefined): CommandParseResult {
+        addedNum: number, cursor: number | undefined, completions: CompletionItem[]): CommandParseResult {
         const parser = this.getArgumentParser(node.parser)
         const result = parser.parse(value, cursor, node.params)
 
@@ -128,7 +128,7 @@ export class CommandParser implements ArgumentParser {
     }
 
     public parseNodes(value: string, nodes: CommandTreeNode[], inputArgs: Argument[],
-        addedNum: number, cursor: number | undefined): CommandParseResult {
+        addedNum: number, cursor: number | undefined, completions: CompletionItem[]): CommandParseResult {
         if (nodes.length === 1) {
             return this.parseOneNode(value, nodes[0], inputArgs, addedNum, cursor)
         } else {

@@ -298,7 +298,7 @@
                                     },
                                     "children": [
                                         {
-                                            "template": "color",
+                                            "definition": "color",
                                             "description": "color",
                                             "executable": true
                                         }
@@ -408,7 +408,7 @@
                                     },
                                     "children": [
                                         {
-                                            "template": "boolean",
+                                            "definition": "boolean",
                                             "description": "visibility",
                                             "executable": true
                                         }
@@ -863,7 +863,7 @@
             "description": "Sets the default game mode.",
             "children": [
                 {
-                    "template": "gamemode",
+                    "definition": "gamemode",
                     "description": "mode",
                     "executable": true
                 }
@@ -880,7 +880,7 @@
             "executable": true,
             "children": [
                 {
-                    "template": "difficulty",
+                    "definition": "difficulty",
                     "description": "difficulty",
                     "executable": true
                 }
@@ -937,7 +937,7 @@
                                                     "executable": true,
                                                     "children": [
                                                         {
-                                                            "template": "boolean",
+                                                            "definition": "boolean",
                                                             "description": "hideParticles",
                                                             "executable": true
                                                         }
@@ -1027,7 +1027,7 @@
             "description": "The best command ever in the universe.",
             "children": [
                 {
-                    "template": "execute_subcommand"
+                    "definition": "execute_subcommand"
                 }
             ]
         },
@@ -1287,7 +1287,7 @@
             "description": "Sets a player's game mode.",
             "children": [
                 {
-                    "template": "gamemode",
+                    "definition": "gamemode",
                     "description": "mode",
                     "executable": true,
                     "children": [
@@ -1341,7 +1341,7 @@
                     "executable": true,
                     "children": [
                         {
-                            "template": "boolean",
+                            "definition": "boolean",
                             "description": "value",
                             "executable": true
                         }
@@ -1523,10 +1523,10 @@
             "description": "Gets items from the specific loot table.",
             "children": [
                 {
-                    "template": "loot_target",
+                    "definition": "loot_target",
                     "children": [
                         {
-                            "template": "loot_source",
+                            "definition": "loot_source",
                             "executable": true
                         }
                     ]
@@ -1646,15 +1646,194 @@
             ]
         },
         {
-            "parser": "particle",
+            "parser": "literal",
             "params": {
                 "expected": [
-                    
+                    "particle"
                 ]
-            }
+            },
+            "description": "Creates particles.",
+            "children": [
+                {
+                    "definition": "particle",
+                    "description":"name",
+                    "executable": true,
+                    "children": [
+                        {
+                            "parser": "vector",
+                            "params": {
+                                "dimension": 3
+                            },
+                            "description": "pos",
+                            "executable": true,
+                            "children": [
+                                {
+                                    "parser": "vector",
+                                    "params": {
+                                        "dimension": 3
+                                    },
+                                    "description": "delta",
+                                    "children": [
+                                        {
+                                            "parser": "number",
+                                            "params": {
+                                                "min": 0
+                                            },
+                                            "description": "speed",
+                                            "children": [
+                                                {
+                                                    "parser": "number",
+                                                    "params": {
+                                                        "isInteger": true,
+                                                        "min": 0
+                                                    },
+                                                    "description": "count",
+                                                    "executable": true,
+                                                    "children": [
+                                                        {
+                                                            "parser": "literal",
+                                                            "params": {
+                                                                "expected": [
+                                                                    "force",
+                                                                    "normal"
+                                                                ]
+                                                            },
+                                                            "executable": true,
+                                                            "children": [
+                                                                {
+                                                                    "parser": "selector",
+                                                                    "params": {
+                                                                        "amount": "multiple",
+                                                                        "type": "players"
+                                                                    },
+                                                                    "description": "player",
+                                                                    "executable": true
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "playsound"
+                ]
+            },
+            "description": "Plays a sound to players.",
+            "children": [
+                {
+                    "parser": "sound",
+                    "description": "sound",
+                    "children": [
+                        {
+                            "parser": "literal",
+                            "params": {
+                                "expected": [
+                                    "ambient",
+                                    "block",
+                                    "hostile",
+                                    "master",
+                                    "music",
+                                    "neutral",
+                                    "player",
+                                    "record",
+                                    "voice",
+                                    "weather"
+                                ]
+                            },
+                            "description": "source",
+                            "children": [
+                                {
+                                    "parser": "selector",
+                                    "params": {
+                                        "amount": "multiple",
+                                        "type": "players"
+                                    },
+                                    "description": "player",
+                                    "executable": true,
+                                    "children": [
+                                        {
+                                            "parser": "vector",
+                                            "params": {
+                                                "dimension": 3
+                                            },
+                                            "description": "pos",
+                                            "executable": true,
+                                            "children": [
+                                                {
+                                                    "parser": "number",
+                                                    "params": {
+                                                        "min": 0
+                                                    },
+                                                    "description": "volume",
+                                                    "executable": true,
+                                                    "children": [
+                                                        {
+                                                            "parser": "number",
+                                                            "params": {
+                                                                "min": 0.5,
+                                                                "max": 2
+                                                            },
+                                                            "description": "pitch",
+                                                            "executable": true
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "publish"
+                ]
+            },
+            "permission": 4,
+            "description": "Opens single-player world to the local network.",
+            "executable": true,
+            "children": [
+                {
+                    "parser": "number",
+                    "params": {
+                        "isInteger": true,
+                        "min": 0,
+                        "max": 65535
+                    },
+                    "description": "port",
+                    "executable": true
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "recipe"
+                ]
+            },
+            "description": "Unlocks or locks players' recipes."
         }
     ],
-    "templates": {
+    "definitions": {
         "boolean": {
             "parser": "literal",
             "params": {
@@ -1717,7 +1896,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "execute_subcommand"
+                                "definition": "execute_subcommand"
                             }
                         ]
                     }
@@ -1741,7 +1920,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "execute_subcommand"
+                                "definition": "execute_subcommand"
                             }
                         ]
                     }
@@ -1764,7 +1943,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "execute_subcommand"
+                                "definition": "execute_subcommand"
                             }
                         ]
                     },
@@ -1786,7 +1965,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "template": "execute_subcommand"
+                                        "definition": "execute_subcommand"
                                     }
                                 ]
                             }
@@ -1808,7 +1987,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "execute_subcommand"
+                                "definition": "execute_subcommand"
                             }
                         ]
                     }
@@ -1831,7 +2010,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "execute_subcommand"
+                                "definition": "execute_subcommand"
                             }
                         ]
                     },
@@ -1853,7 +2032,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "template": "execute_subcommand"
+                                        "definition": "execute_subcommand"
                                     }
                                 ]
                             }
@@ -1878,7 +2057,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "execute_subcommand"
+                                "definition": "execute_subcommand"
                             }
                         ]
                     },
@@ -1900,7 +2079,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "template": "execute_subcommand"
+                                        "definition": "execute_subcommand"
                                     }
                                 ]
                             }
@@ -1922,7 +2101,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "execute_subcommand"
+                                "definition": "execute_subcommand"
                             }
                         ]
                     }
@@ -1947,7 +2126,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "execute_subcommand"
+                                "definition": "execute_subcommand"
                             }
                         ]
                     }
@@ -1983,7 +2162,7 @@
                                         "executable": true,
                                         "children": [
                                             {
-                                                "template": "execute_subcommand"
+                                                "definition": "execute_subcommand"
                                             }
                                         ]
                                     }
@@ -2031,7 +2210,7 @@
                                                         "executable": true,
                                                         "children": [
                                                             {
-                                                                "template": "execute_subcommand"
+                                                                "definition": "execute_subcommand"
                                                             }
                                                         ]
                                                     }
@@ -2065,7 +2244,7 @@
                                         "executable": true,
                                         "children": [
                                             {
-                                                "template": "execute_subcommand"
+                                                "definition": "execute_subcommand"
                                             }
                                         ]
                                     }
@@ -2091,7 +2270,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "template": "execute_subcommand"
+                                        "definition": "execute_subcommand"
                                     }
                                 ]
                             }
@@ -2147,7 +2326,7 @@
                                                                 "executable": true,
                                                                 "children": [
                                                                     {
-                                                                        "template": "execute_subcommand"
+                                                                        "definition": "execute_subcommand"
                                                                     }
                                                                 ]
                                                             }
@@ -2169,7 +2348,7 @@
                                                         "executable": true,
                                                         "children": [
                                                             {
-                                                                "template": "execute_subcommand"
+                                                                "definition": "execute_subcommand"
                                                             }
                                                         ]
                                                     }
@@ -2230,7 +2409,7 @@
                                                                 "executable": true,
                                                                 "children": [
                                                                     {
-                                                                        "template": "execute_subcommand"
+                                                                        "definition": "execute_subcommand"
                                                                     }
                                                                 ]
                                                             }
@@ -2268,7 +2447,7 @@
                                                 "executable": true,
                                                 "children": [
                                                     {
-                                                        "template": "execute_subcommand"
+                                                        "definition": "execute_subcommand"
                                                     }
                                                 ]
                                             }
@@ -2307,7 +2486,7 @@
                                                                 "executable": true,
                                                                 "children": [
                                                                     {
-                                                                        "template": "execute_subcommand"
+                                                                        "definition": "execute_subcommand"
                                                                     }
                                                                 ]
                                                             }
@@ -2342,7 +2521,7 @@
                                                 "executable": true,
                                                 "children": [
                                                     {
-                                                        "template": "execute_subcommand"
+                                                        "definition": "execute_subcommand"
                                                     }
                                                 ]
                                             }
@@ -2388,7 +2567,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "template": "loot_tool",
+                                        "definition": "loot_tool",
                                         "executable": true
                                     }
                                 ]
@@ -2448,7 +2627,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "template": "loot_tool",
+                                "definition": "loot_tool",
                                 "executable": true
                             }
                         ]
@@ -2501,14 +2680,14 @@
                 },
                 "children": [
                     {
-                        "template": "nbt_holder_multiple",
+                        "definition": "nbt_holder_multiple",
                         "children": [
                             {
                                 "parser": "slot",
                                 "description": "slot",
                                 "children": [
                                     {
-                                        "template": "loot_source"
+                                        "definition": "loot_source"
                                     },
                                     {
                                         "parser": "number",

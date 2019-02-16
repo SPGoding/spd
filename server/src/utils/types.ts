@@ -102,9 +102,9 @@ export interface CommandTreeNode {
      */
     parser?: ArgumentType,
     /**
-     * The template of the node.
+     * The definition to use.
      */
-    template: string,
+    definition?: string,
     /**
      * All parameters for the parser.
      */

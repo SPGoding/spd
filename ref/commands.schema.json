@@ -9,7 +9,7 @@
                 "$ref": "#/definitions/node"
             }
         },
-        "templates": {
+        "definitions": {
             "type": "object",
             "additionalProperties": {
                 "oneOf": [
@@ -29,11 +29,11 @@
     "definitions": {
         "node": {
             "type": "object",
-            "required": [
-                "parser"
-            ],
-            "anyOf": [
+            "oneOf": [
                 {
+                    "required": [
+                        "parser"
+                    ],
                     "properties": {
                         "parser": {
                             "description": "The parser to use."
@@ -43,15 +43,11 @@
                             "description": "Human-readable command/argument description. Expects a long sentense for the first node of each command to describe the command, and a short description for non-literal parameters."
                         },
                         "children": {
-                            "oneOf": [
-                                {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/node"
-                                    },
-                                    "description": "All children of the command node."
-                                }
-                            ]
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/node"
+                            },
+                            "description": "All children of the command node."
                         },
                         "executable": {
                             "type": "boolean",
@@ -308,60 +304,32 @@
                             "properties": {
                                 "parser": {
                                     "enum": [
-                                        "command"
-                                    ]
-                                },
-                                "params": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "redirect": {
-                                            "type": "string",
-                                            "description": "From which node to parse the following command."
-                                        }
-                                    },
-                                    "required": [
-                                        "redirect"
-                                    ]
-                                }
-                            },
-                            "required": [
-                                "params"
-                            ]
-                        },
-                        {
-                            "properties": {
-                                "parser": {
-                                    "anyOf": [
-                                        {
-                                            "enum": [
-                                                "nbt_value",
-                                                "advancement",
-                                                "loot_table",
-                                                "function",
-                                                "recipe",
-                                                "block_tag",
-                                                "entity_type_tag",
-                                                "fluid_tag",
-                                                "function_tag",
-                                                "item_tag",
-                                                "json",
-                                                "blockstate",
-                                                "itemstack",
-                                                "blockstate_predicate",
-                                                "itemstack_predcate",
-                                                "nbt_path",
-                                                "nbt_number_type",
-                                                "effect",
-                                                "enchantment",
-                                                "axes",
-                                                "dimension",
-                                                "range",
-                                                "slot"
-                                            ]
-                                        },
-                                        {
-                                            "type": "string"
-                                        }
+                                        "nbt_value",
+                                        "advancement",
+                                        "loot_table",
+                                        "function",
+                                        "recipe",
+                                        "block_tag",
+                                        "entity_type_tag",
+                                        "fluid_tag",
+                                        "function_tag",
+                                        "item_tag",
+                                        "json",
+                                        "blockstate",
+                                        "itemstack",
+                                        "blockstate_predicate",
+                                        "itemstack_predcate",
+                                        "nbt_path",
+                                        "nbt_number_type",
+                                        "effect",
+                                        "enchantment",
+                                        "axes",
+                                        "dimension",
+                                        "range",
+                                        "slot",
+                                        "command",
+                                        "particle",
+                                        "sound"
                                     ]
                                 },
                                 "description": {},
@@ -374,12 +342,25 @@
                     ]
                 },
                 {
-                    "type": "object",
                     "properties": {
-                        "template": {
+                        "definition": {
                             "type": "string"
+                        },
+                        "children": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/node"
+                            },
+                            "description": "All children of the command node."
+                        },
+                        "executable": {
+                            "type": "boolean",
+                            "description": "Whether the command is executable."
                         }
-                    }
+                    },
+                    "required": [
+                        "definition"
+                    ]
                 }
             ]
         }
