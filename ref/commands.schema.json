@@ -9,7 +9,7 @@
                 "$ref": "#/definitions/node"
             }
         },
-        "definitions": {
+        "templates": {
             "type": "object",
             "additionalProperties": {
                 "oneOf": [
@@ -343,7 +343,7 @@
                 },
                 {
                     "properties": {
-                        "definition": {
+                        "template": {
                             "type": "string"
                         },
                         "children": {
@@ -359,7 +359,7 @@
                         }
                     },
                     "required": [
-                        "definition"
+                        "template"
                     ]
                 }
             ]

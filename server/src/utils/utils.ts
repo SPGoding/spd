@@ -1,4 +1,5 @@
 import { LocalCache, DefinitionType } from './types'
+import { CompletionItem } from 'vscode-languageserver'
 
 /**
  * Combines two local caches.

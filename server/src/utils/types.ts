@@ -94,7 +94,7 @@ export const ArgumentTypes: ArgumentType[] = [
 ]
 
 /**
- * A command tree node used in commands.json.
+ * A command tree node stored in commands.json.
  */
 export interface CommandTreeNode {
     /**
@@ -123,4 +123,19 @@ export interface CommandTreeNode {
      * Whether the command is executable.
      */
     executable?: boolean
+}
+
+/**
+ * The structure of commands.json.
+ */
+export interface CommandTree {
+    commands: CommandTreeNode[],
+    templates: Template[]
+}
+
+/**
+ * An template defined in commands.json.
+ */
+export interface Template {
+    [name: string]: CommandTreeNode | CommandTreeNode[]
 }

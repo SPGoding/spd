@@ -1,34 +1,37 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { ArgumentParser, Argument, Command, ArgumentParseResult, SimpleArgument, ParsingProblem } from '../parser'
-import { ArgumentType, CommandTreeNode, LocalCache, DefinitionTypes } from '../utils/types'
+import { ArgumentParser, Argument, Command, ArgumentParseResult, ParsingProblem } from '../parser'
+import { ArgumentType, CommandTreeNode, LocalCache, DefinitionTypes, CommandTree } from '../utils/types'
 import { combineLocalCaches, convertArrayToString } from '../utils/utils'
 import { LiteralParser } from './literal'
 import { CompletionItem } from 'vscode-languageserver'
 
 const commandTree = JSON.parse(
     fs.readFileSync(path.join(__dirname, '../../../ref/commands.json'), { encoding: 'utf8' })
-) as CommandTreeNode[]
+) as CommandTree
+const templates = commandTree.templates
+const commandNodes = commandTree.commands
 
 /**
  * Parses a command.
  * Accepts comments (begin with `#`) and empty lines.
  */
 export class CommandParser implements ArgumentParser {
+    private readonly completions: CompletionItem[] = []
+
     public parse(value: string, cursor: number | undefined) {
         const args: Argument[] = []
         const cmd: Command = { args, cache: {}, errors: [] }
-        const completions: CompletionItem[] = []
         const ans: ArgumentParseResult = {
             argument: cmd, rest: '', cache: cmd.cache,
-            errors: cmd.errors, completions
+            errors: cmd.errors, completions: this.completions
         }
 
         if (value[0] === '#') {
             // Completion
             if (value.length === 1 && cursor === 1) {
-                completions.push(CompletionItem.create('define'))
-                completions.push(CompletionItem.create('region'))
+                this.completions.push(CompletionItem.create('define'))
+                this.completions.push(CompletionItem.create('region'))
             }
 
             // Further suppoer.
@@ -36,7 +39,7 @@ export class CommandParser implements ArgumentParser {
                 // Completion.
                 if (value.length === 8 && cursor === 8) {
                     const cpls = DefinitionTypes.map(v => CompletionItem.create(v))
-                    completions.push(...cpls)
+                    this.completions.push(...cpls)
                 }
                 // Parsing.
                 const segments = value.split(/\s/g)
@@ -75,10 +78,11 @@ export class CommandParser implements ArgumentParser {
         } else if (/^\s*$/.test(value)) {
             args.push({ type: 'empty_line', value: value } as Argument)
         } else {
-            const result = this.parseNodes(value, commandTree, args, 0, cursor)
+            const result = this.parseNodes(value, commandNodes, args, 0, cursor)
             ans.argument = result.argument
             combineLocalCaches(ans.cache, result.cache)
             ans.errors.push(...result.errors)
+            ans.completions
         }
 
         return ans
@@ -97,38 +101,43 @@ export class CommandParser implements ArgumentParser {
     }
 
     public parseOneNode(value: string, node: CommandTreeNode, inputArgs: Argument[],
-        addedNum: number, cursor: number | undefined, completions: CompletionItem[]): CommandParseResult {
-        const parser = this.getArgumentParser(node.parser)
-        const result = parser.parse(value, cursor, node.params)
+        addedNum: number, cursor: number | undefined): CommandParseResult {
+        if (node.parser !== undefined) {
+            const parser = this.getArgumentParser(node.parser)
+            const result = parser.parse(value, cursor, node.params)
+            combineCompletions(this.completions, result.completions)
 
-        var args = [...inputArgs, result.argument]
+            var args = [...inputArgs, result.argument]
 
-        if (!containError(result.errors)) {
-            if (node.children) {
-                const addedNum = value.length - result.rest.length
-                const subResult = this.parseNodes(result.rest, node.children, args, addedNum,
-                    cursor !== undefined ? cursor - addedNum : undefined)
-                combineLocalCaches(result.cache, subResult.cache)
-                downgradeErrors(subResult.errors)
-                result.errors.push(...subResult.errors)
-                args = [...subResult.argument.args]
-                result.rest = subResult.rest
+            if (!containError(result.errors)) {
+                if (node.children) {
+                    const addedNum = value.length - result.rest.length
+                    const subResult = this.parseNodes(result.rest, node.children, args, addedNum,
+                        cursor !== undefined ? cursor - addedNum : undefined)
+                    combineLocalCaches(result.cache, subResult.cache)
+                    downgradeErrors(subResult.errors)
+                    result.errors.push(...subResult.errors)
+                    args = [...subResult.argument.args]
+                    result.rest = subResult.rest
+                }
             }
-        }
 
-        const ans = {
-            argument: {
-                cache: result.cache,
-                errors: result.errors,
-                args
-            }, rest: result.rest, cache: result.cache, errors: result.errors
-        }
+            const ans = {
+                argument: {
+                    cache: result.cache,
+                    errors: result.errors,
+                    args
+                }, rest: result.rest, cache: result.cache, errors: result.errors
+            }
 
-        return addPos(ans, addedNum)
+            return addPos(ans, addedNum)
+        } else {
+            throw 'UnimplementException'
+        }
     }
 
     public parseNodes(value: string, nodes: CommandTreeNode[], inputArgs: Argument[],
-        addedNum: number, cursor: number | undefined, completions: CompletionItem[]): CommandParseResult {
+        addedNum: number, cursor: number | undefined): CommandParseResult {
         if (nodes.length === 1) {
             return this.parseOneNode(value, nodes[0], inputArgs, addedNum, cursor)
         } else {
@@ -197,9 +206,21 @@ function addPos(result: CommandParseResult, addedNum: number): CommandParseResul
     return result
 }
 
+/**
+ * Combine two completions.
+ * @param origin The origin completions. Will be overriden by `override`.
+ * @param override The override completions.
+ */
+export function combineCompletions(origin: CompletionItem[], override: CompletionItem[] | undefined) {
+    if (override) {
+        origin.push(...override)
+    }
+}
+
 interface CommandParseResult extends ArgumentParseResult {
     argument: Command
     rest: string
     cache: LocalCache
     errors: ParsingProblem[]
+    completions?: CompletionItem[]
 }

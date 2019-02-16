@@ -298,7 +298,7 @@
                                     },
                                     "children": [
                                         {
-                                            "definition": "color",
+                                            "template": "color",
                                             "description": "color",
                                             "executable": true
                                         }
@@ -408,7 +408,7 @@
                                     },
                                     "children": [
                                         {
-                                            "definition": "boolean",
+                                            "template": "boolean",
                                             "description": "visibility",
                                             "executable": true
                                         }
@@ -863,7 +863,7 @@
             "description": "Sets the default game mode.",
             "children": [
                 {
-                    "definition": "gamemode",
+                    "template": "gamemode",
                     "description": "mode",
                     "executable": true
                 }
@@ -880,7 +880,7 @@
             "executable": true,
             "children": [
                 {
-                    "definition": "difficulty",
+                    "template": "difficulty",
                     "description": "difficulty",
                     "executable": true
                 }
@@ -937,7 +937,7 @@
                                                     "executable": true,
                                                     "children": [
                                                         {
-                                                            "definition": "boolean",
+                                                            "template": "boolean",
                                                             "description": "hideParticles",
                                                             "executable": true
                                                         }
@@ -1027,7 +1027,7 @@
             "description": "The best command ever in the universe.",
             "children": [
                 {
-                    "definition": "execute_subcommand"
+                    "template": "execute_subcommand"
                 }
             ]
         },
@@ -1287,7 +1287,7 @@
             "description": "Sets a player's game mode.",
             "children": [
                 {
-                    "definition": "gamemode",
+                    "template": "gamemode",
                     "description": "mode",
                     "executable": true,
                     "children": [
@@ -1341,7 +1341,7 @@
                     "executable": true,
                     "children": [
                         {
-                            "definition": "boolean",
+                            "template": "boolean",
                             "description": "value",
                             "executable": true
                         }
@@ -1523,10 +1523,10 @@
             "description": "Gets items from the specific loot table.",
             "children": [
                 {
-                    "definition": "loot_target",
+                    "template": "loot_target",
                     "children": [
                         {
-                            "definition": "loot_source",
+                            "template": "loot_source",
                             "executable": true
                         }
                     ]
@@ -1655,7 +1655,7 @@
             "description": "Creates particles.",
             "children": [
                 {
-                    "definition": "particle",
+                    "template": "particle",
                     "description":"name",
                     "executable": true,
                     "children": [
@@ -1833,7 +1833,7 @@
             "description": "Unlocks or locks players' recipes."
         }
     ],
-    "definitions": {
+    "templates": {
         "boolean": {
             "parser": "literal",
             "params": {
@@ -1896,7 +1896,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "execute_subcommand"
+                                "template": "execute_subcommand"
                             }
                         ]
                     }
@@ -1920,7 +1920,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "execute_subcommand"
+                                "template": "execute_subcommand"
                             }
                         ]
                     }
@@ -1943,7 +1943,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "execute_subcommand"
+                                "template": "execute_subcommand"
                             }
                         ]
                     },
@@ -1965,7 +1965,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "definition": "execute_subcommand"
+                                        "template": "execute_subcommand"
                                     }
                                 ]
                             }
@@ -1987,7 +1987,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "execute_subcommand"
+                                "template": "execute_subcommand"
                             }
                         ]
                     }
@@ -2010,7 +2010,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "execute_subcommand"
+                                "template": "execute_subcommand"
                             }
                         ]
                     },
@@ -2032,7 +2032,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "definition": "execute_subcommand"
+                                        "template": "execute_subcommand"
                                     }
                                 ]
                             }
@@ -2057,7 +2057,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "execute_subcommand"
+                                "template": "execute_subcommand"
                             }
                         ]
                     },
@@ -2079,7 +2079,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "definition": "execute_subcommand"
+                                        "template": "execute_subcommand"
                                     }
                                 ]
                             }
@@ -2101,7 +2101,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "execute_subcommand"
+                                "template": "execute_subcommand"
                             }
                         ]
                     }
@@ -2126,7 +2126,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "execute_subcommand"
+                                "template": "execute_subcommand"
                             }
                         ]
                     }
@@ -2162,7 +2162,7 @@
                                         "executable": true,
                                         "children": [
                                             {
-                                                "definition": "execute_subcommand"
+                                                "template": "execute_subcommand"
                                             }
                                         ]
                                     }
@@ -2210,7 +2210,7 @@
                                                         "executable": true,
                                                         "children": [
                                                             {
-                                                                "definition": "execute_subcommand"
+                                                                "template": "execute_subcommand"
                                                             }
                                                         ]
                                                     }
@@ -2244,7 +2244,7 @@
                                         "executable": true,
                                         "children": [
                                             {
-                                                "definition": "execute_subcommand"
+                                                "template": "execute_subcommand"
                                             }
                                         ]
                                     }
@@ -2270,7 +2270,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "definition": "execute_subcommand"
+                                        "template": "execute_subcommand"
                                     }
                                 ]
                             }
@@ -2326,7 +2326,7 @@
                                                                 "executable": true,
                                                                 "children": [
                                                                     {
-                                                                        "definition": "execute_subcommand"
+                                                                        "template": "execute_subcommand"
                                                                     }
                                                                 ]
                                                             }
@@ -2348,7 +2348,7 @@
                                                         "executable": true,
                                                         "children": [
                                                             {
-                                                                "definition": "execute_subcommand"
+                                                                "template": "execute_subcommand"
                                                             }
                                                         ]
                                                     }
@@ -2409,7 +2409,7 @@
                                                                 "executable": true,
                                                                 "children": [
                                                                     {
-                                                                        "definition": "execute_subcommand"
+                                                                        "template": "execute_subcommand"
                                                                     }
                                                                 ]
                                                             }
@@ -2447,7 +2447,7 @@
                                                 "executable": true,
                                                 "children": [
                                                     {
-                                                        "definition": "execute_subcommand"
+                                                        "template": "execute_subcommand"
                                                     }
                                                 ]
                                             }
@@ -2486,7 +2486,7 @@
                                                                 "executable": true,
                                                                 "children": [
                                                                     {
-                                                                        "definition": "execute_subcommand"
+                                                                        "template": "execute_subcommand"
                                                                     }
                                                                 ]
                                                             }
@@ -2521,7 +2521,7 @@
                                                 "executable": true,
                                                 "children": [
                                                     {
-                                                        "definition": "execute_subcommand"
+                                                        "template": "execute_subcommand"
                                                     }
                                                 ]
                                             }
@@ -2567,7 +2567,7 @@
                                 "executable": true,
                                 "children": [
                                     {
-                                        "definition": "loot_tool",
+                                        "template": "loot_tool",
                                         "executable": true
                                     }
                                 ]
@@ -2627,7 +2627,7 @@
                         "executable": true,
                         "children": [
                             {
-                                "definition": "loot_tool",
+                                "template": "loot_tool",
                                 "executable": true
                             }
                         ]
@@ -2680,14 +2680,14 @@
                 },
                 "children": [
                     {
-                        "definition": "nbt_holder_multiple",
+                        "template": "nbt_holder_multiple",
                         "children": [
                             {
                                 "parser": "slot",
                                 "description": "slot",
                                 "children": [
                                     {
-                                        "definition": "loot_source"
+                                        "template": "loot_source"
                                     },
                                     {
                                         "parser": "number",
