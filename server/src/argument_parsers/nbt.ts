@@ -7,10 +7,11 @@ const NBT_BYTE_REGEX = /^([0-9]+[bB]|[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$/
 const NBT_DOUBLE_REGEX = /^([+-]?)((\.[0-9]+)|([0-9]+\.)|([0-9]+\.[0-9]+)|[0-9]+[eE][0-9]+)([dD]?)$/
 const NBT_FLOAT_REGEX = /^([+-]?)((\.[0-9]+)[fF]|([0-9]+\.)[fF]|([0-9]+\.[0-9]+)[fF]|[0-9]+[eE][0-9]+[fF])$/
 
-const ESCAPE_PATTERN = /("|\\)/g
-const UNESCAPE_PATTERN = /\\("|\\)/g
+const ESCAPE_PATTERN = /(\\|"|')/g
+const UNESCAPE_PATTERN_DOUBLE = /\\(\\|")/g
+const UNESCAPE_PATTERN_SINGLE = /\\(\\|')/g
 
-const UNQUOTED_SUPPORT = /[a-zA-Z0-9\-_\.]/
+const UNQUOTED_LEGAL_CHAR = /[a-zA-Z0-9\-_\.]/
 
 const BYTE_RANGE = [-128, 127]
 const SHORT_RANGE = [-32768, 32767]
@@ -22,12 +23,16 @@ const DOUBLE_RANGE = [-1.8E308, 1.8E308]
 export function escape(data: string) {
     return data.replace(ESCAPE_PATTERN, '\\$1')
 }
-export function unescape(data: string) {
-    return data.replace(UNESCAPE_PATTERN, '$1')
+export function unescape(data: string, quote: string) {
+    if (quote === "'") {
+        return data.replace(UNESCAPE_PATTERN_SINGLE, '$1')
+    } else {
+        return data.replace(UNESCAPE_PATTERN_DOUBLE, '$1')
+    }
 }
 
-export function dequote(data: string) {
-    return data.slice(data.search('"') + 1, data.lastIndexOf('"'))
+export function dequote(data: string, quote: string) {
+    return data.slice(data.indexOf(quote) + 1, data.lastIndexOf(quote))
 }
 
 export type NbtValue = NbtCompound | NbtList | NbtNumber | string
@@ -63,6 +68,7 @@ export class NbtParser implements ArgumentParser {
         let inVal = false
         let inQuote = false
         let wasInQuote = false
+        let quote = '"'
         let startPos = 0
         let compoundStart = 0
         let keyName = ''
@@ -76,18 +82,19 @@ export class NbtParser implements ArgumentParser {
                 continue
             }
             if (inBody) {
-                if (nbt[i] === '"' && nbt[i - 1] !== '\\') {
+                if ((nbt[i] === '"' || nbt[i] === "'") && nbt[i - 1] !== '\\') {
                     if (!inQuote) {
                         stringStart = i
                     }
                     inQuote = !inQuote
                     wasInQuote = true
+                    quote = nbt[i]
                 }
                 if (!inQuote) {
                     if (nbt[i] === ':') {
                         keyName = nbt.slice(startPos, i).trim()
                         if (wasInQuote) {
-                            keyName = unescape(dequote(keyName))
+                            keyName = unescape(dequote(keyName, quote), quote)
                             wasInQuote = false
                         }
                         inVal = true
@@ -121,7 +128,7 @@ export class NbtParser implements ArgumentParser {
                             inVal = false
                             if (type === 'string') {
                                 if (!wasInQuote) {
-                                    if (!UNQUOTED_SUPPORT.test(val)) {
+                                    if (!UNQUOTED_LEGAL_CHAR.test(val)) {
                                         this.parsingProblems.push({
                                             range: { start: valStart, end: i },
                                             message: 'Unexpected char(s) detected in string!',
@@ -129,7 +136,7 @@ export class NbtParser implements ArgumentParser {
                                         })
                                     }
                                 }
-                                compound[keyName] = wasInQuote ? unescape(dequote(val)) : val
+                                compound[keyName] = wasInQuote ? unescape(dequote(val, quote), quote) : val
                                 wasInQuote = false
                             }
                             else if (type === 'int' || type === 'short' || type === 'long') {
@@ -172,6 +179,7 @@ export class NbtParser implements ArgumentParser {
         let isLast = false
         let inQuote = false
         let wasInQuote = false
+        let quote = '"'
         let stringStart = 0
         const list: NbtList = { type: 'string' }
         for (let i = pos; i < nbt.length; i++) {
@@ -183,7 +191,7 @@ export class NbtParser implements ArgumentParser {
             }
             if (inBody) {
                 if (nbt[i] === ';' && itemIndex === 0) {
-                    if(list.type != 'string') {
+                    if (list.type != 'string') {
                         this.parsingProblems.push({
                             range: { start: startPos, end: i },
                             message: 'It seems that you are trying to assign the type twice.',
@@ -206,33 +214,34 @@ export class NbtParser implements ArgumentParser {
                     else {
                         this.parsingProblems.push({
                             range: { start: startPos, end: i },
-                            message: 'Considering it is an array, but met unexpected type assignment!',
+                            message: `Expected array type 'B', 'I' or 'L' but got: '${typeIdentity}'.`,
                             severity: 'warning'
                         })
                     }
                     startPos = i + 1
                     continue
                 }
-                if(nbt[i] === '"' && nbt[i - 1] !== '\\') {
-                    if(!inQuote) {
+                if ((nbt[i] === '"' || nbt[i] === "'") && nbt[i - 1] !== '\\') {
+                    if (!inQuote) {
                         stringStart = i
                     }
                     inQuote = !inQuote
                     wasInQuote = true
+                    quote = nbt[i]
                 }
-                if(!inQuote) {
+                if (!inQuote) {
                     if (nbt[i] === '{') {
                         const itemStart = i
                         const result = this.parseCompound(nbt, i)
                         const nextComma = nbt.slice(result[1], nbt.length).search(',')
                         i = result[1] + (nextComma === -1 ? 0 : nextComma)
-                        if(nextComma === -1) {
+                        if (nextComma === -1) {
                             isLast = true
                         }
                         if (!isArray && itemIndex === 0) {
                             list.type = 'compound'
                         }
-                        if(list.type != 'compound') {
+                        if (list.type != 'compound') {
                             this.parsingProblems.push({
                                 range: { start: itemStart, end: i },
                                 message: 'Detected current item type does not match previous detected types!',
@@ -247,11 +256,11 @@ export class NbtParser implements ArgumentParser {
                         const itemStart = i
                         const result = this.parseListOrArray(nbt, i)
                         const nextComma = nbt.slice(result[1], nbt.length).search(',')
-                       i = result[1] + (nextComma === -1 ? 1 : nextComma)
+                        i = result[1] + (nextComma === -1 ? 1 : nextComma)
                         if (!isArray && itemIndex === 0) {
                             list.type = 'list'
                         }
-                        if(list.type != 'list') {
+                        if (list.type != 'list') {
                             this.parsingProblems.push({
                                 range: { start: itemStart, end: i },
                                 message: 'Detected current item type does not match previous detected types!',
@@ -278,8 +287,8 @@ export class NbtParser implements ArgumentParser {
                             })
                         }
                         if (type === 'string') {
-                            if(!wasInQuote) {
-                                if(!UNQUOTED_SUPPORT.test(val)) {
+                            if (!wasInQuote) {
+                                if (!UNQUOTED_LEGAL_CHAR.test(val)) {
                                     this.parsingProblems.push({
                                         range: { start: valStart, end: i },
                                         message: 'Unexpected char(s) detected in string!',
@@ -287,7 +296,7 @@ export class NbtParser implements ArgumentParser {
                                     })
                                 }
                             }
-                            list[itemIndex] = wasInQuote ? unescape(dequote(val)) : val
+                            list[itemIndex] = wasInQuote ? unescape(dequote(val, quote), quote) : val
                         }
                         else if (type === 'int' || type === 'short' || type === 'long') {
                             list[itemIndex] = { type: type, value: parseInt(val) }
@@ -332,13 +341,13 @@ export class NbtParser implements ArgumentParser {
         for (const regex of regexs) {
             if (regex[0].test(num)) {
                 let n = 0
-                if(regex[1] == 'float' || regex[1] == 'double') {
+                if (regex[1] == 'float' || regex[1] == 'double') {
                     n = parseFloat(num)
                 }
                 else {
                     n = parseInt(num)
                 }
-                if(n >= regex[2][0] && n <= regex[2][1]) {
+                if (n >= regex[2][0] && n <= regex[2][1]) {
                     return regex[1]
                 }
             }

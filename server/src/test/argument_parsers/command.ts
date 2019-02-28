@@ -38,8 +38,8 @@ const deepNode: CommandTreeNode = {
 }
 //#endregion
 
-describe.only('CommandParser tests', () => {
-    describe.only('parse() tests', () => {
+describe('CommandParser tests', () => {
+    describe('parse() tests', () => {
         it('Should parse #define', ()=>{
             const result = parser.parse('#define', undefined)
 

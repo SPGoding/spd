@@ -17,17 +17,18 @@ export class StringParser implements ArgumentParser {
                 rest = segments.slice(1).join(' ')
                 break
             case 'phrase':
-                if (input[0] !== '"') {
+                if (input[0] !== '"' && input[0] !== "'") {
                     value = segments[0]
                     rest = segments.slice(1).join(' ')
                 } else {
+                    const quote = input[0]
                     let escaped = false
                     let hasEnded = false
                     for (let index = 1; index < input.length; index++) {
                         const char = input[index]
                         if (char === '\\') {
                             escaped = !escaped
-                        } else if (char === '"') {
+                        } else if (char === quote) {
                             if (escaped) {
                                 escaped = false
                             } else {
@@ -51,7 +52,7 @@ export class StringParser implements ArgumentParser {
                     }
                     if (!hasEnded) {
                         problems.push({
-                            message: `Expected an ending quote '"'.`,
+                            message: `Expected an ending ${quote === "'" ? 'single quote' : 'double quote'}.`,
                             range: { start: 0, end: input.length },
                             severity: 'warning'
                         })

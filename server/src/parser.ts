@@ -1,5 +1,5 @@
 import { LocalCache, ArgumentType } from './utils/types'
-import { NbtValue } from './argument_parsers/nbt_value'
+import { NbtValue } from './argument_parsers/nbt'
 import { Selector } from './argument_parsers/selector'
 import { CompletionItem } from 'vscode-languageserver'
 

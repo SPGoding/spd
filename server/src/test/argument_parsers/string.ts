@@ -28,7 +28,7 @@ describe('StringParser Tests', () => {
                 rest: 'bar', cache: {}, errors: []
             })
         })
-        it('Should parse complex phrase string', () => {
+        it('Should parse phrase string with double quote', () => {
             const parser = new StringParser()
 
             const result = parser.parse('"foo bar" baz', undefined, { type: 'phrase' })
@@ -36,6 +36,18 @@ describe('StringParser Tests', () => {
             assert.deepStrictEqual(result, {
                 argument: {
                     type: 'string', value: '"foo bar"'
+                },
+                rest: 'baz', cache: {}, errors: []
+            })
+        })
+        it('Should parse phrase string with single quote', () => {
+            const parser = new StringParser()
+
+            const result = parser.parse("'foo bar' baz", undefined, { type: 'phrase' })
+
+            assert.deepStrictEqual(result, {
+                argument: {
+                    type: 'string', value: "'foo bar'"
                 },
                 rest: 'baz', cache: {}, errors: []
             })
@@ -63,7 +75,7 @@ describe('StringParser Tests', () => {
                 }, errors: [{
                     severity: 'warning',
                     range: { start: 0, end: 8 },
-                    message: `Expected an ending quote '"'.`
+                    message: 'Expected an ending double quote.'
                 }], rest: '', cache: {},
             })
         })

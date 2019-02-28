@@ -1,4 +1,4 @@
-import { NbtParser } from '../../argument_parsers/nbt_value'
+import { NbtParser } from '../../argument_parsers/nbt'
 import * as assert from 'power-assert'
 import { describe, it } from 'mocha'
 
@@ -7,16 +7,16 @@ const TEST_NUMBER_NBT_LIST = '[0.0d, 1.0d, 2.0d]'
 const TEST_STRING_NBT_LIST = '[a,b,c,d,e]'
 const TEST_LIST_NBT_LIST = '[[1,2,3],[4,5,6]]'
 const TEST_COMPOUND_NBT_LIST = '[{name:sf,age:unknown},{name:spg,age:-1}]'
-const TEST_QUOTED_STRING = '{string:"I am a {} {} fucking string","\\"\\\\"":fuck}'
-const TEST_QUOTED_LIST = '["quote","\\"FUCKING\\\\ \\\\QUOTE\\""]'
+const TEST_QUOTED_STRING = `{string:"I am a {} {} ducking string","\\"\\\\"":'"du\\'ck"'}`
+const TEST_QUOTED_LIST = '["quote","\\"DUCKING\\\\ \\\\QUOTE\\""]'
 const TEST_NBT_ARRAY = '[I;1,2,3]'
 const TEST_ERROR_COMPOUND = '{wow:notenclosing'
-const TEST_ERROR_FAULT_QUOTE_COMPOUND = '{wow:"fuck}'
-const TEST_ERROR_LIST = '[fuck,fuck'
-const TEST_FAULT_ASSIGNMENT = '[FUCK;fuck,fuck]'
+const TEST_ERROR_FAULT_QUOTE_COMPOUND = '{wow:"duck}'
+const TEST_ERROR_LIST = '[duck,duck'
+const TEST_FAULT_ASSIGNMENT = '[DUCK;duck,duck]'
 const TEST_DUPLICATED_ASSIGNMENT = '[I;L;1]'
-const TEST_FAULT_QUOTE_LIST = '[fuck,"fuck]'
-const TEST_FAULT_TYPE_ARRAY = '[I;fuck]'
+const TEST_FAULT_QUOTE_LIST = '[duck,"duck]'
+const TEST_FAULT_TYPE_ARRAY = '[I;duck]'
 const TEST_FAULT_TYPE_LIST = '[1.0,1]'
 const TEST_INT_OUT_OF_RANGE_LIST = '[2147483648]'
 
@@ -41,8 +41,8 @@ describe('NbtParser tests', () => {
         it('Should correctly parse quoted value', () => {
             const parser = new NbtParser()
             assert.deepStrictEqual(parser.parseCompound(TEST_QUOTED_STRING, 0)[0], {
-                string: 'I am a {} {} fucking string',
-                '"\\"': 'fuck'
+                string: 'I am a {} {} ducking string',
+                '"\\"': `"du'ck"`
             })
         })
     })
@@ -133,7 +133,7 @@ describe('NbtParser tests', () => {
             const parser = new NbtParser()
             assert.deepStrictEqual(parser.parseListOrArray(TEST_QUOTED_LIST, 0)[0], {
                 0: 'quote',
-                1: '"FUCKING\\ \\QUOTE"',
+                1: '"DUCKING\\ \\QUOTE"',
                 type: 'string'
             })
         })
@@ -232,7 +232,7 @@ describe('NbtParser tests', () => {
                             start: 1,
                             end: 5
                         },
-                        message: 'Considering it is an array, but met unexpected type assignment!',
+                        message: "Expected array type 'B', 'I' or 'L' but got: 'DUCK'.",
                         severity: 'warning'
                     }
                 ])
