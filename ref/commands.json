@@ -1830,7 +1830,15 @@
                     "recipe"
                 ]
             },
-            "description": "Unlocks or locks players' recipes."
+            "description": "Unlocks or locks players' recipes.",
+            "children": [
+                {
+                    "parser": "literal",
+                    "params": {
+                        
+                    }
+                }
+            ]
         }
     ],
     "templates": {
