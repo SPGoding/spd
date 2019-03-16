@@ -1185,7 +1185,6 @@
                 ]
             },
             "description": "Forces chunks to load constantly or not.",
-            "permission": 4,
             "children": [
                 {
                     "parser": "literal",
@@ -1195,6 +1194,7 @@
                             "remove"
                         ]
                     },
+                    "permission": 4,
                     "children": [
                         {
                             "parser": "vector",
@@ -1223,6 +1223,7 @@
                             "remove"
                         ]
                     },
+                    "permission": 4,
                     "children": [
                         {
                             "parser": "literal",
@@ -1656,7 +1657,7 @@
             "children": [
                 {
                     "template": "particle",
-                    "description":"name",
+                    "description": "name",
                     "executable": true,
                     "children": [
                         {
@@ -1835,10 +1836,308 @@
                 {
                     "parser": "literal",
                     "params": {
-                        
-                    }
+                        "expected": [
+                            "give",
+                            "take"
+                        ]
+                    },
+                    "children": [
+                        {
+                            "parser": "selector",
+                            "params": {
+                                "amount": "multiple",
+                                "type": "players"
+                            },
+                            "description": "player",
+                            "children": [
+                                {
+                                    "parser": "literal",
+                                    "params": {
+                                        "expected": [
+                                            "*"
+                                        ]
+                                    },
+                                    "executable": true
+                                },
+                                {
+                                    "parser": "recipe",
+                                    "description": "recipe",
+                                    "executable": true
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "reload"
+                ]
+            },
+            "description": "Reloads data packs.‌",
+            "permission": 4,
+            "executable": true
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "replaceitem"
+                ]
+            },
+            "description": "Replaces items of blocks or entities.",
+            "children": [
+                {
+                    "template": "nbt_holder_multiple",
+                    "children": [
+                        {
+                            "parser": "slot",
+                            "description": "slot",
+                            "children": [
+                                {
+                                    "parser": "itemstack",
+                                    "description": "item",
+                                    "executable": true,
+                                    "children": [
+                                        {
+                                            "parser": "number",
+                                            "params": {
+                                                "isInteger": true,
+                                                "min": 0,
+                                                "max": 64
+                                            },
+                                            "description": "amount",
+                                            "executable": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "save-all"
+                ]
+            },
+            "description": "Saves the server to the data storage device.",
+            "permission": 4,
+            "executable": true,
+            "children": [
+                {
+                    "parser": "literal",
+                    "params": {
+                        "expected": [
+                            "flush"
+                        ]
+                    },
+                    "executable": true
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "save-off"
+                ]
+            },
+            "description": "Disables automatic server saves.",
+            "permission": 4,
+            "executable": true
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "save-on"
+                ]
+            },
+            "description": "Enables automatic server saves.",
+            "permission": 4,
+            "executable": true
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "exepected": [
+                    "say"
+                ]
+            },
+            "description": "Sends a message to all players.",
+            "children": [
+                {
+                    "parser": "string",
+                    "params": {
+                        "type": "greedy"
+                    },
+                    "description": "message",
+                    "executable": true
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "exepected": [
+                    "schedule"
+                ]
+            },
+            "description": "Schedules a function to execute.",
+            "children": [
+                {
+                    "parser": "literal",
+                    "params": {
+                        "exepected": [
+                            "function"
+                        ]
+                    },
+                    "children": [
+                        {
+                            "parser": "function",
+                            "description": "function",
+                            "children": [
+                                {
+                                    "parser": "number",
+                                    "params": {
+                                        "isInteger": true,
+                                        "min": 1
+                                    },
+                                    "description": "time",
+                                    "executable": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "scoreboard"
+                ]
+            },
+            "description": "Manages scoreboard objectives and scores."
+            // TODO
+            // https://minecraft.gamepedia.com/Scoreboard
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "seed"
+                ]
+            },
+            "description": "Gets the world seed",
+            "executable": true
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "setblock"
+                ]
+            },
+            "description": "Places a block at specific position.",
+            "children": [
+                {
+                    "parser": "vector",
+                    "params": {
+                        "dimension": 3
+                    },
+                    "description": "pos",
+                    "children": [
+                        {
+                            "parser": "blockstate",
+                            "description": "block",
+                            "executable": true,
+                            "children": [
+                                {
+                                    "parser": "literal",
+                                    "params": {
+                                        "expected": [
+                                            "destroy",
+                                            "keep",
+                                            "replace"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "setworldspawn"
+                ]
+            },
+            "description": "Sets the world spawn.",
+            "executable": true,
+            "children": [
+                {
+                    "parser": "vector",
+                    "params": {
+                        "dimension": 3
+                    },
+                    "description": "pos",
+                    "executable": true
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "spawnpoint"
+                ]
+            },
+            "description": "Sets the spawn point for a player.",
+            "executable": true,
+            "children": [
+                {
+                    "parser": "selector",
+                    "params": {
+                        "amount": "multiple",
+                        "type": "players"
+                    }, 
+                    "description": "target",
+                    "executable": true,
+                    "children": [
+                        {
+                            "parser": "vector",
+                            "params": {
+                                "dimension": 3
+                            },
+                            "description": "pos",
+                            "executable": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "parser": "literal",
+            "params": {
+                "expected": [
+                    "spreadplayers"
+                ]
+            },
+            "description": "Teleports targets randomly."
+            // TODO
+            // https://minecraft.gamepedia.com/Commands
         }
     ],
     "templates": {

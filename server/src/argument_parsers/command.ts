@@ -230,35 +230,33 @@ export function combineCompletions(origin: CompletionItem[], override: Completio
 
 /**
  * Combine two command tree nodes.
- * If the origin is an array, `override.description` will be set to all items in `origin` and
- * `override.children` & `override.executable` will be set to the last item of `origin`.
- * Otherwise `override.children`, `override.description` and `override.executable` will be set to `origin`.
+ * If the origin is an array, this function will be called to all items of the array.
+ * Otherwise `override.children` and `override.executable` will be set to the deepest child node of `origin`, 
+ * and `override.description` will be set to `origin` directly.
  * @param origin The origin node or array of nodes. WILL be overriden.
  * @param override The override node.
  */
 export function combineCommandTreeNodes(origin: Template, override: CommandTreeNode) {
     if (origin instanceof Array) {
-        if (override.description) {
-            origin.forEach(node => {
-                node.description = override.description
-            })
-        }
-        if (override.children) {
-            origin[origin.length - 1].children = override.children
-        }
-        if (override.executable) {
-            origin[origin.length - 1].executable = override.executable
-        }
+        origin.forEach(node => {
+            combineCommandTreeNodes(node, override)
+        })
     } else {
-        if (override.children) {
-            origin.children = override.children
+        const recursion = (node: CommandTreeNode) => {
+            if (node.children) {
+                node.children.forEach(v => {
+                    recursion(v)
+                })
+            } else {
+                node.children = override.children
+                node.executable = override.executable
+            }
         }
+        recursion(origin)
+
         if (override.description) {
             origin.description = override.description
-        }
-        if (override.executable) {
-            origin.executable = override.executable
-        }
+        }        
     }
 }
 
