@@ -47,10 +47,10 @@ export class VectorParser implements ArgumentParser {
         }
 
         const ans: ArgumentParseResult = {
-            argument: {
+            result: {
                 value, type: 'vector'
             },
-            errors: problems, rest, cache: {}
+            problems: problems, rest, cache: {}
         }
 
         if (completions) {

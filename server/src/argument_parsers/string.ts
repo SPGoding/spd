@@ -65,10 +65,10 @@ export class StringParser implements ArgumentParser {
         }
 
         return {
-            argument: {
+            result: {
                 value, type: 'string'
             },
-            errors: problems, rest, cache: {}
+            problems: problems, rest, cache: {}
         }
     }
 }

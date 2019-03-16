@@ -102,9 +102,9 @@ export interface CommandTreeNode {
      */
     parser?: ArgumentType,
     /**
-     * The definition to use.
+     * The template to use.
      */
-    definition?: string,
+    template?: string,
     /**
      * All parameters for the parser.
      */
@@ -130,12 +130,13 @@ export interface CommandTreeNode {
  */
 export interface CommandTree {
     commands: CommandTreeNode[],
-    templates: Template[]
+    templates: {
+        [name: string]: Template
+    }
 }
 
 /**
  * An template defined in commands.json.
  */
-export interface Template {
-    [name: string]: CommandTreeNode | CommandTreeNode[]
-}
+export type Template = CommandTreeNode | CommandTreeNode[]
+

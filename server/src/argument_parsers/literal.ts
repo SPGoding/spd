@@ -45,11 +45,11 @@ export class LiteralParser implements ArgumentParser {
         }
 
         const ans: ArgumentParseResult = {
-            argument: {
+            result: {
                 value: value,
                 type: 'literal'
             },
-            errors: problems,
+            problems: problems,
             rest,
             cache: {}
         }

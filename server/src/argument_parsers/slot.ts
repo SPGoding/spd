@@ -72,10 +72,10 @@ export class SlotParser implements ArgumentParser {
         }
 
         const ans: ArgumentParseResult = {
-            argument: {
+            result: {
                 value, type: 'slot'
             },
-            errors: problems, rest, cache: {}
+            problems: problems, rest, cache: {}
         }
 
         if (completions) {

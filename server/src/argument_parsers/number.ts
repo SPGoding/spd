@@ -47,10 +47,10 @@ export class NumberParser implements ArgumentParser {
         }
 
         return {
-            argument: {
+            result: {
                 value, type: 'number'
             },
-            errors: problems, rest, cache: {}
+            problems: problems, rest, cache: {}
         }
     }
 }

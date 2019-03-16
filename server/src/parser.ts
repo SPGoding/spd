@@ -31,9 +31,9 @@ export interface Command {
      */
     cache: LocalCache
     /**
-     * All errors of the command.
+     * All problems of the command.
      */
-    errors: ParsingProblem[]
+    problems: ParsingProblem[]
 }
 
 /**
@@ -89,7 +89,7 @@ export interface ArgumentParseResult {
     /**
      * The parsed argument result.
      */
-    argument: Argument
+    result: Argument
     /**
      * The rest value which the next argument parser should parse.
      */
@@ -102,7 +102,7 @@ export interface ArgumentParseResult {
      * All errors eccured when parsing the argument. 
      * Will be combined to `Command` which the argument belongs to.
      */
-    errors: ParsingProblem[]
+    problems: ParsingProblem[]
     /**
      * All possible completions at the cursor location.
      */
