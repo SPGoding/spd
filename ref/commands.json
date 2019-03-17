@@ -576,7 +576,7 @@
                                     "description": "pos",
                                     "children": [
                                         {
-                                            "parser": "nbt_value",
+                                            "parser": "nbt",
                                             "description": "NBT",
                                             "executable": true
                                         }
@@ -599,7 +599,7 @@
                                     "description": "target",
                                     "children": [
                                         {
-                                            "parser": "nbt_value",
+                                            "parser": "nbt",
                                             "description": "NBT",
                                             "executable": true
                                         }
@@ -2337,10 +2337,7 @@
                             "executable": true,
                             "children": [
                                 {
-                                    "parser": "nbt_value",
-                                    "params": {
-                                        "expected": ["compound"]
-                                    },
+                                    "parser": "nbt",
                                     "description": "dataTag",
                                     "executable": true
                                 }
@@ -3604,7 +3601,7 @@
                                                 "description": "path",
                                                 "children": [
                                                     {
-                                                        "parser": "nbt_number_type",
+                                                        "template": "nbt_number_type",
                                                         "description": "type",
                                                         "children": [
                                                             {
@@ -3674,7 +3671,7 @@
                                                 "description": "path",
                                                 "children": [
                                                     {
-                                                        "parser": "nbt_number_type",
+                                                        "template": "nbt_number_type",
                                                         "description": "type",
                                                         "children": [
                                                             {
@@ -3973,6 +3970,12 @@
                 ]
             }
         ],
+        "nbt_number_type": {
+            "parser": "literal",
+            "params": {
+                "expected": ["byte", "double", "float", "int", "long", "short"]
+            }
+        },
         "sound_source": {
             "parser": "literal",
             "params": {

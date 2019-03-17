@@ -185,43 +185,6 @@
                             "properties": {
                                 "parser": {
                                     "enum": [
-                                        "nbt_value"
-                                    ]
-                                },
-                                "params": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "expected": {
-                                            "enum": [
-                                                "compound",
-                                                "list",
-                                                "byte",
-                                                "short",
-                                                "integer",
-                                                "long",
-                                                "float",
-                                                "double",
-                                                "string",
-                                                "byte_array",
-                                                "integer_array",
-                                                "long_array"
-                                            ],
-                                            "description": "The kinds of NBT values which are expected."
-                                        }
-                                    },
-                                    "required": [
-                                        "expected"
-                                    ]
-                                }
-                            },
-                            "required": [
-                                "params"
-                            ]
-                        },
-                        {
-                            "properties": {
-                                "parser": {
-                                    "enum": [
                                         "number"
                                     ]
                                 },
@@ -308,7 +271,6 @@
                             "properties": {
                                 "parser": {
                                     "enum": [
-                                        "nbt_value",
                                         "advancement",
                                         "loot_table",
                                         "function",
@@ -323,8 +285,8 @@
                                         "itemstack",
                                         "blockstate_predicate",
                                         "itemstack_predcate",
+                                        "nbt",
                                         "nbt_path",
-                                        "nbt_number_type",
                                         "effect",
                                         "enchantment",
                                         "axes",
