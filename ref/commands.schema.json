@@ -276,7 +276,8 @@
                                 "parser": {
                                     "enum": [
                                         "bossbar",
-                                        "objective"
+                                        "objective",
+                                        "team"
                                     ]
                                 },
                                 "params": {
@@ -289,6 +290,9 @@
                                                 "remove"
                                             ],
                                             "description": "What will be done to the argument."
+                                        },
+                                        "isTrigger": {
+                                            "type": "boolean"
                                         }
                                     },
                                     "required": [
@@ -329,7 +333,10 @@
                                         "slot",
                                         "command",
                                         "particle",
-                                        "sound"
+                                        "sound",
+                                        "tag",
+                                        "time",
+                                        "criteria"
                                     ]
                                 },
                                 "description": {},
