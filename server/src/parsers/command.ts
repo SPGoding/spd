@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { ArgumentParser, Argument, Command, ArgumentParseResult, ParsingProblem } from '../parser'
+import { Parser, Argument, Command, ParsedResult, ParsingProblem } from '../utils/parser'
 import { ArgumentType, CommandTreeNode, LocalCache, DefinitionTypes, CommandTree, Template } from '../utils/types'
 import { combineLocalCaches, convertArrayToString } from '../utils/utils'
 import { LiteralParser } from './literal'
@@ -16,13 +16,13 @@ const commandNodes = commandTree.commands
  * Parses a command.
  * Accepts comments (begin with `#`) and empty lines.
  */
-export class CommandParser implements ArgumentParser {
+export class CommandParser implements Parser {
     private readonly completions: CompletionItem[] = []
 
-    public parse(value: string, cursor: number | undefined) {
+    public pull(value: string, cursor: number | undefined) {
         const args: Argument[] = []
         const cmd: Command = { args, cache: {}, problems: [] }
-        const ans: ArgumentParseResult = {
+        const ans: ParsedResult = {
             result: cmd, rest: '', cache: cmd.cache,
             problems: cmd.problems, completions: this.completions
         }
@@ -69,14 +69,14 @@ export class CommandParser implements ArgumentParser {
                         })
                         break
                 }
-                args.push({ type: 'comment_definition', value: value } as Argument)
+                args.push({ type: 'comment_definition', raw: value } as Argument)
             } else if (value.slice(0, 8) === '#region ') {
                 // TODO: #region support here.
             } else {
-                args.push({ type: 'comment', value: value } as Argument)
+                args.push({ type: 'comment', raw: value } as Argument)
             }
         } else if (/^\s*$/.test(value)) {
-            args.push({ type: 'empty_line', value: value } as Argument)
+            args.push({ type: 'empty_line', raw: value } as Argument)
         } else {
             const result = this.parseNodes(value, commandNodes, args, 0, cursor)
             ans.result = result.result
@@ -88,7 +88,7 @@ export class CommandParser implements ArgumentParser {
         return ans
     }
 
-    private getArgumentParser(parser: ArgumentType): ArgumentParser {
+    private getArgumentParser(parser: ArgumentType): Parser {
         switch (parser) {
             case 'command':
                 return new CommandParser()
@@ -104,7 +104,7 @@ export class CommandParser implements ArgumentParser {
         addedNum: number, cursor: number | undefined): CommandParseResult {
         if (node.parser !== undefined) {
             const parser = this.getArgumentParser(node.parser)
-            const result = parser.parse(value, cursor, node.params)
+            const result = parser.pull(value, cursor, node.params)
             combineCompletions(this.completions, result.completions)
 
             var args = [...inputArgs, result.result]
@@ -260,7 +260,7 @@ export function combineCommandTreeNodes(origin: Template, override: CommandTreeN
     }
 }
 
-interface CommandParseResult extends ArgumentParseResult {
+interface CommandParseResult extends ParsedResult {
     result: Command
     rest: string
     cache: LocalCache

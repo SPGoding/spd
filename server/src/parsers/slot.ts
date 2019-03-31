@@ -1,8 +1,8 @@
-import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
+import { Parser, ParsedResult, ParsingProblem } from '../utils/parser'
 import { CompletionItem } from 'vscode-languageserver'
 import { convertArrayToString } from '../utils/utils'
 
-export class SlotParser implements ArgumentParser {
+export class SlotParser implements Parser {
     private readonly COMPLETION_TREE: [string, string[]][] = [
         ['armor', ['chest', 'feet', 'head', 'legs']],
         ['container', [
@@ -28,7 +28,7 @@ export class SlotParser implements ArgumentParser {
         ['weapon', ['mainhand', 'offhand']]
     ]
 
-    parse(input: string, cursor: number | undefined, params: object): ArgumentParseResult {
+    pull(input: string, cursor: number | undefined, params: object): ParsedResult {
         const segments = input.split(/\s/g)
         const problems: ParsingProblem[] = []
         const value = segments[0]
@@ -71,9 +71,9 @@ export class SlotParser implements ArgumentParser {
             }
         }
 
-        const ans: ArgumentParseResult = {
+        const ans: ParsedResult = {
             result: {
-                value, type: 'slot'
+                raw: value, type: 'slot'
             },
             problems: problems, rest, cache: {}
         }

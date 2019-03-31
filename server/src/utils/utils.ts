@@ -11,14 +11,37 @@ export function combineLocalCaches(origin: LocalCache, override: LocalCache) {
         for (const key of ['name', 'tag', 'sound']) {
             if (origin.definitions[key] && override.definitions[key]) {
                 origin.definitions[key].push(...override.definitions[key])
+            } else {
+                origin.definitions[key] = override.definitions[key]
             }
         }
+    } else {
+        origin.definitions = override.definitions
     }
+
     if (origin.references && override.references) {
-        for (const key of ['name', 'tag', 'sound', 'advancement', 'recipe', 'loot_table',
-            'function', 'block_tag', 'entity_type_tag', 'fluid_tag', 'function_tag', 'item_tag']) {
-            origin.references[key].push(...override.references[key])
+        for (const key of [
+            'name',
+            'tag',
+            'sound',
+            'advancement',
+            'recipe',
+            'loot_table',
+            'function',
+            'block_tag',
+            'entity_type_tag',
+            'fluid_tag',
+            'function_tag',
+            'item_tag'
+        ]) {
+            if (origin.references[key] && override.references[key]) {
+                origin.references[key].push(...override.references[key])
+            } else {
+                origin.references[key] = override.references[key]
+            }
         }
+    } else {
+        origin.references = override.references
     }
 }
 

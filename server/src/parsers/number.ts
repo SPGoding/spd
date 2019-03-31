@@ -1,4 +1,4 @@
-import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
+import { Parser, ParsedResult, ParsingProblem } from '../utils/parser'
 
 interface NumberParserParams {
     isInteger?: boolean,
@@ -6,8 +6,8 @@ interface NumberParserParams {
     max?: number
 }
 
-export class NumberParser implements ArgumentParser {
-    parse(input: string, _cursor: number | undefined, params: NumberParserParams): ArgumentParseResult {
+export class NumberParser implements Parser {
+    pull(input: string, _cursor: number | undefined, params: NumberParserParams): ParsedResult {
         const segments = input.split(/\s/g)
         const problems: ParsingProblem[] = []
         const value = segments[0]
@@ -48,7 +48,7 @@ export class NumberParser implements ArgumentParser {
 
         return {
             result: {
-                value, type: 'number'
+                raw: value, type: 'number'
             },
             problems: problems, rest, cache: {}
         }

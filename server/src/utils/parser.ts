@@ -1,45 +1,12 @@
-import { LocalCache, ArgumentType } from './utils/types'
-import { NbtValue } from './argument_parsers/nbt'
-import { Selector } from './argument_parsers/selector'
+import { LocalCache, ArgumentType } from './types'
+import { NbtValue } from '../parsers/nbt'
+import { Selector } from '../parsers/selector'
 import { CompletionItem } from 'vscode-languageserver'
 
 /**
- * Parse a function file.
- * @param content The content of the file.
+ * Represents an argument.
  */
-export function parseFunction(content: string) {
-    const lines = content.split(/\r\n/g)
-    const ans: Command[] = []
-
-    for (const line of lines) {
-        // ans.push(parseCommand(line))
-    }
-
-    return ans
-}
-
-/**
- * Represents a command.
- */
-export interface Command {
-    /**
-     * All arguments of the command.
-     */
-    args: Argument[]
-    /**
-     * The cache of the command.
-     */
-    cache: LocalCache
-    /**
-     * All problems of the command.
-     */
-    problems: ParsingProblem[]
-}
-
-/**
- * Represents a command argument.
- */
-export interface SimpleArgument {
+export interface Argument {
     /**
      * The type of the argument.
      */
@@ -48,10 +15,14 @@ export interface SimpleArgument {
      * The raw string of the argument. Shoudn't contain spaces at sides.
      */
     value: string
+    /**
+     * Additional data for complex arguments.
+     */
+    data?: NbtValue | Selector
 }
 
 /**
- * Represents an error occurred when parsing a command.
+ * Represents a thrown problem while parsing a command.
  */
 export interface ParsingProblem {
     /**
@@ -74,18 +45,16 @@ export interface ParsingProblem {
     severity: 'info' | 'warning' | 'error'
 }
 
-export interface ArgumentParser {
+export interface Parser {
     /**
      * Parse the input value as the argument.
      * @param input The input value.
-     * @param cursor The location of the cursor. Should be undefined when cursor is
-     * not in the range of the input string.
      * @param params The parameters for the parser.
      */
-    parse(input: string, cursor: number | undefined, params?: object): ArgumentParseResult
+    parse(input: string, params?: object): ParsedResult
 }
 
-export interface ArgumentParseResult {
+export interface ParsedResult {
     /**
      * The parsed argument result.
      */
@@ -97,16 +66,14 @@ export interface ArgumentParseResult {
     /**
      * Cache of the argument. Will be combined to `Command` which the argument belongs to.
      */
-    cache: LocalCache
+    cache?: LocalCache
     /**
      * All errors eccured when parsing the argument. 
      * Will be combined to `Command` which the argument belongs to.
      */
-    problems: ParsingProblem[]
+    problems?: ParsingProblem[]
     /**
-     * All possible completions at the cursor location.
+     * All possible completions that can be applied at the end of the input string.
      */
     completions?: CompletionItem[]
 }
-
-export type Argument = SimpleArgument | NbtValue | Selector | Command

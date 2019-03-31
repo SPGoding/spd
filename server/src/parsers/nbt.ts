@@ -1,4 +1,4 @@
-import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
+import { Parser, ParsedResult, ParsingProblem } from '../utils/parser'
 
 const NBT_INT_REGEX = /^([+-]?)[0-9]+$/
 const NBT_SHORT_REGEX = /^([+-]?)[0-9]+[sS]$/
@@ -54,11 +54,11 @@ export interface NbtNumber {
     value: number
 }
 
-export class NbtParser implements ArgumentParser {
+export class NbtParser implements Parser {
 
     parsingProblems: ParsingProblem[] = []
 
-    parse(value: string, cursor: number | undefined, params: object /* NbtStructureTree */): ArgumentParseResult {
+    pull(value: string, cursor: number | undefined, params: object /* NbtStructureTree */): ParsedResult {
         throw 'UnimplementedException'
         // return { argument: null, rest: null, cache: null, errors: this.parsingErrors }
     }

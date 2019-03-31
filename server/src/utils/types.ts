@@ -9,16 +9,16 @@ export type LocalCache = {
     /**
      * All definitions.
      * @example
-     * "#define tag foo"
+     * "#define tag foo <description for this tag here...>"
      * =>
-     * { tag: ['foo'] }
+     * { tags: { foo: '<description for this tag here...>' } }
      */
     definitions?: {
         [type in DefinitionType]?: {
-            id: string,
+            id: string
             description?: string
         }[]
-    },
+    }
     /**
      * All references.
      * @example
@@ -26,9 +26,7 @@ export type LocalCache = {
      * =>
      * { tag: ['foo', 'bar'] }
      */
-    references?: {
-        [type in DefinitionType | ResourceLocationType]?: string[]
-    }
+    references?: { [type in DefinitionType | ResourceLocationType]?: string[] }
 }
 
 /**
@@ -41,16 +39,16 @@ export type WorkspaceCache = {
         [id: string]: {
             definition: {
                 /**
-                 * The file contains the definition (for `DefinitionType`), 
+                 * The file contains the definition (for `DefinitionType`),
                  * or the file matched the resource location (for `ResourceLocationType`).
                  */
-                uri: string,
+                uri: string
                 /**
-                 * The definition range (for `DefinitionType`). 
+                 * The definition range (for `DefinitionType`).
                  * Shouldn't exist for `ResourceLocationType`.
                  */
-                range?: Range,
-            },
+                range?: Range
+            }
             /**
              * URIs of all files which have reference this data.
              */
@@ -63,18 +61,32 @@ export type WorkspaceCache = {
  * All possible types of a resource location.
  */
 export type ResourceLocationType =
-    | 'advancement' | 'recipe' | 'loot_table' | 'function' | 'block_tag'
-    | 'entity_type_tag' | 'fluid_tag' | 'function_tag' | 'item_tag'
+    | 'advancement'
+    | 'recipe'
+    | 'loot_table'
+    | 'function'
+    | 'block_tag'
+    | 'entity_type_tag'
+    | 'fluid_tag'
+    | 'function_tag'
+    | 'item_tag'
 export const ResourceLocationTypes: ResourceLocationType[] = [
-    'advancement', 'recipe', 'loot_table', 'function', 'block_tag',
-    'entity_type_tag', 'fluid_tag', 'function_tag', 'item_tag'
+    'advancement',
+    'recipe',
+    'loot_table',
+    'function',
+    'block_tag',
+    'entity_type_tag',
+    'fluid_tag',
+    'function_tag',
+    'item_tag'
 ]
 
 /**
  * All possible types of a comment definition.
  * `name` stands for fake names of scoreboards.
  * `tag` stands for an entity tag.
- * `sound` stands for an resource pack custom sound event. 
+ * `sound` stands for an resource pack custom sound event.
  */
 export type DefinitionType = 'name' | 'tag' | 'sound'
 export const DefinitionTypes: DefinitionType[] = ['name', 'tag', 'sound']
@@ -87,10 +99,45 @@ export const DefinitionTypes: DefinitionType[] = ['name', 'tag', 'sound']
  * nbt_path target_selector ResourceLocationTypes DefinitionTypes
  */
 export type ArgumentType =
-    | ResourceLocationType | DefinitionType | 'literal' | 'string' | 'number' | 'boolean' | 'comment' | 'empty_line' | 'error' | 'vector' | 'command' | 'nbt_path' | 'nbt_value' | 'target_selector' | 'comment_definition' | 'slot' | 'mode' | 'color' | 'bossbar'
+    | ResourceLocationType
+    | DefinitionType
+    | 'literal'
+    | 'string'
+    | 'number'
+    | 'boolean'
+    | 'comment'
+    | 'empty_line'
+    | 'error'
+    | 'vector'
+    | 'command'
+    | 'nbt_path'
+    | 'nbt_value'
+    | 'target_selector'
+    | 'comment_definition'
+    | 'slot'
+    | 'mode'
+    | 'color'
+    | 'bossbar'
 export const ArgumentTypes: ArgumentType[] = [
-    ...ResourceLocationTypes, ...DefinitionTypes, 'literal', 'string', 'number', 'boolean', 'comment', 'empty_line',
-    'error', 'vector', 'command', 'nbt_path', 'nbt_value', 'target_selector', 'comment_definition', 'slot', 'mode', 'color', 'bossbar'
+    ...ResourceLocationTypes,
+    ...DefinitionTypes,
+    'literal',
+    'string',
+    'number',
+    'boolean',
+    'comment',
+    'empty_line',
+    'error',
+    'vector',
+    'command',
+    'nbt_path',
+    'nbt_value',
+    'target_selector',
+    'comment_definition',
+    'slot',
+    'mode',
+    'color',
+    'bossbar'
 ]
 
 /**
@@ -100,25 +147,25 @@ export interface CommandTreeNode {
     /**
      * The parser to use.
      */
-    parser?: ArgumentType,
+    parser?: ArgumentType
     /**
      * The template to use.
      */
-    template?: string,
+    template?: string
     /**
      * All parameters for the parser.
      */
-    params?: object,
+    params?: object
     /**
      * Human-readable command/argument description.
      * Expects a long sentense for the first node of each command to describe the command,
      * and a short description for non-string parameters.
      */
-    description?: string,
+    description?: string
     /**
      * All children of the command node.
      */
-    children?: CommandTreeNode[],
+    children?: CommandTreeNode[]
     /**
      * Whether the command is executable.
      */
@@ -129,7 +176,7 @@ export interface CommandTreeNode {
  * The structure of commands.json.
  */
 export interface CommandTree {
-    commands: CommandTreeNode[],
+    commands: CommandTreeNode[]
     templates: {
         [name: string]: Template
     }
@@ -139,4 +186,3 @@ export interface CommandTree {
  * An template defined in commands.json.
  */
 export type Template = CommandTreeNode | CommandTreeNode[]
-

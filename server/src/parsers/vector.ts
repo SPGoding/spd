@@ -1,14 +1,14 @@
-import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
+import { Parser, ParsedResult, ParsingProblem } from '../utils/parser'
 import { CompletionItem } from 'vscode-languageserver'
 
 interface VectorParserParams {
     dimension: number
 }
 ['~', '~', '']
-export class VectorParser implements ArgumentParser {
+export class VectorParser implements Parser {
     private readonly ELEMENT_REGEX = /^[~\^]?[+-]?\d*\.?\d*$/
 
-    parse(input: string, cursor: number | undefined, params: VectorParserParams): ArgumentParseResult {
+    pull(input: string, cursor: number | undefined, params: VectorParserParams): ParsedResult {
         const segments = input.split(/\s/g)
         const problems: ParsingProblem[] = []
         const value = segments.slice(0, params.dimension).join(' ')
@@ -46,9 +46,9 @@ export class VectorParser implements ArgumentParser {
             })
         }
 
-        const ans: ArgumentParseResult = {
+        const ans: ParsedResult = {
             result: {
-                value, type: 'vector'
+                raw: value, type: 'vector'
             },
             problems: problems, rest, cache: {}
         }

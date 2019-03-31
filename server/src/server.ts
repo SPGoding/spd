@@ -8,28 +8,26 @@ import * as fs from 'fs'
 
 const connection = createConnection(ProposedFeatures.all)
 
-connection.onInitialize((params) => {
-    return {
-        capabilities: {
-            completionProvider: {},
-            definitionProvider: true,
-            documentHighlightProvider: true,
-            hoverProvider: true,
-            referencesProvider: true,
-            renameProvider: true,
-            documentLinkProvider: {
-                resolveProvider: true
-            },
-            signatureHelpProvider: {
-                triggerCharacters: [' ', ',', '\r\n']
-            },
-            textDocumentSync: {
-                change: TextDocumentSyncKind.Incremental,
-                openClose: true
-            }
+connection.onInitialize(_params => ({
+    capabilities: {
+        completionProvider: {},
+        definitionProvider: true,
+        documentHighlightProvider: true,
+        hoverProvider: true,
+        referencesProvider: true,
+        renameProvider: true,
+        documentLinkProvider: {
+            resolveProvider: true
+        },
+        signatureHelpProvider: {
+            triggerCharacters: [' ', ',', '\r\n']
+        },
+        textDocumentSync: {
+            change: TextDocumentSyncKind.Incremental,
+            openClose: true
         }
     }
-})
+}))
 
 const workspaceCache: WorkspaceCache = {}
 

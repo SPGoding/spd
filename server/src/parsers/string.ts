@@ -1,11 +1,11 @@
-import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
+import { Parser, ParsedResult, ParsingProblem } from '../utils/parser'
 
 interface StringParserParams {
     type: 'word' | 'phrase' | 'greedy'
 }
 
-export class StringParser implements ArgumentParser {
-    parse(input: string, _cursor: number | undefined, params: StringParserParams): ArgumentParseResult {
+export class StringParser implements Parser {
+    pull(input: string, _cursor: number | undefined, params: StringParserParams): ParsedResult {
         const segments = input.split(/\s/g)
         const problems: ParsingProblem[] = []
         let value = input
@@ -66,7 +66,7 @@ export class StringParser implements ArgumentParser {
 
         return {
             result: {
-                value, type: 'string'
+                raw: value, type: 'string'
             },
             problems: problems, rest, cache: {}
         }

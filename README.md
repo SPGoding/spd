@@ -4,9 +4,9 @@ A VSCode extension for editing Minecraft datapacks.
 
 ## Using
 
-TODO
 
-## Structure
+
+## Structure of Source Code
 
 ```
 .

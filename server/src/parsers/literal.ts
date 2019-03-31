@@ -1,4 +1,4 @@
-import { ArgumentParser, ArgumentParseResult, ParsingProblem } from '../parser'
+import { Parser, ParsedResult, ParsingProblem } from '../utils/parser'
 import { convertArrayToString } from '../utils/utils'
 import { CompletionItem } from 'vscode-languageserver'
 
@@ -6,10 +6,10 @@ interface LiteralParserParams {
     expected: string[]
 }
 
-export class LiteralParser implements ArgumentParser {
+export class LiteralParser implements Parser {
     constructor(private readonly params?: LiteralParserParams) { }
 
-    parse(input: string, cursor: number | undefined, params: LiteralParserParams): ArgumentParseResult {
+    pull(input: string, cursor: number | undefined, params: LiteralParserParams): ParsedResult {
         const segments = input.split(/\s/g)
         const value = segments[0]
         const rest = segments.slice(1).join(' ')
@@ -44,9 +44,9 @@ export class LiteralParser implements ArgumentParser {
             }
         }
 
-        const ans: ArgumentParseResult = {
+        const ans: ParsedResult = {
             result: {
-                value: value,
+                raw: value,
                 type: 'literal'
             },
             problems: problems,
