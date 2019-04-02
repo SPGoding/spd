@@ -45,7 +45,7 @@ export class LiteralParser implements Parser {
         }
 
         const ans: ParsedResult = {
-            result: {
+            argument: {
                 raw: value,
                 type: 'literal'
             },

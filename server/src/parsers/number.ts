@@ -47,7 +47,7 @@ export class NumberParser implements Parser {
         }
 
         return {
-            result: {
+            argument: {
                 raw: value, type: 'number'
             },
             problems: problems, rest, cache: {}

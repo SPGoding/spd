@@ -65,7 +65,7 @@ export class StringParser implements Parser {
         }
 
         return {
-            result: {
+            argument: {
                 raw: value, type: 'string'
             },
             problems: problems, rest, cache: {}

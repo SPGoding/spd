@@ -72,7 +72,7 @@ export class SlotParser implements Parser {
         }
 
         const ans: ParsedResult = {
-            result: {
+            argument: {
                 raw: value, type: 'slot'
             },
             problems: problems, rest, cache: {}

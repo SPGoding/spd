@@ -47,7 +47,7 @@ export class VectorParser implements Parser {
         }
 
         const ans: ParsedResult = {
-            result: {
+            argument: {
                 raw: value, type: 'vector'
             },
             problems: problems, rest, cache: {}

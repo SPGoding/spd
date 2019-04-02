@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { Parser, Argument, Command, ParsedResult, ParsingProblem } from '../utils/parser'
+import { Parser, Argument, ParsedResult, ParsingProblem } from '../utils/parser'
 import { ArgumentType, CommandTreeNode, LocalCache, DefinitionTypes, CommandTree, Template } from '../utils/types'
 import { combineLocalCaches, convertArrayToString } from '../utils/utils'
 import { LiteralParser } from './literal'
@@ -13,176 +13,81 @@ const templates = commandTree.templates
 const commandNodes = commandTree.commands
 
 /**
- * Parses a command.
+ * Provides methods to parse a command.
  * Accepts comments (begin with `#`) and empty lines.
  */
-export class CommandParser implements Parser {
-    private readonly completions: CompletionItem[] = []
+export class CommandParser extends Parser {
+    public static id = 'command'
 
-    public pull(value: string, cursor: number | undefined) {
-        const args: Argument[] = []
-        const cmd: Command = { args, cache: {}, problems: [] }
-        const ans: ParsedResult = {
-            result: cmd, rest: '', cache: cmd.cache,
-            problems: cmd.problems, completions: this.completions
-        }
+    public parse(input: string, index: number): ParsedResult {
 
-        if (value[0] === '#') {
-            // Completion
-            if (value.length === 1 && cursor === 1) {
-                this.completions.push(CompletionItem.create('define'))
-                this.completions.push(CompletionItem.create('region'))
-            }
 
-            // Further suppoer.
-            if (value.slice(0, 8) === '#define ') {
-                // Completion.
-                if (value.length === 8 && cursor === 8) {
-                    const cpls = DefinitionTypes.map(v => CompletionItem.create(v))
-                    this.completions.push(...cpls)
-                }
-                // Parsing.
-                const segments = value.split(/\s/g)
-                ans.cache.definitions = {}
-                switch (segments[1]) {
-                    case 'name':
-                    case 'tag':
-                    case 'sound':
-                        if (segments.length === 3) {
-                            ans.cache.definitions[segments[1]] = [{
-                                id: segments[2]
-                            }]
-                        } else if (segments.length >= 4) {
-                            ans.cache.definitions[segments[1]] = [{
-                                id: segments[2],
-                                description: segments[3]
-                            }]
-                        }
-                        break
-                    default:
-                        ans.problems.push({
-                            severity: 'warning',
-                            range: { start: 8, end: segments[1].length + 8 },
-                            message: `Expected ${
-                                convertArrayToString(DefinitionTypes)
-                                } but got '${segments[1]}'.`
-                        })
-                        break
-                }
-                args.push({ type: 'comment_definition', raw: value } as Argument)
-            } else if (value.slice(0, 8) === '#region ') {
-                // TODO: #region support here.
-            } else {
-                args.push({ type: 'comment', raw: value } as Argument)
-            }
-        } else if (/^\s*$/.test(value)) {
-            args.push({ type: 'empty_line', raw: value } as Argument)
-        } else {
-            const result = this.parseNodes(value, commandNodes, args, 0, cursor)
-            ans.result = result.result
-            combineLocalCaches(ans.cache, result.cache)
-            ans.problems.push(...result.problems)
-            ans.completions
-        }
-
-        return ans
+        throw new Error('Method not implemented.')
     }
 
-    private getArgumentParser(parser: ArgumentType): Parser {
-        switch (parser) {
-            case 'command':
-                return new CommandParser()
-            case 'literal':
-                return new LiteralParser()
-            // TODO: Add more parsers here.
-            default:
-                throw `Unknown parser "${parser}"`
-        }
-    }
-
-    public parseOneNode(value: string, node: CommandTreeNode, inputArgs: Argument[],
-        addedNum: number, cursor: number | undefined): CommandParseResult {
-        if (node.parser !== undefined) {
-            const parser = this.getArgumentParser(node.parser)
-            const result = parser.pull(value, cursor, node.params)
-            combineCompletions(this.completions, result.completions)
-
-            var args = [...inputArgs, result.result]
-
-            if (!containError(result.problems)) {
-                if (node.children) {
-                    const addedNum = value.length - result.rest.length
-                    const subResult = this.parseNodes(result.rest, node.children, args, addedNum,
-                        cursor !== undefined ? cursor - addedNum : undefined)
-                    combineLocalCaches(result.cache, subResult.cache)
-                    downgradeErrors(subResult.problems)
-                    result.problems.push(...subResult.problems)
-                    args = [...subResult.result.args]
-                    result.rest = subResult.rest
-                }
-            }
-
-            const ans = {
-                result: {
-                    cache: result.cache,
-                    problems: result.problems,
-                    args
-                }, rest: result.rest, cache: result.cache, problems: result.problems
-            }
-
-            return addPosToProblems(ans, addedNum)
-        } else if (node.template) {
-            const templateName = node.template
-            const template = templates[templateName]
-            combineCommandTreeNodes(templates, node)
-            if (template instanceof Array) {
-                return this.parseNodes(value, template, inputArgs, addedNum,
-                    cursor !== undefined ? cursor - addedNum : undefined)
-            } else {
-                return this.parseOneNode(value, template, inputArgs, addedNum,
-                    cursor !== undefined ? cursor - addedNum : undefined)
-            }
-        } else {
-            throw "Expected 'parser' or 'template' but got: nothing."
-        }
-    }
-
-    public parseNodes(value: string, nodes: CommandTreeNode[], inputArgs: Argument[],
-        addedNum: number, cursor: number | undefined): CommandParseResult {
+    public parseViaNodes(input: string, index: number, nodes: CommandTreeNode[]) {
         if (nodes.length === 1) {
-            return this.parseOneNode(value, nodes[0], inputArgs, addedNum, cursor)
+
         } else {
             for (const node of nodes) {
-                const result = this.parseOneNode(value, node, inputArgs, addedNum, cursor)
-
-                if (!containError(result.problems)) {
-                    return result
-                }
+                const result = this.parseViaOneNode(input, index, node)
             }
-
-            const problems: ParsingProblem[] = [{
-                range: { start: 0, end: value.length },
-                message: 'Failed to match all nodes.',
-                severity: 'error'
-            }]
-
-            return addPosToProblems({
-                result: {
-                    args: [...inputArgs, { type: 'error', value }],
-                    cache: {}, problems
-                },
-                rest: '', cache: {}, problems
-            }, addedNum)
         }
+    }
+
+    public parseViaOneNode(input: string, index: number, node: CommandTreeNode): ParsedResult {
+        if (node.parser) {
+            // parser
+            const result = this.getParser(node.parser, node.params).parse(input, index)
+            if (result.endIndex >= input.length - 1 && !node.executable) {
+                if (!result.problems) {
+                    result.problems = []
+                }
+                result.problems.push({
+                    message: 'Expected executable command but got: EOF.',
+                    range: { start: input.length - 1, end: input.length },
+                    severity: 'warning'
+                })
+            }
+            if (result.endIndex < input.length - 1 && !node.children) {
+                if (!result.problems) {
+                    result.problems = []
+                }
+                result.problems.push({
+                    message: `Expected EOF but got: '${input.slice(result.endIndex + 1)}'.`,
+                    range: { start: result.endIndex + 1, end: input.length },
+                    severity: 'warning'
+                })
+            }
+            // TODO: recursive
+
+        } else if (node.template) {
+            // template
+        } else {
+            throw new Error('Expected a parser or template.')
+        }
+    }
+
+    private getParser(id: string, params?: object): Parser {
+        // TODO: Add new parsers here.
+        const parserList = [CommandParser]
+
+        for (const parser of parserList) {
+            if (parser.id === id) {
+                return new parser(params)
+            }
+        }
+
+        throw new Error(`Unexpected parser id: '${id}'.`)
     }
 }
 
 /**
  * Whether the input parsing problems contain severity 'error'.
- * @param errors The parsing problems.
+ * @param problems The parsing problems.
  */
-function containError(errors: ParsingProblem[]) {
-    for (const error of errors) {
+function containError(problems: ParsingProblem[]) {
+    for (const error of problems) {
         if (error.severity === 'error') {
             return true
         }
@@ -256,12 +161,12 @@ export function combineCommandTreeNodes(origin: Template, override: CommandTreeN
 
         if (override.description) {
             origin.description = override.description
-        }        
+        }
     }
 }
 
 interface CommandParseResult extends ParsedResult {
-    result: Command
+    argument: Command
     rest: string
     cache: LocalCache
     problems: ParsingProblem[]

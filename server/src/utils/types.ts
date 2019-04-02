@@ -1,24 +1,9 @@
-import { Range } from 'vscode-languageserver'
-
 /**
  * Caches for making renaming faster.
  * Stored in each function's tree.
  * @see WorkspaceCache
  */
 export type LocalCache = {
-    /**
-     * All definitions.
-     * @example
-     * "#define tag foo <description for this tag here...>"
-     * =>
-     * { tags: { foo: '<description for this tag here...>' } }
-     */
-    definitions?: {
-        [type in DefinitionType]?: {
-            id: string
-            description?: string
-        }[]
-    }
     /**
      * All references.
      * @example
@@ -35,22 +20,14 @@ export type LocalCache = {
  * @see LocalCache
  */
 export type WorkspaceCache = {
-    [type in ResourceLocationType | DefinitionType]?: {
+    [type in ResourceLocationType]?: {
         [id: string]: {
-            definition: {
-                /**
-                 * The file contains the definition (for `DefinitionType`),
-                 * or the file matched the resource location (for `ResourceLocationType`).
-                 */
-                uri: string
-                /**
-                 * The definition range (for `DefinitionType`).
-                 * Shouldn't exist for `ResourceLocationType`.
-                 */
-                range?: Range
-            }
             /**
-             * URIs of all files which have reference this data.
+             * The URI of the file which matches the resource location.
+             */
+            definition: string
+            /**
+             * URIs of all files that reference this data.
              */
             references: string[]
         }
@@ -93,10 +70,6 @@ export const DefinitionTypes: DefinitionType[] = ['name', 'tag', 'sound']
 
 /**
  * All possible command argument types.
- */
-/*
- * TODO: Parsers
- * nbt_path target_selector ResourceLocationTypes DefinitionTypes
  */
 export type ArgumentType =
     | ResourceLocationType

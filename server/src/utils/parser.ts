@@ -18,7 +18,7 @@ export interface Argument {
     /**
      * Additional data for complex arguments.
      */
-    data?: NbtValue | Selector
+    data?: NbtValue | Selector | Argument[]
 }
 
 /**
@@ -45,24 +45,49 @@ export interface ParsingProblem {
     severity: 'info' | 'warning' | 'error'
 }
 
-export interface Parser {
+export abstract class Parser {
+    /**
+     * The id of the current parser.
+     */
+    public static id: string
+
+    /**
+     * Constructs a parser class.
+     * @param params The parameters for the parser.
+     */
+    public constructor(private readonly params?: object) { }
+
     /**
      * Parse the input value as the argument.
      * @param input The input value.
-     * @param params The parameters for the parser.
+     * @param index The index where the parsing should begin.
      */
-    parse(input: string, params?: object): ParsedResult
+    public abstract parse(input: string, index: number): ParsedResult
+
+    public toString() {
+        const attributes: string[] = []
+        for (const key in this.params) {
+            attributes.push(`${key}=${this.params[key]}`)
+        }
+
+        if (attributes.length > 0) {
+            return `${Parser.id}[${attributes.join(',')}]`
+        } else {
+            return Parser.id
+        }
+    }
 }
 
 export interface ParsedResult {
     /**
      * The parsed argument result.
      */
-    result: Argument
+    argument: Argument
     /**
-     * The rest value which the next argument parser should parse.
+     * The end index of the parsing.
+     * Next parser should begin at endIndex + 1.
      */
-    rest: string
+    endIndex: number
     /**
      * Cache of the argument. Will be combined to `Command` which the argument belongs to.
      */
