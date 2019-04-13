@@ -89,7 +89,7 @@ export interface ParsedResult {
      */
     endIndex: number
     /**
-     * Cache of the argument. Will be combined to `Command` which the argument belongs to.
+     * Cache of the argument.
      */
     cache?: LocalCache
     /**

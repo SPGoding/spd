@@ -1,3 +1,5 @@
+import { Range } from 'vscode-languageserver'
+
 /**
  * Caches for making renaming faster.
  * Stored in each function's tree.
@@ -9,9 +11,16 @@ export type LocalCache = {
      * @example
      * "/summon minecraft:armor_stand ~ ~ ~ {Tags:[foo,bar]}"
      * =>
-     * { tag: ['foo', 'bar'] }
+     * {
+     *  tag: {
+     *  }
+     * }
      */
-    references?: { [type in DefinitionType | ResourceLocationType]?: string[] }
+    references?: { 
+        tag: {
+            [tag: string]: Range
+        }
+    }
 }
 
 /**
